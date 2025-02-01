@@ -1,0 +1,38 @@
+Domain IngestaDeDatos {
+	Subdomain AnonimizacionDeDatos {
+		type CORE_DOMAIN
+		domainVisionStatement = "Proceso de eliminar información sensible de las imágenes médicas (DICOM) y metadatos asociados."
+	}
+	Subdomain IngestionDeDatos {
+		type CORE_DOMAIN
+		domainVisionStatement = "Importación de datos desde centros de salud y laboratorios hacia la infraestructura en la nube privada de STA"
+	}
+	Subdomain EnriquecimientoDeDatos {
+		type CORE_DOMAIN
+		domainVisionStatement = "Proceso de agregar etiquetas, metadatos y estructurar los datos para su uso en modelos de IA"
+	}
+	Subdomain AlmacenamientoYSeguridad {
+		type CORE_DOMAIN
+		domainVisionStatement = "Gestión de datos en la nube, cumplimiento de normativas como HIPAA, y garantía de privacidad"
+	}
+	Subdomain ProcesamientoDeImagenes {
+		type CORE_DOMAIN
+		domainVisionStatement = "Clasificación de imágenes por modalidad, región anatómica y patología"
+	}
+	Subdomain EntrenamientoModelosIA {
+		type CORE_DOMAIN
+		domainVisionStatement = "Uso de los datos procesados para entrenar modelos de IA en el ámbito médico"
+	}
+	Subdomain VentaDatosIA {
+		type CORE_DOMAIN
+		domainVisionStatement = "Se encarga de proveer una UI para buscar datos de entrenamiento. También ofrece diferentes funcionalidades según el plan que tengan los usuarios finales"
+	}
+	Subdomain IdentidadAcceso {
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Gestiona los permisos que tienen para acceder los distintos productos"
+	}
+  Subdomain ManejoUsarios {
+    type GENERIC_SUBDOMAIN
+    domainVisionStatement = "Gestiona la creación de usuarios y su manej con seguridad"
+  }
+}
