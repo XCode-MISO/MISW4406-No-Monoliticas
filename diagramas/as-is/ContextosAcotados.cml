@@ -11,19 +11,33 @@ ContextMap {
 	STAEnterpriseContext [SK]<->[SK] VentaDatosContext
 }
 
-BoundedContext IngestionDatosContext implements IngestionDeDatos{}
+BoundedContext IngestionDatosContext implements IngestionDeDatos{
+	domainVisionStatement = "Ingesta de datos desde la infraestructura de un cliente en una nube privada personal para luego anonimizarlos"
+}
 
-BoundedContext AnonimizacionYEnriquecimientoDatosContext implements AnonimizacionDeDatos, EnriquecimientoDeDatos, AlmacenamientoYSeguridad {}
+BoundedContext AnonimizacionYEnriquecimientoDatosContext implements AnonimizacionDeDatos, EnriquecimientoDeDatos, AlmacenamientoYSeguridad {
+	domainVisionStatement = "Anonimización de datos de los clientes con enriquecimiento de datos y almacenamiento en base de datos segurda de la nube privada"
+}
 
-BoundedContext ProcesamientoDatosContext implements AlmacenamientoYSeguridad, ProcesamientoDeImagenes, EntrenamientoModelosIA{}
+BoundedContext ProcesamientoDatosContext implements AlmacenamientoYSeguridad, ProcesamientoDeImagenes, EntrenamientoModelosIA{
+	domainVisionStatement = "Procesamiento de Datos para entrenar modelos de IA mediante pipelines de procesamiento que corren de manera manual. Se guardan en una base de datos segura en la nube privada"
+}
 
-BoundedContext VentaDatosContext implements VentaDatosIA{}
+BoundedContext VentaDatosContext implements VentaDatosIA{
+	domainVisionStatement = "UI para desarrolladores de IA donde pueden buscar datos que pueden descargar para entrenar sus modelos"
+}
 
-BoundedContext STAStandardContext implements VentaDatosIA{}
+BoundedContext STAStandardContext implements VentaDatosIA{
+	domainVisionStatement = "Funcionalidades básicas de la UI de ventas de datos como buscar y descargar datos para los modelos"
+}
 
-BoundedContext STAProContext implements VentaDatosIA{}
+BoundedContext STAProContext implements VentaDatosIA{
+	domainVisionStatement = "Funcionalidades para correr SQL en contextos aislados entre clientes para modelar los datos y entrenar modelos"
+}
 
-BoundedContext STAEnterpriseContext implements VentaDatosIA{}
+BoundedContext STAEnterpriseContext implements VentaDatosIA{
+	domainVisionStatement = "Standard + Pro + gestión de expertos en modelado y customización de datos de entrenamiento"
+}
 
 
 Domain IngestaDeDatos {
