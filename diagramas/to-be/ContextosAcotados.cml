@@ -1,0 +1,149 @@
+ContextMap SaludTechContextMap {
+	type = SYSTEM_LANDSCAPE
+	state = TO_BE
+
+	contains GestionDeDatosMedicosContext
+	contains GestionSeguridadContext
+	contains AdquisicionAutomatizadaContext
+	contains IngestionDatosContext
+	contains AnonimizacionInteligenteContext
+	contains ProcesamientoImagenesContext
+	contains GestionClientesYPartnersContext
+	contains ServiciosDesarrolladoresContext
+	contains DistribucionDatosContext
+	contains CumplimientoNormativoContext
+
+	GestionDeDatosMedicosContext [P]<->[P] AdquisicionAutomatizadaContext
+	GestionDeDatosMedicosContext [P]<->[P] GestionClientesYPartnersContext
+
+	GestionDeDatosMedicosContext [C] <- [S] GestionSeguridadContext
+	AdquisicionAutomatizadaContext [C] <- [S] GestionSeguridadContext
+	IngestionDatosContext [C] <- [S] GestionSeguridadContext
+	AnonimizacionInteligenteContext [C] <- [S] GestionSeguridadContext
+	ProcesamientoImagenesContext [C] <- [S] GestionSeguridadContext
+	GestionClientesYPartnersContext [C] <- [S] GestionSeguridadContext
+	ServiciosDesarrolladoresContext [C] <- [S] GestionSeguridadContext
+	DistribucionDatosContext [C] <- [S] GestionSeguridadContext
+	
+	CumplimientoNormativoContext [SK] <-> [SK] GestionSeguridadContext
+
+	IngestionDatosContext [D, ACL]<-[U, OHS, PL] AdquisicionAutomatizadaContext
+	AnonimizacionInteligenteContext [D, ACL]<-[U, OHS, PL]	IngestionDatosContext
+	ProcesamientoImagenesContext [D, ACL]<-[U, OHS, PL]	AnonimizacionInteligenteContext
+
+	ServiciosDesarrolladoresContext [D, ACL]<-[U, OHS, PL]	DistribucionDatosContext
+	GestionClientesYPartnersContext [D, ACL]<-[U, OHS, PL]	DistribucionDatosContext
+
+	AdquisicionAutomatizadaContext [D, ACL]<-[U, OHS, PL]	GestionClientesYPartnersContext
+	AdquisicionAutomatizadaContext	[C] <- [S, PL] CumplimientoNormativoContext	
+	DistribucionDatosContext 	[C] <- [S, PL] CumplimientoNormativoContext	
+
+}
+
+BoundedContext GestionDeDatosMedicosContext implements GestionDeDatosMedicosDomain{
+  type = FEATURE
+  domainVisionStatement = "Este contexto se encarga de la recolección, anonimización, almacenamiento y distribución de imágenes médicas y diagnósticos anonimizados. Su objetivo es garantizar que los datos estén disponibles de manera segura y eficiente para los clientes, cumpliendo con las normativas de privacidad y seguridad."
+}
+
+BoundedContext GestionSeguridadContext implements GestionSeguridadDomain{
+		type FEATURE
+		domainVisionStatement =
+				"Este contexto gestiona identidades digitales anonimizadas para los pacientes, asegurando trazabilidad sin comprometer privacidad."
+}
+
+BoundedContext AdquisicionAutomatizadaContext implements AdquisicionAutomatizadaDomain{
+	type FEATURE
+	domainVisionStatement = "Este contexto gestiona el acopio de la informacion de imagenes, de acuerdo a la normativa de cada pais."		
+}
+
+BoundedContext IngestionDatosContext implements IngestionDatosDomain{
+		type FEATURE
+		domainVisionStatement =
+				"Este contexto maneja el almacenamiento y organización de los datos anonimizados en una infraestructura en la nube altamente escalable y segura, con cumplimiento normativo global."
+}
+
+BoundedContext AnonimizacionInteligenteContext implements AnonimizacionInteligenteDomain{
+		type FEATURE
+		domainVisionStatement =
+				"Este contexto elimina automáticamente información sensible mediante algoritmos avanzados de anonimización, optimizando su desempeño con el tiempo."		
+}
+
+BoundedContext ProcesamientoImagenesContext implements ProcesamientoImagenesDomain{
+		type FEATURE
+		domainVisionStatement =
+				"Este contexto automatiza la categorización y etiquetado de datos mediante modelos de IA especializados en diferentes modalidades médicas, generando metadatos avanzados."
+}
+
+BoundedContext GestionClientesYPartnersContext implements GestionClientesYPartnersDomain{
+  type = FEATURE
+  domainVisionStatement = "Este contexto se encarga de la relación con los proveedores de datos (centros de salud, laboratorios) y los clientes (desarrolladores de IA, empresas, etc.). Su objetivo es garantizar que los acuerdos con los partners y clientes se gestionen de manera eficiente y que se cumplan los términos de los contratos."
+}
+
+BoundedContext ServiciosDesarrolladoresContext {
+  type = FEATURE
+  domainVisionStatement = "Este contexto ofrece herramientas y servicios para que los desarrolladores de IA accedan a datos médicos anonimizados y estructurados. Incluye productos como STA Standard, STA Pro y STA Enterprise, que permiten a los clientes entrenar y desarrollar modelos de IA de manera eficiente."
+}
+
+BoundedContext DistribucionDatosContext implements DistribucionDatosDomain{
+		type = FEATURE
+		domainVisionStatement =
+				"Este contexto maneja la distribución eficiente y segura de los datos anonimizados a los clientes de STA. Se ofrece acceso en tiempo real con mecanismos de búsqueda optimizada y procesamiento a demanda."
+}
+
+BoundedContext CumplimientoNormativoContext implements CumplimientoNormativoDomain{
+  type = FEATURE
+  domainVisionStatement = "Este contexto se encarga de garantizar que los procesos de STA cumplan con las leyes de privacidad y seguridad en cada país donde opere."
+}
+   
+
+Domain SaludTechDomain {
+	Subdomain GestionDeDatosMedicosDomain{
+		type CORE_DOMAIN
+		domainVisionStatement = "Dominio principal, encargado de recolectar, procesar y distribuir las imagenes medicas"
+	}
+
+	Subdomain GestionSeguridadDomain{
+		type GENERIC_SUBDOMAIN
+		domainVisionStatement = "Subdominio que garantiza la identificacion y autenticacion de entidades y operaciones que realiza."
+	}
+
+	Subdomain AdquisicionAutomatizadaDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio encargado del acopio de imagenes."
+	}
+
+	Subdomain IngestionDatosDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio IngestionDatosDomain"
+	}
+	
+	Subdomain AnonimizacionInteligenteDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio AdquisicionAutomatizadaDomain"
+	}
+
+	Subdomain ProcesamientoImagenesDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio EnriquecimientoDatosDomain"
+	}
+
+	Subdomain GestionClientesYPartnersDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio GestionClientesYPartnersDomain"
+	}
+
+	Subdomain ServiciosDesarrolladoresDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio ServiciosDesarrolladoresDomain"
+	}
+
+	Subdomain DistribucionDatosDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio DistribucionDatosDomain"
+	}
+
+	Subdomain CumplimientoNormativoDomain{
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Subdominio CumplimientoNormativoDomain"
+	}	
+}
