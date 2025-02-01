@@ -1,5 +1,5 @@
 
-Domain IngestaDeDatos {
+Domain IngestaYProcesamientoDatos  {
 
 	Subdomain IngestionDeDatos {
 		type CORE_DOMAIN
@@ -12,6 +12,39 @@ Domain IngestaDeDatos {
 	Subdomain EnriquecimientoDeDatos {
 		type CORE_DOMAIN
 		domainVisionStatement = "Proceso de agregar etiquetas, metadatos y estructurar los datos para su uso en modelos de IA"
+    
+    Entity Paciente {
+      hint = "Representa a la persona cuyos datos médicos son recolectados y procesados. Los datos del paciente están anonimizados para proteger su privacidad"
+      string token
+      GrupoEdad grupo_edad
+      string sexo
+      string etnicidad 
+    }
+
+    Entity ImagenMedica {
+      hint = " Representa las imágenes médicas recolectadas de los centros de salud, como rayos X, tomografías, resonancias magnéticas, etc."
+      Modalidad modalidad
+      RegionAnatomica region_anatomica
+      Patologia patologia
+      string resolucion
+      string contraste
+      string formato
+    }
+
+    Entity Diagnostico {
+      hint = "Representa el informe médico asociado a una imagen médica, que puede incluir texto, imágenes o PDFs"
+      string descripcion
+      Collection<Sintoma> sintomas
+      Collection<string> historial
+    }
+
+    Entity CentroSalud {
+      hint = "Representa los hospitales, clínicas y laboratorios que proveen datos médicos a STA"
+      string nombre
+      string ubicacion
+      string tipo
+    }
+
 	}
 	Subdomain AlmacenamientoYSeguridad {
 		type CORE_DOMAIN
@@ -21,6 +54,11 @@ Domain IngestaDeDatos {
 	Subdomain ProcesamientoDeImagenes {
 		type CORE_DOMAIN
 		domainVisionStatement = "Clasificación de imágenes por modalidad, región anatómica y patología"
+    Entity PipelineProcesamiento {
+      hint = "Representa el conjunto de procesos automatizados que transforman los datos crudos en datos listos para su uso en IA"
+      string tipo
+      string frecuencia //cron
+    }
 	}
 	Subdomain EntrenamientoModelosIA {
 		type CORE_DOMAIN
@@ -34,5 +72,60 @@ Domain IngestaDeDatos {
 	Subdomain IdentidadAcceso {
 		type SUPPORTING_DOMAIN
 		domainVisionStatement = "Gestiona los usuarios y los permisos que tienen para acceder los distintos productos"
+    Entity Usuario {
+      hint = "Representa a los usuarios que consumen los datos procesados por STA para entrenar modelos de IA"
+      string tipo
+      Collection<Imagen> historial_descargas
+    }
 	}
+}
+
+UserStory EnviarDatos {
+  As a "CentroSalud"
+  I want to "enviar"
+  an "ImagenMedica"
+  for "vender mis datos"
+  so that "recibí un pago de STA por los datos"
+}
+
+UserStory AnonimizarDatos {
+  As a "Equipo STA"
+  I want to "anonimizar mis"
+  an "ImagenMedicas"
+  so that "pueda garantizar la privacidad de mis clientes y usuarios"
+}
+
+UserStory BuscarImagenesMedicas {
+  As a "desarrollador IA"
+  I want to "buscar imagenes"
+  an "ImagenMedica"
+  so that "pueda usarlas para entrenar modelos de IA"
+}
+
+UserStory EnriquecerDatos {
+  As a "equipo STA"
+  I want to "enriquecer"
+  an "ImagenMedica"
+  so that "pueda usarlas para entrenar modelos de IA y organizarlas en mi base de datos"
+}
+
+UserStory VerificarHIPAA {
+  As a "equipo de cumplimiento normativo"
+  I want to "verificar"
+  an "ImagenMedica"
+  so that "cumpla los requicitos de anonimidad"
+}
+
+UserStory PlanPro {
+  As a "desarrollador de IA con plan PRO"
+  I want to "ejecutar consultas SQL en"
+  an "ImagenMedica"
+  so that "pueda acceder de manera personalizada a mis datos"
+}
+
+UserStory AutomatizarAnonimizacion {
+  As a "equipo de STA"
+  I want to "automatizar"
+  an "PipelineProcesamiento"
+  so that "se ejecuten de manera automatica, de manera rápida y con notificaciones a los errores de procesamiento"
 }
