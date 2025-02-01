@@ -1,0 +1,65 @@
+ContextMap {
+	type SYSTEM_LANDSCAPE
+	state AS_IS
+	contains AnonimizacionYEnriquecimientoDatosContext, ProcesamientoDatosContext, VentaDatosContext, IngestionDatosContext, STAStandardContext, STAProContext, STAEnterpriseContext
+	
+	IngestionDatosContext -> AnonimizacionYEnriquecimientoDatosContext
+	AnonimizacionYEnriquecimientoDatosContext -> ProcesamientoDatosContext
+	ProcesamientoDatosContext [PL]->[ACL] VentaDatosContext
+	STAStandardContext [SK]<->[SK] VentaDatosContext
+	STAProContext [SK]<->[SK] VentaDatosContext
+	STAEnterpriseContext [SK]<->[SK] VentaDatosContext
+}
+
+BoundedContext IngestionDatosContext implements IngestionDeDatos{}
+
+BoundedContext AnonimizacionYEnriquecimientoDatosContext implements AnonimizacionDeDatos, EnriquecimientoDeDatos, AlmacenamientoYSeguridad {}
+
+BoundedContext ProcesamientoDatosContext implements AlmacenamientoYSeguridad, ProcesamientoDeImagenes, EntrenamientoModelosIA{}
+
+BoundedContext VentaDatosContext implements VentaDatosIA{}
+
+BoundedContext STAStandardContext implements VentaDatosIA{}
+
+BoundedContext STAProContext implements VentaDatosIA{}
+
+BoundedContext STAEnterpriseContext implements VentaDatosIA{}
+
+
+Domain IngestaDeDatos {
+
+	Subdomain IngestionDeDatos {
+		type CORE_DOMAIN
+		domainVisionStatement = "Importación de datos desde centros de salud y laboratorios hacia la infraestructura en la nube privada de STA"
+	}
+	Subdomain AnonimizacionDeDatos {
+		type CORE_DOMAIN
+		domainVisionStatement = "Proceso de eliminar información sensible de las imágenes médicas (DICOM) y metadatos asociados."
+	}
+	Subdomain EnriquecimientoDeDatos {
+		type CORE_DOMAIN
+		domainVisionStatement = "Proceso de agregar etiquetas, metadatos y estructurar los datos para su uso en modelos de IA"
+	}
+	Subdomain AlmacenamientoYSeguridad {
+		type CORE_DOMAIN
+		domainVisionStatement = "Gestión de datos en la nube, cumplimiento de normativas como HIPAA, y garantía de privacidad"
+	}
+
+	Subdomain ProcesamientoDeImagenes {
+		type CORE_DOMAIN
+		domainVisionStatement = "Clasificación de imágenes por modalidad, región anatómica y patología"
+	}
+	Subdomain EntrenamientoModelosIA {
+		type CORE_DOMAIN
+		domainVisionStatement = "Uso de los datos procesados para entrenar modelos de IA en el ámbito médico"
+	}
+
+	Subdomain VentaDatosIA {
+		type CORE_DOMAIN
+		domainVisionStatement = "Se encarga de proveer una UI para buscar datos de entrenamiento. También ofrece diferentes funcionalidades según el plan que tengan los usuarios finales"
+	}
+	Subdomain IdentidadAcceso {
+		type SUPPORTING_DOMAIN
+		domainVisionStatement = "Gestiona los usuarios y los permisos que tienen para acceder los distintos productos"
+	}
+}
