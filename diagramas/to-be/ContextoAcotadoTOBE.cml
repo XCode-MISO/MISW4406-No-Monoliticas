@@ -114,36 +114,36 @@ Domain SaludTechDomain {
 
 	Subdomain IngestionDatosDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio IngestionDatosDomain"
+		domainVisionStatement = "Subdominio encargado del almacenamiento y organizacion de datos"
 	}
 	
 	Subdomain AnonimizacionInteligenteDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio AdquisicionAutomatizadaDomain"
+		domainVisionStatement = "Subdominio encargado de quitar los datos sensibles de las imagenes acopiadas"
 	}
 
 	Subdomain ProcesamientoImagenesDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio EnriquecimientoDatosDomain"
+		domainVisionStatement = "Subdominio encargado de procesar la informacion"
 	}
 
 	Subdomain GestionClientesYPartnersDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio GestionClientesYPartnersDomain"
+		domainVisionStatement = "Subdominio encargado de gestionar a los clientes de la organizacion"
 	}
 
 	Subdomain ServiciosDesarrolladoresDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio ServiciosDesarrolladoresDomain"
+		domainVisionStatement = "Subdominio en cargado de gestionar los recursos necesarios para brindar servicios a los desarrolladores AI"
 	}
 
 	Subdomain DistribucionDatosDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio DistribucionDatosDomain"
+		domainVisionStatement = "Subdominio en cargado de la distribucion de datos a cleintes y desarrolladores AI"
 	}
 
 	Subdomain CumplimientoNormativoDomain{
 		type SUPPORTING_DOMAIN
-		domainVisionStatement = "Subdominio CumplimientoNormativoDomain"
+		domainVisionStatement = "Subdominio en cargado de garantizar el cumplimiento de las normas legales en cada pais"
 	}	
 }
