@@ -1,1 +1,10 @@
-# MISW4406-No-Monoliticas
+# Diagramas - TO-BE
+
+## Contexto Acotado:
+![contexto-acotado](./ContextosAcotadosTOBE.png)
+
+## Lenguaje Ubicuo:
+**FALTA** 
+
+## Event Storming:
+**FALTA**
