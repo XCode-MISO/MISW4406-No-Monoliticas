@@ -28,7 +28,8 @@ XCODE
 #### TO-BE
 - Ubicacion:  diagramas/to-be/ContextosAcotadosTOBE.png
 - Link: https://github.com/XCode-MISO/MISW4406-No-Monoliticas/blob/main/diagramas/to-be/ContextosAcotadosTOBE.png
-- Diagrama: **FALTA**
+- Diagrama: ![image](https://github.com/user-attachments/assets/9cf15d82-a850-4909-9e0e-3d0f882afbe6)
+
 
 
 ### Mapas de Contexto
