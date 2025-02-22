@@ -1,0 +1,26 @@
+# Diseño y Construcción de Soluciones No Monoliticas
+
+## Grupo: Vikingos
+### Integrantes:
+| Nombre                        | Correo                                                            |
+| ----------------------------- | ----------------------------------------------------------------- |
+|Andres Losada|af.losada@uniandes.edu.co|
+|Esneider Restrepo|erestrepoe@uniandes.edu.co|
+|Emerson Chaparro|echaparroa@uniandes.edu.co|
+|Cristian Arias|ca.ariasv1@uniandes.edu.co|
+
+## Entrega 4
+
+## Ejecutar aplicación:
+
+ - Activar ambiente virtual:
+
+    venv\Scripts\activate
+
+ - Instalar dependencia: 
+
+    pip install -r requirements.txt
+
+ - Ejecutar Servidor Http en modo debug:
+
+    flask --app src/pda/api --debug run
