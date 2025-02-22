@@ -172,4 +172,4 @@ cython_debug/
 
 src-gen/**
 
-code/data/**
+*/data/**
