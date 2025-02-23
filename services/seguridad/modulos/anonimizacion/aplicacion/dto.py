@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.aplicacion.dto import DTO
+from seguridad.seedwork.aplicacion.dto import DTO
 
 @dataclass(frozen=True)
 class AnonimizacionDTO(DTO):

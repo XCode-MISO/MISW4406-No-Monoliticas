@@ -23,7 +23,7 @@ anonimizaciones = db.Table(
     db.Column("segmento_orden", db.Integer),
     db.Column("leg_orden", db.Integer),
     db.Column("fecha_salida", db.DateTime),
-    db.Column("fecha_llegada", db.DateTime),
+    db.Column("fecha_fin", db.DateTime),
     db.Column("origen_codigo", db.String),
     db.Column("destino_codigo", db.String),
 )
