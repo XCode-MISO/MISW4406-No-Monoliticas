@@ -6,21 +6,26 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     import seguridad.modulos.anonimizacion.aplicacion
+    import seguridad.modulos.hippa.aplicacion
 
 def importar_modelos_alchemy():
     import seguridad.modulos.anonimizacion.infraestructura.dto
+    import seguridad.modulos.hippa.infraestructura.dto
 
 
 def comenzar_consumidor():
     import threading
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
+    import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
     # Suscripción a eventos
     threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
+    threading.Thread(target=hippa.suscribirse_a_eventos).start()
     
 
     # Suscripción a comandos
     threading.Thread(target=anonimizacion.suscribirse_a_comandos).start()
+    threading.Thread(target=hippa.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -55,10 +60,11 @@ def create_app(configuracion={}):
 ######################################################################
 
     # Importa Blueprints
-    from . import anonimizaciones
+    from . import anonimizaciones, hippa
 
     # Registro de Blueprints
     app.register_blueprint(anonimizaciones.bp)
+    app.register_blueprint(hippa.bp)
 
     @app.route("/spec", methods=["GET"])
     def spec():
