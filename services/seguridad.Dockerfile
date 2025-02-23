@@ -3,10 +3,10 @@
 FROM python:3.10.7-slim
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /seguridad
 
 # Copy the requirements file to the working directory
-COPY .requirements.txt .
+COPY requirements.txt .
 
 # Install the required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
