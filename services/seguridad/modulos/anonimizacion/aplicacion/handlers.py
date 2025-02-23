@@ -1,6 +1,6 @@
-from aeroalpes.modulos.vuelos.dominio.eventos import anonimizacionCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
-from aeroalpes.seedwork.aplicacion.handlers import Handler
-from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despachador
+from seguridad.modulos.vuelos.dominio.eventos import anonimizacionCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
+from seguridad.seedwork.aplicacion.handlers import Handler
+from seguridad.modulos.vuelos.infraestructura.despachadores import Despachador
 
 class HandlerAnonimizacionIntegracion(Handler):
     @staticmethod

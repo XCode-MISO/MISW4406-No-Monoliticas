@@ -23,4 +23,4 @@
 
  - Ejecutar Servidor Http en modo debug:
 
-    flask --app src/pda/api --debug run
+    flask --app src/seguridad/api --debug run

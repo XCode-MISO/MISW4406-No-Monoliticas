@@ -5,24 +5,22 @@ from flask_swagger import swagger
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
-    import seguridad.modulos.propiedades.aplicacion
-    import seguridad.modulos.propietarios.aplicacion
+    import seguridad.modulos.anonimizacion.aplicacion
 
 def importar_modelos_alchemy():
-    import seguridad.modulos.propiedades.infraestructura.dto
-    import seguridad.modulos.propietarios.infraestructura.dto
+    import seguridad.modulos.anonimizacion.infraestructura.dto
 
 
 def comenzar_consumidor():
     import threading
-    import seguridad.modulos.propiedades.infraestructura.consumidores as propiedades
+    import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
 
     # Suscripción a eventos
-    threading.Thread(target=propiedades.suscribirse_a_eventos).start()
+    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
     
 
     # Suscripción a comandos
-    threading.Thread(target=propiedades.suscribirse_a_comandos).start()
+    threading.Thread(target=anonimizacion.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -57,24 +55,16 @@ def create_app(configuracion={}):
 ######################################################################
 
     # Importa Blueprints
-    from . import arrendatarios
-    from . import propiedades
-    from . import propietarios
-    from . import transacciones
-    from . import usuario
+    from . import anonimizaciones
 
     # Registro de Blueprints
-    app.register_blueprint(arrendatarios.bp)
-    app.register_blueprint(propiedades.bp)
-    app.register_blueprint(propietarios.bp)
-    app.register_blueprint(transacciones.bp)
-    app.register_blueprint(usuario.bp)
+    app.register_blueprint(anonimizaciones.bp)
 
     @app.route("/spec", methods=["GET"])
     def spec():
         swag = swagger(app)
         swag['info']['version'] = "1.0"
-        swag['info']['title'] = "Propiedades de los Andes"
+        swag['info']['title'] = "Anonimizaciones"
         return jsonify(swag)
 
     @app.route("/health", methods=["GET"])
