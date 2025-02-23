@@ -21,6 +21,6 @@
 
     pip install -r requirements.txt
 
- - Ejecutar Servidor Http en modo debug:
+ - Ejecutar Servidor Seguridad Http en modo debug:
 
-    flask --app src/pda/api --debug run
+    flask --app seguridad/api --debug run
