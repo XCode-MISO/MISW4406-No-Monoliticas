@@ -18,12 +18,16 @@ class MapeadorValidacionHippa(Mapeador):
 
     def entidad_a_dto(self, entidad: ValidacionHippa) -> ValidacionHippaDTO:
 
-        validacion_hippa_dto = ValidacionHippaDTO()
-        validacion_hippa_dto.fecha_creacion = entidad.fecha_creacion
-        validacion_hippa_dto.fecha_actualizacion = entidad.fecha_actualizacion
-        validacion_hippa_dto.id = str(entidad.id)
-        validacion_hippa_dto.imagen = str(entidad.image)
-        validacion_hippa_dto.estado = str(entidad.estado)
+        validacion_hippa_dto = ValidacionHippaDTO(
+            fecha_creacion = entidad.fecha_creacion,
+            fecha_actualizacion = entidad.fecha_actualizacion,
+            id = str(entidad.id),
+            imagen = str(entidad.image),
+            estado = str(entidad.estado)
+        )
+        print("entidad a dto")
+        print(str(entidad.id))
+        print(validacion_hippa_dto)
 
         return validacion_hippa_dto
 

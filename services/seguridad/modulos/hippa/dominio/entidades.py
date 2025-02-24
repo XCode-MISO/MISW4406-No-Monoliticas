@@ -31,7 +31,6 @@ class Imagen(Entidad):
 class ValidacionHippa(Entidad):
     id: str = field(default_factory=str)
     image: Imagen = field(default_factory=Imagen)
-    razones: list[str] = field(default_factory=list[str])
     estado: Status = field(default_factory=Status)
 
     def __str__(self) -> str:
@@ -42,7 +41,6 @@ class ValidacionHippa(Entidad):
 class ValidacionesHippa(AgregacionRaiz):
     id: str = field(default_factory=str)
     image: Imagen = field(default_factory=Imagen)
-    razones: list[str] = field(default_factory=list[str])
     estado: Status = field(default_factory=Status)
 
     def crear_validaciones_hippa(self, validaciones_hippa: ValidacionesHippa):

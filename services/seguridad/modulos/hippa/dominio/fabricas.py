@@ -20,7 +20,6 @@ import logging
 class _FabricaValidacionHippa(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
         if isinstance(obj, Entidad):
-            logging.info("Entidad a DTO de ValidacionHippa", obj)
             return mapeador.entidad_a_dto(obj)
         else:
             hippa: ValidacionHippa = mapeador.dto_a_entidad(obj)

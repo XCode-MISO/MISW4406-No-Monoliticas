@@ -34,7 +34,6 @@ class RepositorioanonimizacionSQLite(RepositorioValidacionesHippa):
 
     def agregar(self, validacion_hippa: ValidacionHippa):
         validacion_hippa_dto = self.fabrica_validaciones_hippa.crear_objeto(validacion_hippa, MapeadorValidacionHippa())
-        logging('validacion_hippa_dto', validacion_hippa_dto)
         db.session.add(validacion_hippa_dto)
         db.session.commit()
 

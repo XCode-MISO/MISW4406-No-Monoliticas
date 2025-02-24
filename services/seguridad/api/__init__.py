@@ -19,9 +19,6 @@ def comenzar_consumidor(app):
     import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
 
-    # Suscripción a eventos
-    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
-    threading.Thread(target=hippa.suscribirse_a_eventos).start()
     '''
     def wrap_app_context_eventos(modulo):
         def wrapper():
@@ -42,9 +39,23 @@ def comenzar_consumidor(app):
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
             anonimizacion.suscribirse_a_comandos()
+    def suscribir_eventos():
+        with app.app_context():
+            anonimizacion.suscribirse_a_eventos()
+    def suscribir_comandos_hippa():
+        with app.app_context():  # Asegurar contexto de Flask
             hippa.suscribirse_a_comandos()
+    def suscribir_eventos_hippa():
+        with app.app_context():
+            hippa.suscribirse_a_eventos()
+
     
+    # Suscripción a comandos
     threading.Thread(target=suscribir_comandos).start()
+    threading.Thread(target=suscribir_comandos_hippa).start()
+    # Suscripción a eventos
+    threading.Thread(target=suscribir_eventos).start()
+    threading.Thread(target=suscribir_eventos_hippa).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask

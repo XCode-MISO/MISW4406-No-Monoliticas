@@ -17,8 +17,9 @@ from seguridad.modulos.hippa.aplicacion.servicios import ServicioValidacionHippa
 def suscribirse_a_eventos():
     cliente = None
     try:
+        print("Subscribiendose a eventos hippa")
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-validacion_hippa', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos', schema=AvroSchema(EventoValidacionHippaCreada))
+        consumidor = cliente.subscribe('eventos-validacion_hippa', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos-hippa', schema=AvroSchema(EventoValidacionHippaCreada))
 
         print("suscribirse_a_eventos()")
         while True:
@@ -37,10 +38,11 @@ def suscribirse_a_eventos():
 def suscribirse_a_comandos():
     cliente = None
     try:
+        print("Subscribiendose a comandos hippa")
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('comandos-validacion_hippa', 
                 consumer_type=_pulsar.ConsumerType.Shared, 
-                subscription_name='seguridad-sub-comandos', 
+                subscription_name='seguridad-sub-comandos-hippa', 
                 schema=AvroSchema(ComandoCrearValidacionHippa)
             )     
         
@@ -52,8 +54,8 @@ def suscribirse_a_comandos():
             
             hippa_dict = mensaje.value().data.__dict__            
             map_validacion = MapeadorImagenHippaDTOJson()
-            print('dto: {map_validacion}')
             validacion_dto = map_validacion.externo_a_dto(hippa_dict)
+            print("FINALIZADO VALIDACION HIPPA")
             sr = ServicioValidacionHippa()
             dto_final = sr.crear_validacion_hippa(validacion_dto)
 

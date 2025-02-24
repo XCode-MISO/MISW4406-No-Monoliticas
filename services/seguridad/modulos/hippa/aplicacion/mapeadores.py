@@ -8,10 +8,14 @@ from datetime import datetime
 import logging
 
 class MapeadorImagenHippaDTOJson(AppMap):
+    _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
     def externo_a_dto(self, externo: dict) -> ImagenHippaDTO:
         return ImagenHippaDTO(
             imagen=externo.get('imagen'),
-            id=externo.get('id', str(uuid.uuid4())),
+            id=externo.get('id', f'{uuid.uuid4()}'),
+            fecha_creacion=externo.get('fecha_creacion', datetime.now().strftime(self._FORMATO_FECHA)),
+            fecha_actualizacion=externo.get('fecha_actualizacion', datetime.now().strftime(self._FORMATO_FECHA)),
+            estado=None,
         )
     def dto_a_externo(self, dto: ImagenHippaDTO) -> dict:
         return dto.__dict__
@@ -19,14 +23,13 @@ class MapeadorImagenHippaDTOJson(AppMap):
 
 class MapeadorValidacionHippa(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
-
     def obtener_tipo(self) -> type:
         return ValidacionHippa.__class__
 
     def entidad_a_dto(self, entidad: ValidacionHippa) -> ImagenHippaDTO:
         logging.debug(entidad)
-        fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
-        fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
+        fecha_creacion = str(entidad.fecha_creacion)
+        fecha_actualizacion = str(entidad.fecha_actualizacion)
         _id = str(entidad.id)
         imagen = str(entidad.image)
         estado = str(entidad.estado)
@@ -37,10 +40,12 @@ class MapeadorValidacionHippa(RepMap):
             estado=estado
             )
     def dto_a_entidad(self, dto: ImagenHippaDTO) -> ValidacionHippa:
-        validacionHippa = ValidacionHippa()
-        validacionHippa.id = dto.id
-        validacionHippa.fecha_creacion = datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA)
-        validacionHippa.image = dto.imagen
-        validacionHippa.estado = dto.estado
+        validacionHippa = ValidacionHippa(
+            id=dto.id,
+            fecha_creacion=datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA),
+            fecha_actualizacion=datetime.strptime(dto.fecha_actualizacion, self._FORMATO_FECHA),
+            image=dto.imagen,
+            estado=None,
+        )
         
         return validacionHippa
