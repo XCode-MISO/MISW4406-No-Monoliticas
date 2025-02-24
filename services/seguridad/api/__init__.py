@@ -2,27 +2,42 @@ import os
 import threading
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
+import logging
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     import seguridad.modulos.anonimizacion.aplicacion
+    import seguridad.modulos.hippa.aplicacion
 
 def importar_modelos_alchemy():
     import seguridad.modulos.anonimizacion.infraestructura.dto
+    import seguridad.modulos.hippa.infraestructura.dto
 
+    def wrap_app_context_eventos(modulo):
+        def wrapper():
+            with app.app_context():
+                print("DOES THIS EVEN RUN FUCK MY LIFE")
+                modulo.suscribirse_a_eventos()
+        return wrapper
+    def wrap_app_context_comandos(modulo):
+        def wrapper():
+            with app.app_context():
+                modulo.suscribirse_a_comandos()
+        return wrapper
 def comenzar_consumidor(app):
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
+    import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
     # Suscripción a eventos
-    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
+    threading.Thread(target=wrap_app_context_eventos(anonimizacion)).start()
+    threading.Thread(target=wrap_app_context_eventos(hippa)).start()
 
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
             anonimizacion.suscribirse_a_comandos()
-
-    threading.Thread(target=suscribir_comandos).start()
+            hippa.suscribirse_a_comandos()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
@@ -69,4 +84,5 @@ def create_app(configuracion={}):
     def health():
         return {"status": "up"}
 
+    app.logger.setLevel(logging.DEBUG)
     return app
