@@ -33,8 +33,7 @@ class Despachador:
     def publicar_comando(self, comando, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = ComandoCrearAnonimizacionPayload(
-            id_usuario=str(comando.id_usuario)
-            # agregar itinerarios
+            id=str(comando.id)
         )
         comando_integracion = ComandoCrearAnonimizacion(data=payload)
         self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearAnonimizacion))

@@ -13,6 +13,8 @@ from .dto import ValidacionHippa as ValidacionHippaDTO
 from .mapeadores import MapeadorValidacionHippa
 from uuid import UUID
 
+import logging
+
 class RepositorioValidacionesHippaMYSQL(RepositorioValidacionesHippa):
 
     def __init__(self):
@@ -32,7 +34,9 @@ class RepositorioValidacionesHippaMYSQL(RepositorioValidacionesHippa):
 
     def agregar(self, validacion_hippa: ValidacionHippa):
         validacion_hippa_dto = self.fabrica_validaciones_hippa.crear_objeto(validacion_hippa, MapeadorValidacionHippa())
+        logging('validacion_hippa_dto', validacion_hippa_dto)
         db.session.add(validacion_hippa_dto)
+        db.session.commit()
 
     def actualizar(self, validacion_hippa: ValidacionHippa):
         # TODO
