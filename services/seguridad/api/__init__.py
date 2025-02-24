@@ -19,55 +19,15 @@ def comenzar_consumidor(app):
     import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
 
-    '''
-    def wrap_app_context_eventos(modulo):
-        def wrapper():
-            with app.app_context():
-                modulo.suscribirse_a_eventos()
-        return wrapper
-    def wrap_app_context_comandos(modulo):
-            def wrapper():
-                with app.app_context():
-                    modulo.suscribirse_a_comandos()
-            return wrapper
-    # Suscripción a eventos
-    threading.Thread(target=wrap_app_context_eventos(anonimizacion)).start()
-    threading.Thread(target=wrap_app_context_eventos(hippa)).start()
-
-    '''
+    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
+    threading.Thread(target=hippa.suscribirse_a_eventos).start()
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
-        with app.app_context():  
+        with app.app_context():  # Asegurar contexto de Flask
             anonimizacion.suscribirse_a_comandos()
-    def suscribir_eventos():
-        with app.app_context():
-            anonimizacion.suscribirse_a_eventos()
-    def suscribir_comandos_hippa():
-        with app.app_context(): 
             hippa.suscribirse_a_comandos()
-    def suscribir_eventos_hippa():
-        with app.app_context():
-            hippa.suscribirse_a_eventos()
-
-    threads = []
-
-    # Suscripción a comandos
-    t1 = threading.Thread(target=suscribir_comandos)
-    t1.start()
-    threads.append(t1)
-    """ t2= threading.Thread(target=suscribir_comandos_hippa)
-    t2.start()
-    threads.append(t2) """
-    # Suscripción a eventos
-    t3 = threading.Thread(target=suscribir_eventos)
-    t3.start()
-    threads.append(t3)
-    """ t4 = threading.Thread(target=suscribir_eventos_hippa)
-    t4.start()
-    threads.append(t4) """
-
-    for t in threads:
-        print(t.getName() + str(t.is_alive()))
+    
+    threading.Thread(target=suscribir_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
