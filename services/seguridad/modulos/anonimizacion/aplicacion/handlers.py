@@ -1,10 +1,15 @@
-from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionCancelada, AnonimizacionCreada, AnonimizacionFinalizada, AnonimizacionIniciada
+from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionAgregada
 from seguridad.seedwork.aplicacion.handlers import Handler
 from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
 
-class HandlerAnonimizacionIntegracion(Handler):
+class HandlerReservaIntegracion(Handler):
     @staticmethod
     def handle_anonimizacion_creada(evento):
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'eventos-anonimizacion')
+
+    @staticmethod
+    def handle_anonimizacion_agregada(evento):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'eventos-anonimizacion')
 

@@ -9,8 +9,8 @@ class ValidacionHippaQueryBaseHandler(QueryHandler):
 
     @property
     def fabrica_repositorio(self):
-        return self._fabrica_repositori
+        return self._fabrica_repositorio
 
     @property
-    def fabrica_valiudacion_hippa(self):
+    def fabrica_validacion_hippa(self):
         return self._fabrica_valiudacion_hippa    

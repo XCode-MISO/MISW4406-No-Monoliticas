@@ -8,12 +8,17 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import seguridad.modulos.anonimizacion.dominio.objetos_valor as ov
-from seguridad.seedwork.dominio.entidades import Entidad
+from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionAgregada
+from seguridad.seedwork.dominio.entidades import AgregacionRaiz, Entidad
 
 @dataclass
-class Anonimizacion(Entidad):
-    fecha_fin: datetime = field(default=None)
-    image: string = field(default_factory=str)
+class Anonimizacion(AgregacionRaiz):
+    nombre: str = field(default_factory=str)
+    imagen: str = field(default_factory=str)
+    fecha_fin: str = field(default_factory=str)
 
-    def __str__(self) -> str:
-        return self.id
+    def crear_anonimizacion(self, anonimizacion: Anonimizacion):
+        self.nombre = anonimizacion.nombre
+        self.imagen = anonimizacion.imagen
+        self.fecha_fin = anonimizacion.fecha_fin
+        self.agregar_evento(AnonimizacionAgregada(id_reserva=self.id, fecha_creacion=self.fecha_creacion))
