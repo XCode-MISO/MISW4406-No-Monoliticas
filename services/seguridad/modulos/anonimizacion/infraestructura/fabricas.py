@@ -9,13 +9,13 @@ from dataclasses import dataclass, field
 from seguridad.seedwork.dominio.fabricas import Fabrica
 from seguridad.seedwork.dominio.repositorios import Repositorio
 from seguridad.modulos.anonimizacion.dominio.repositorios import Repositorioanonimizacion
-from .repositorios import RepositorioanonimizacionSQLite
+from .repositorios import RepositorioanonimizacionMYSQL
 from .excepciones import ExcepcionFabrica
 
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
         if obj == Repositorioanonimizacion.__class__:
-            return RepositorioanonimizacionSQLite()
+            return RepositorioanonimizacionMYSQL()
         else:
             raise ExcepcionFabrica()
