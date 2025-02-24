@@ -17,7 +17,7 @@ class MapeadorAnonimizacion(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
     def obtener_tipo(self) -> type:
-        return 
+        return Anonimizacion.__class__
 
     def entidad_a_dto(self, entidad: Anonimizacion) -> AnonimizacionDTO:
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)

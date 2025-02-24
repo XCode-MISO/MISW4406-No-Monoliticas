@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from seguridad.seedwork.dominio.eventos import (EventoDominio)
 from datetime import datetime
+import uuid
 
 @dataclass
 class AnonimizacionCreada(EventoDominio):

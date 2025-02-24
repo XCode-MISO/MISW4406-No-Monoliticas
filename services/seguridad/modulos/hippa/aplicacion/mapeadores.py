@@ -26,22 +26,21 @@ class MapeadorValidacionHippa(RepMap):
     def entidad_a_dto(self, entidad: ValidacionHippa) -> ImagenHippaDTO:
         logging.debug(entidad)
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
-        fecha_actualizacion = entidad.fecha_actualizacion.strftime(
-            self._FORMATO_FECHA)
+        fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
         imagen = str(entidad.image)
         estado = str(entidad.estado)
-        return ImagenHippaDTO(
+        return ImagenHippaDTO(_id,
             fecha_creacion=fecha_creacion,
             fecha_actualizacion=fecha_actualizacion,
             imagen=imagen,
             estado=estado
             )
-    def dto_a_entidad(self, entidad: ImagenHippaDTO) -> ValidacionHippa:
-        return ValidacionHippa(
-            id=entidad.id,
-            fecha_creacion=datetime.now(),
-            fecha_actualizacion=datetime.now(),
-            image=entidad.imagen,
-            estado=entidad.estado,
-        )
+    def dto_a_entidad(self, dto: ImagenHippaDTO) -> ValidacionHippa:
+        validacionHippa = ValidacionHippa()
+        validacionHippa.id = dto.id
+        validacionHippa.fecha_creacion = datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA)
+        validacionHippa.image = dto.imagen
+        validacionHippa.estado = dto.estado
+        
+        return validacionHippa

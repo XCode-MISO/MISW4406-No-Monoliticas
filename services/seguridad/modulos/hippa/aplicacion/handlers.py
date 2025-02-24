@@ -9,6 +9,11 @@ class HandlerHippaIntegracion(Handler):
         despachador.publicar_evento(evento, 'eventos-hippa')
 
     @staticmethod
+    def handle_hippa_agregada(evento):
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'eventos-hippa')
+
+    @staticmethod
     def handle_hippa_iniciada(evento):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'eventos-hippa')

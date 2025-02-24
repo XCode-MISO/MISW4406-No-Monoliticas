@@ -6,12 +6,11 @@ En este archivo usted encontrará las entidades del dominio de vuelos
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from datetime import datetime
-
+from seguridad.modulos.hippa.dominio.eventos import HippaAgregada
 import seguridad.modulos.hippa.dominio.objetos_valor as ov
-from seguridad.seedwork.dominio.entidades import Entidad
-from seguridad.modulos.hippa.dominio.objetos_valor import Status
 
+from seguridad.modulos.hippa.dominio.objetos_valor import Status
+from seguridad.seedwork.dominio.entidades import AgregacionRaiz, Entidad
 @dataclass
 class Imagen(Entidad):
     image: str = field(default_factory=str)
@@ -37,3 +36,17 @@ class ValidacionHippa(Entidad):
 
     def __str__(self) -> str:
         return self.id
+    
+    
+@dataclass
+class ValidacionesHippa(AgregacionRaiz):
+    id: str = field(default_factory=str)
+    image: Imagen = field(default_factory=Imagen)
+    razones: list[str] = field(default_factory=list[str])
+    estado: Status = field(default_factory=Status)
+
+    def crear_validaciones_hippa(self, validaciones_hippa: ValidacionesHippa):
+        self.id = validaciones_hippa.id
+        self.imagen = validaciones_hippa.imagen
+        self.estado = validaciones_hippa.estado
+        self.agregar_evento(HippaAgregada(id=self.id, fecha_creacion=self.fecha_creacion))

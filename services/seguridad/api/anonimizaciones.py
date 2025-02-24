@@ -9,7 +9,6 @@ from seguridad.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimi
 from seguridad.modulos.anonimizacion.aplicacion.queries.obtener_anonimizacion import ObtenerAnonimizacion
 from seguridad.modulos.anonimizacion.aplicacion.comandos.crear_anonimizacion import CrearAnonimizacion
 from seguridad.seedwork.aplicacion.queries import ejecutar_query
-from seguridad.seedwork.aplicacion.comandos import ejecutar_commando
 from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
 
 bp = api.crear_blueprint('anonimizacion', '/anonimizacion')

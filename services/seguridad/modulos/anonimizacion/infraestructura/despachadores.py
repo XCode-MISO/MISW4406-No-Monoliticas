@@ -22,7 +22,6 @@ class Despachador:
     def _publicar_mensaje_comando(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoCrearAnonimizacion))
-        mySchema=AvroSchema(ComandoCrearAnonimizacion)
         publicador.send(mensaje)
         cliente.close()
 

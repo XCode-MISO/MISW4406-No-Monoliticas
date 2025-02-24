@@ -1,6 +1,6 @@
 import os
 import threading
-from flask import Flask, render_template, request, url_for, redirect, jsonify, session
+from flask import Flask, app, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 import logging
 
@@ -14,6 +14,15 @@ def importar_modelos_alchemy():
     import seguridad.modulos.anonimizacion.infraestructura.dto
     import seguridad.modulos.hippa.infraestructura.dto
 
+def comenzar_consumidor(app):
+    import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
+    import seguridad.modulos.hippa.infraestructura.consumidores as hippa
+
+
+    # Suscripción a eventos
+    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
+    threading.Thread(target=hippa.suscribirse_a_eventos).start()
+    '''
     def wrap_app_context_eventos(modulo):
         def wrapper():
             with app.app_context():
@@ -21,23 +30,22 @@ def importar_modelos_alchemy():
                 modulo.suscribirse_a_eventos()
         return wrapper
     def wrap_app_context_comandos(modulo):
-        def wrapper():
-            with app.app_context():
-                modulo.suscribirse_a_comandos()
-        return wrapper
-def comenzar_consumidor(app):
-    import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
-    import seguridad.modulos.hippa.infraestructura.consumidores as hippa
-
+            def wrapper():
+                with app.app_context():
+                    modulo.suscribirse_a_comandos()
+            return wrapper
     # Suscripción a eventos
     threading.Thread(target=wrap_app_context_eventos(anonimizacion)).start()
     threading.Thread(target=wrap_app_context_eventos(hippa)).start()
 
+    '''
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
             anonimizacion.suscribirse_a_comandos()
             hippa.suscribirse_a_comandos()
+    
+    threading.Thread(target=suscribir_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
@@ -68,10 +76,11 @@ def create_app(configuracion={}):
             comenzar_consumidor(app)  # Pasamos la app para el contexto
 
     # Importa Blueprints
-    from . import anonimizaciones
+    from . import anonimizaciones, hippa
 
     # Registro de Blueprints
     app.register_blueprint(anonimizaciones.bp)
+    app.register_blueprint(hippa.bp)
 
     @app.route("/spec", methods=["GET"])
     def spec():

@@ -31,7 +31,7 @@ class CrearAnonimizacionHandler(CrearAnonimizacionBaseHandler):
             ,   imagen=comando.id
             ,   fecha_fin=comando.id)
 
-        anonimizacion: Anonimizacion = self.fabrica_vuelos.crear_objeto(anonimizacion_dto, MapeadorAnonimizacion())
+        anonimizacion: Anonimizacion = self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorAnonimizacion())
         anonimizacion.crear_anonimizacion(anonimizacion)
 
         repositorio = self.fabrica_repositorio.crear_objeto(Repositorioanonimizacion.__class__)

@@ -7,7 +7,6 @@ encargados de la transformación entre formatos de dominio y DTOs
 
 from seguridad.seedwork.dominio.repositorios import Mapeador
 from seguridad.modulos.hippa.dominio.entidades import ValidacionHippa
-
 from .dto import ValidacionHippa as ValidacionHippaDTO
 
 
@@ -26,7 +25,7 @@ class MapeadorValidacionHippa(Mapeador):
         validacion_hippa_dto.imagen = str(entidad.image)
         validacion_hippa_dto.estado = str(entidad.estado)
 
-        return ValidacionHippa_dto
+        return validacion_hippa_dto
 
     def dto_a_entidad(self, dto: ValidacionHippaDTO) -> ValidacionHippa:
         ValidacionHippa = ValidacionHippa(

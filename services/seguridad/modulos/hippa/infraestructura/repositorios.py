@@ -15,7 +15,7 @@ from uuid import UUID
 
 import logging
 
-class RepositorioValidacionesHippaMYSQL(RepositorioValidacionesHippa):
+class RepositorioanonimizacionSQLite(RepositorioValidacionesHippa):
 
     def __init__(self):
         self._fabrica_validaciones_hippa: FabricaValidacionHippa = FabricaValidacionHippa()
@@ -26,7 +26,7 @@ class RepositorioValidacionesHippaMYSQL(RepositorioValidacionesHippa):
 
     def obtener_por_id(self, id: UUID) -> ValidacionHippa:
         validacion_hippa_dto = db.session.query(ValidacionHippaDTO).filter_by(id=str(id)).one()
-        return self.fabrica_anonimizaciones.crear_objeto(validacion_hippa_dto, MapeadorValidacionHippa())
+        return self.fabrica_validaciones_hippa.crear_objeto(validacion_hippa_dto, MapeadorValidacionHippa())
 
     def obtener_todos(self) -> list[ValidacionHippa]:
         # TODO

@@ -6,7 +6,6 @@ objetos complejos del dominio de vuelos
 """
 
 from .entidades import Anonimizacion
-from .excepciones import TipoObjetoNoExisteEnDominioanonimizacionExcepcion
 from seguridad.seedwork.dominio.repositorios import Mapeador, Repositorio
 from seguridad.seedwork.dominio.fabricas import Fabrica
 from seguridad.seedwork.dominio.entidades import Entidad
@@ -20,7 +19,6 @@ class _FabricaAnonimizacion(Fabrica):
         else:
             anonimizacion: Anonimizacion = mapeador.dto_a_entidad(obj)
             print(anonimizacion)
-            #self.validar_regla(TamanioMayorAMetro(anonimizacion))
             return anonimizacion
 
 @dataclass

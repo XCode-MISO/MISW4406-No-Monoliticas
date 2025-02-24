@@ -39,7 +39,7 @@ def suscribirse_a_comandos():
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         #consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
-        consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
+        consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='seguridad-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
 #########################################        
         print("suscribirse_a_comandos()")
 #########################################

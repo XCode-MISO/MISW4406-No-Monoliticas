@@ -21,7 +21,7 @@ class Despachador:
     
     def _publicar_mensaje_comando(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=schema)
+        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoCrearValidacionHippa))
         publicador.send(mensaje)
         cliente.close()
 
@@ -38,8 +38,9 @@ class Despachador:
     def publicar_comando(self, comando, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = ComandoCrearValidacionHippaPayload(
-            id=str(comando.id)
-            ,
+            id=comando.id,
+            image=comando.image,
+            estado=comando.estado
         )
         comando_integracion = ComandoCrearValidacionHippa(data=payload)
         self._publicar_mensaje_comando(comando_integracion, topico, AvroSchema(ComandoCrearValidacionHippa))
