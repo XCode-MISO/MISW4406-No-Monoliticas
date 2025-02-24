@@ -18,26 +18,10 @@ def comenzar_consumidor(app):
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
     import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
-
     # Suscripción a eventos
     threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
     threading.Thread(target=hippa.suscribirse_a_eventos).start()
-    '''
-    def wrap_app_context_eventos(modulo):
-        def wrapper():
-            with app.app_context():
-                modulo.suscribirse_a_eventos()
-        return wrapper
-    def wrap_app_context_comandos(modulo):
-            def wrapper():
-                with app.app_context():
-                    modulo.suscribirse_a_comandos()
-            return wrapper
-    # Suscripción a eventos
-    threading.Thread(target=wrap_app_context_eventos(anonimizacion)).start()
-    threading.Thread(target=wrap_app_context_eventos(hippa)).start()
 
-    '''
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
