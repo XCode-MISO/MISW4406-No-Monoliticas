@@ -18,24 +18,32 @@ def comenzar_consumidor(app):
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
     import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
-    # Suscripción a eventos
-    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
-    threading.Thread(target=hippa.suscribirse_a_eventos).start()
-
-    # Suscripción a comandos dentro del contexto de la app
-    def suscribir_comandos():
-        with app.app_context():  # Asegurar contexto de Flask
-            anonimizacion.suscribirse_a_comandos()
+    def hippa_suscribir_comandos():
+        with app.app_context():
             hippa.suscribirse_a_comandos()
-    
-    threading.Thread(target=suscribir_comandos).start()
+
+    def hippa_suscribir_eventos():
+        with app.app_context():
+            hippa.suscribirse_a_eventos()
+
+    def anonimizacion_suscribir_comandos():
+        with app.app_context():
+            anonimizacion.suscribirse_a_comandos()
+
+    def anonimizacion_suscribir_eventos():
+        with app.app_context():
+            anonimizacion.suscribirse_a_eventos()
+
+    threading.Thread(target=hippa_suscribir_comandos).start()
+    threading.Thread(target=hippa_suscribir_eventos).start()
+    threading.Thread(target=anonimizacion_suscribir_comandos).start()    
+    threading.Thread(target=anonimizacion_suscribir_eventos).start()    
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
     app = Flask(__name__, instance_relative_config=True)
 
     # Configuración de BD
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@localhost:3306/saludtech'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

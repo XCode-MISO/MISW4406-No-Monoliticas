@@ -31,7 +31,7 @@ def agregar_anonimizacion():
         anonimizacion_dict = request.json
         map_anonimizacion = MapeadorAnonimizacionDTOJson()
         anonimizacion_dto = map_anonimizacion.externo_a_dto(anonimizacion_dict)
-        comando = CrearAnonimizacion(anonimizacion_dto.fecha_creacion, anonimizacion_dto.fecha_actualizacion, anonimizacion_dto.id, anonimizacion_dto.nombre, anonimizacion_dto.imagen, anonimizacion_dto.fecha_fin)
+        comando = CrearAnonimizacion(anonimizacion_dto.fecha_creacion, anonimizacion_dto.fecha_actualizacion, anonimizacion_dto.id, anonimizacion_dto.nombre, anonimizacion_dto.imagen, anonimizacion_dto.fecha_fin)        
         despachador = Despachador()
         despachador.publicar_comando(comando, 'comandos-anonimizacion')
         

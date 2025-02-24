@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 class CrearValidacionHippa(Comando):
     id: str
     image: str
+    estado:str
     fecha_creacion: str
     fecha_actualizacion: str
 

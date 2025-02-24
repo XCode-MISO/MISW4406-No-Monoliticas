@@ -19,7 +19,7 @@ def suscribirse_a_eventos():
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('eventos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos', schema=AvroSchema(AnonimizacionAgregada))
 
-        print("suscribirse_a_eventos()")
+        print("oo-------> anonimizacion_suscribirse_a_eventos()")
         while True:
             mensaje = consumidor.receive()
 #########################################
@@ -41,18 +41,30 @@ def suscribirse_a_comandos():
         #consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
         consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='seguridad-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
 #########################################        
-        print("suscribirse_a_comandos()")
+        print("oo-------> anonimizacion_suscribirse_a_comandos()")
 #########################################
 
         while True:
             mensaje = consumidor.receive()
-            print(f'================> Comando recibido: {mensaje.value().data}')
+            print(f'oo-------> anonimizacion:  Comando recibido: {mensaje.value().data}')
 ########################################
             anonimizacion_dict = mensaje.value().data.__dict__            
             map_anonimizacion = MapeadorAnonimizacionDTOJson()
             anonimizacion_dto = map_anonimizacion.externo_a_dto(anonimizacion_dict)
             sr = ServicioAnonimizacion()
             dto_final = sr.crear_anonimizacion(anonimizacion_dto)
+
+            from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
+            from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
+            from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorImagenHippaDTOJson
+            from seguridad.modulos.hippa.aplicacion.servicios import ServicioValidacionHippa
+            
+            x_dict = {'estado': 'NOMBRE-3', 'image': 'image', 'id': '1234567890', 'fecha_creacion': '2025-12-12', 'fecha_actualizacion': '2025-12-12'}
+            x_map = MapeadorImagenHippaDTOJson()
+            x_dto = x_map.externo_a_dto(x_dict)
+            x_comando = CrearValidacionHippa(x_dto.id, x_dto.imagen, x_dto.estado, x_dto.fecha_creacion, x_dto.fecha_actualizacion)
+            x_despachador = Despachador()
+            x_despachador.publicar_comando(x_comando, 'comandos-hippa')
 ########################################
             consumidor.acknowledge(mensaje)
             

@@ -7,6 +7,7 @@ class ComandoCrearValidacionHippaPayload(ComandoIntegracion):
     id = String()
     image = String()
     estado = String()
-
+    fecha_actualizacion = String()
+    fecha_creacion = String()
 class ComandoCrearValidacionHippa(ComandoIntegracion):
     data = ComandoCrearValidacionHippaPayload()
