@@ -4,7 +4,7 @@ En este archivo usted encontrará reglas de negocio del dominio de anonimizacion
 
 """
 
-from aeroalpes.seedwork.dominio.reglas import ReglaNegocio
+from seguridad.seedwork.dominio.reglas import ReglaNegocio
 from .entidades import Imagen
 
 
@@ -15,7 +15,7 @@ class NormativaPrivacidadPago(ReglaNegocio):
         super().__init__(mensaje)
         self.image = image
 
-    def es_valido(self) -> bool:
+    def es_valido() -> bool:
         return not Imagen.tiene_informacion_de_pago()
 
 class NormativaPrivacidadProveedorSanitario(ReglaNegocio):
@@ -25,7 +25,7 @@ class NormativaPrivacidadProveedorSanitario(ReglaNegocio):
         super().__init__(mensaje)
         self.image = image
 
-    def es_valido(self) -> bool:
+    def es_valido() -> bool:
         return not Imagen.tiene_informacion_del_proveedor_sanitario()
 
 class NormativaPrivacidadFisica(ReglaNegocio):
@@ -35,7 +35,7 @@ class NormativaPrivacidadFisica(ReglaNegocio):
         super().__init__(mensaje)
         self.image = image
 
-    def es_valido(self) -> bool:
+    def es_valido() -> bool:
         return not Imagen.tiene_informacion_fisica()
 
 class NormativaPrivacidadMental(ReglaNegocio):
@@ -45,7 +45,7 @@ class NormativaPrivacidadMental(ReglaNegocio):
         super().__init__(mensaje)
         self.image = image
 
-    def es_valido(self) -> bool:
+    def es_valido() -> bool:
         return not Imagen.tiene_informacion_mental()
 
 class NormativaPrivacidadPersonal(ReglaNegocio):
@@ -55,7 +55,7 @@ class NormativaPrivacidadPersonal(ReglaNegocio):
         super().__init__(mensaje)
         self.image = image
 
-    def es_valido(self) -> bool:
+    def es_valido() -> bool:
         return not Imagen.tiene_informacion_personal()
 
 class NormativaPrivacidadSanitaria(ReglaNegocio):
@@ -65,5 +65,5 @@ class NormativaPrivacidadSanitaria(ReglaNegocio):
         super().__init__(mensaje)
         self.image = image
 
-    def es_valido(self) -> bool:
+    def es_valido() -> bool:
         return not Imagen.tiene_informacion_sanitaria()

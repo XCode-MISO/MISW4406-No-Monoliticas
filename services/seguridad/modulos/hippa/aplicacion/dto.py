@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.aplicacion.dto import DTO
+from seguridad.seedwork.aplicacion.dto import DTO
+from datetime import datetime
 
 @dataclass(frozen=True)
 class ImagenHippaDTO(DTO):
@@ -7,3 +8,5 @@ class ImagenHippaDTO(DTO):
     id: str = field(default_factory=str)
     imagen: str = field(default_factory=str)
     estado: str = field(default_factory=str)
+    fecha_actualizacion: str = field(default_factory=str)
+    fecha_creacion: str = field(default_factory=str)

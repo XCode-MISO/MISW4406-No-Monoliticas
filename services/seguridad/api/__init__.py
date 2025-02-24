@@ -13,19 +13,29 @@ def importar_modelos_alchemy():
     import seguridad.modulos.hippa.infraestructura.dto
 
 
-def comenzar_consumidor():
+def comenzar_consumidor(app):
     import threading
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
     import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
-    # Suscripción a eventos
-    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
-    threading.Thread(target=hippa.suscribirse_a_eventos).start()
-    
+    def wrap_app_context_eventos(modulo):
+        def wrapper():
+            with app.app_context():
+                modulo.suscribirse_a_eventos()
+        return wrapper
+    def wrap_app_context_comandos(modulo):
+        def wrapper():
+            with app.app_context():
+                modulo.suscribirse_a_comandos()
+        return wrapper
 
+    # Suscripción a eventos
+    threading.Thread(target=wrap_app_context_eventos(anonimizacion)).start()
+    threading.Thread(target=wrap_app_context_eventos(hippa)).start()
+    
     # Suscripción a comandos
-    threading.Thread(target=anonimizacion.suscribirse_a_comandos).start()
-    threading.Thread(target=hippa.suscribirse_a_comandos).start()
+    threading.Thread(target=wrap_app_context_comandos(anonimizacion)).start()
+    threading.Thread(target=wrap_app_context_comandos(hippa)).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -56,7 +66,7 @@ def create_app(configuracion={}):
 ######################################################################
         if not app.config.get('TESTING'):
             print('comenzar_consumidor()')
-            comenzar_consumidor()
+            comenzar_consumidor(app)
 ######################################################################
 
     # Importa Blueprints

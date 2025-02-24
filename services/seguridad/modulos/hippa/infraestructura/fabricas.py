@@ -10,7 +10,6 @@ from seguridad.seedwork.dominio.fabricas import Fabrica
 from seguridad.seedwork.dominio.repositorios import Repositorio
 from seguridad.modulos.hippa.dominio.repositorios import RepositorioValidacionesHippa
 from .repositorios import RepositorioValidacionesHippaMYSQL
-from .excepciones import ExcepcionFabrica
 
 @dataclass
 class FabricaRepositorio(Fabrica):
@@ -18,4 +17,4 @@ class FabricaRepositorio(Fabrica):
         if obj == RepositorioValidacionesHippa.__class__:
             return RepositorioValidacionesHippaMYSQL()
         else:
-            raise ExcepcionFabrica()
+            raise Exception("FabricaRepositorio.crear_objeto")
