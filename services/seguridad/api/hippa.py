@@ -17,18 +17,6 @@ bp = api.crear_blueprint('hippa', '/hippa')
 
 @bp.route('/validacion-hippa', methods=['POST'])
 def agregar_validacion_hippa():
-    '''
-    try:
-        validacion_hippa_dict = request.json
-        map_validacion_hippa = MapeadorImagenHippaDTOJson()
-        validacion_hippa_dto = map_validacion_hippa.externo_a_dto(validacion_hippa_dict)
-        sr = ServicioPropiedad()
-        dto_final = sr.crear_validacion_hippa(validacion_hippa_dto)
-        return map_validacion_hippa.dto_a_externo(dto_final)
-    
-    except ExcepcionDominio as e:
-        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
-    '''
     try:
         validacion_hippa_dict = request.json
         map_validacion_hippa = MapeadorImagenHippaDTOJson()
@@ -39,11 +27,19 @@ def agregar_validacion_hippa():
         ,   fecha_creacion=datetime.now()
         ,   fecha_actualizacion=datetime.now()
         )
-        print(comando)
         despachador = Despachador()
         despachador.publicar_comando(comando, 'comandos-validacion_hippa')
         
-        return Response(jsonify(comando), status=202, mimetype='application/json')
+        return Response(
+                json.dumps(dict(
+                    id=comando.id, 
+                    image=comando.image, 
+                    fecha_creacion=str(comando.fecha_creacion), 
+                    fecha_actualizacion=str(comando.fecha_actualizacion)
+                )), 
+                status=202, 
+                mimetype='application/json'
+            )
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 

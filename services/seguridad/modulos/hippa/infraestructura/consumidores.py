@@ -37,10 +37,10 @@ def suscribirse_a_comandos():
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe(
-            'comandos-validacion_hippa', 
-            consumer_type=_pulsar.ConsumerType.Shared, 
-            subscription_name='seguridad-sub-comandos', 
-            schema=AvroSchema(ComandoCrearValidacionHippa)
+                'comandos-validacion_hippa', 
+                consumer_type=_pulsar.ConsumerType.Shared, 
+                subscription_name='seguridad-sub-comandos', 
+                schema=AvroSchema(ComandoCrearValidacionHippa)
             )
 
         while True:
@@ -49,7 +49,7 @@ def suscribirse_a_comandos():
             
             propiedad_dict = mensaje.value().data.__dict__            
             map_validacion_dto = MapeadorImagenHippaDTOJson()
-            logging.info('dto!', map_validacion_dto)
+            logging.info('dto: {map_validacion_dto}')
             validacion_dto = map_validacion_dto.externo_a_dto(propiedad_dict)
             sr = ServicioValidacionHippa()
             dto_final = sr.crear_validacion_hippa(validacion_dto)

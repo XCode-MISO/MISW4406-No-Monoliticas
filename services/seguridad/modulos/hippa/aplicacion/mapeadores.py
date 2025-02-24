@@ -1,3 +1,4 @@
+import uuid
 from seguridad.seedwork.aplicacion.dto import Mapeador as AppMap
 from seguridad.seedwork.dominio.repositorios import Mapeador as RepMap
 from seguridad.modulos.hippa.dominio.entidades import ValidacionHippa
@@ -10,6 +11,7 @@ class MapeadorImagenHippaDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> ImagenHippaDTO:
         return ImagenHippaDTO(
             imagen=externo.get('imagen'),
+            id=externo.get('id', str(uuid.uuid4())),
         )
     def dto_a_externo(self, dto: ImagenHippaDTO) -> dict:
         return dto.__dict__
