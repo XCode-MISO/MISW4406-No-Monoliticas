@@ -12,6 +12,9 @@ class MapeadorImagenHippaDTOJson(AppMap):
         return ImagenHippaDTO(
             imagen=externo.get('imagen'),
             id=externo.get('id', str(uuid.uuid4())),
+            fecha_creacion=externo.get('fecha_creacion'),
+            fecha_actualizacion=externo.get('fecha_actualizacion'),
+            estado=externo.get('estado')
         )
     def dto_a_externo(self, dto: ImagenHippaDTO) -> dict:
         return dto.__dict__
@@ -28,7 +31,7 @@ class MapeadorValidacionHippa(RepMap):
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
         fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
-        imagen = str(entidad.image)
+        imagen = str(entidad.imagen)
         estado = str(entidad.estado)
         return ImagenHippaDTO(_id,
             fecha_creacion=fecha_creacion,
@@ -40,7 +43,7 @@ class MapeadorValidacionHippa(RepMap):
         validacionHippa = ValidacionHippa()
         validacionHippa.id = dto.id
         validacionHippa.fecha_creacion = datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA)
-        validacionHippa.image = dto.imagen
+        validacionHippa.imagen = dto.imagen
         validacionHippa.estado = dto.estado
         
         return validacionHippa

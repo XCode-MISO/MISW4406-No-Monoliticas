@@ -5,7 +5,7 @@ from seguridad.seedwork.infraestructura.schema.v1.comandos import (ComandoIntegr
 
 class ComandoCrearValidacionHippaPayload(ComandoIntegracion):
     id = String()
-    image = String()
+    imagen = String()
     estado = String()
 
 class ComandoCrearValidacionHippa(ComandoIntegracion):

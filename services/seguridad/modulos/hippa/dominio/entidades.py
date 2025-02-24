@@ -13,7 +13,7 @@ from seguridad.modulos.hippa.dominio.objetos_valor import Status
 from seguridad.seedwork.dominio.entidades import AgregacionRaiz, Entidad
 @dataclass
 class Imagen(Entidad):
-    image: str = field(default_factory=str)
+    imagen: str = field(default_factory=str)
     def tiene_informacion_personal() -> bool:
         return False
     def tiene_informacion_sanitaria() -> bool:
@@ -30,7 +30,7 @@ class Imagen(Entidad):
 @dataclass
 class ValidacionHippa(Entidad):
     id: str = field(default_factory=str)
-    image: Imagen = field(default_factory=Imagen)
+    imagen: Imagen = field(default_factory=Imagen)
     razones: list[str] = field(default_factory=list[str])
     estado: Status = field(default_factory=Status)
 
@@ -41,7 +41,7 @@ class ValidacionHippa(Entidad):
 @dataclass
 class ValidacionesHippa(AgregacionRaiz):
     id: str = field(default_factory=str)
-    image: Imagen = field(default_factory=Imagen)
+    imagen: Imagen = field(default_factory=Imagen)
     razones: list[str] = field(default_factory=list[str])
     estado: Status = field(default_factory=Status)
 

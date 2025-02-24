@@ -9,61 +9,61 @@ from .entidades import Imagen
 
 
 class NormativaPrivacidadPago(ReglaNegocio):
-    image: Imagen
+    imagen: Imagen
     
-    def __init__(self, image, mensaje='no tiene información en la imagen relacionada con el pago.'):
+    def __init__(self, imagen, mensaje='no tiene información en la imagen relacionada con el pago.'):
         super().__init__(mensaje)
-        self.image = image
+        self.imagen = imagen
 
     def es_valido() -> bool:
         return not Imagen.tiene_informacion_de_pago()
 
 class NormativaPrivacidadProveedorSanitario(ReglaNegocio):
-    image: Imagen
+    imagen: Imagen
     
-    def __init__(self, image, mensaje='no tiene información en la imagen relacionada con el proveedor sanitario.'):
+    def __init__(self, imagen, mensaje='no tiene información en la imagen relacionada con el proveedor sanitario.'):
         super().__init__(mensaje)
-        self.image = image
+        self.imagen = imagen
 
     def es_valido() -> bool:
         return not Imagen.tiene_informacion_del_proveedor_sanitario()
 
 class NormativaPrivacidadFisica(ReglaNegocio):
-    image: Imagen
+    imagen: Imagen
     
-    def __init__(self, image, mensaje='no tiene información en la imagen relacionada con el físico del paciente.'):
+    def __init__(self, imagen, mensaje='no tiene información en la imagen relacionada con el físico del paciente.'):
         super().__init__(mensaje)
-        self.image = image
+        self.imagen = imagen
 
     def es_valido() -> bool:
         return not Imagen.tiene_informacion_fisica()
 
 class NormativaPrivacidadMental(ReglaNegocio):
-    image: Imagen
+    imagen: Imagen
     
-    def __init__(self, image, mensaje='no tiene información en la imagen relacionada con el estado mental del paciente.'):
+    def __init__(self, imagen, mensaje='no tiene información en la imagen relacionada con el estado mental del paciente.'):
         super().__init__(mensaje)
-        self.image = image
+        self.imagen = imagen
 
     def es_valido() -> bool:
         return not Imagen.tiene_informacion_mental()
 
 class NormativaPrivacidadPersonal(ReglaNegocio):
-    image: Imagen
+    imagen: Imagen
     
-    def __init__(self, image, mensaje='no tiene información en la imagen persional del paciente'):
+    def __init__(self, imagen, mensaje='no tiene información en la imagen persional del paciente'):
         super().__init__(mensaje)
-        self.image = image
+        self.imagen = imagen
 
     def es_valido() -> bool:
         return not Imagen.tiene_informacion_personal()
 
 class NormativaPrivacidadSanitaria(ReglaNegocio):
-    image: Imagen
+    imagen: Imagen
     
-    def __init__(self, image, mensaje='no tiene información en la imagen relacionada con la institucion de salud'):
+    def __init__(self, imagen, mensaje='no tiene información en la imagen relacionada con la institucion de salud'):
         super().__init__(mensaje)
-        self.image = image
+        self.imagen = imagen
 
     def es_valido() -> bool:
         return not Imagen.tiene_informacion_sanitaria()

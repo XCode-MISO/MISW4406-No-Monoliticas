@@ -5,7 +5,7 @@ from seguridad.seedwork.infraestructura.schema.v1.eventos import EventoIntegraci
 class ValidacionHippaPayload(Record):
     id = String()
     estado = String()
-    image = String()
+    imagen = String()
 
 class EventoValidacionHippaCreada(EventoIntegracion):
     data = ValidacionHippaPayload()

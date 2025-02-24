@@ -22,7 +22,7 @@ class MapeadorValidacionHippa(Mapeador):
         validacion_hippa_dto.fecha_creacion = entidad.fecha_creacion
         validacion_hippa_dto.fecha_actualizacion = entidad.fecha_actualizacion
         validacion_hippa_dto.id = str(entidad.id)
-        validacion_hippa_dto.imagen = str(entidad.image)
+        validacion_hippa_dto.imagen = str(entidad.imagen)
         validacion_hippa_dto.estado = str(entidad.estado)
 
         return validacion_hippa_dto
