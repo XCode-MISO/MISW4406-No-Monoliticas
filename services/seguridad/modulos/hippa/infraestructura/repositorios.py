@@ -15,7 +15,7 @@ from uuid import UUID
 
 import logging
 
-class RepositorioanonimizacionSQLite(RepositorioValidacionesHippa):
+class RepositorioanonimizacionMYSQL(RepositorioValidacionesHippa):
 
     def __init__(self):
         self._fabrica_validaciones_hippa: FabricaValidacionHippa = FabricaValidacionHippa()
