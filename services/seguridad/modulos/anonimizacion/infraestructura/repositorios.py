@@ -12,7 +12,7 @@ from .dto import Anonimizacion as AnonimizacionDTO
 from .mapeadores import MapeadorAnonimizacion
 from uuid import UUID
 
-class RepositorioanonimizacionSQLite(Repositorioanonimizacion):
+class RepositorioanonimizacionMYSQL(Repositorioanonimizacion):
 
     def __init__(self):
         self._fabrica_anonimizacion: FabricaAnonimizacion = FabricaAnonimizacion()

@@ -9,12 +9,12 @@ from dataclasses import dataclass, field
 from seguridad.seedwork.dominio.fabricas import Fabrica
 from seguridad.seedwork.dominio.repositorios import Repositorio
 from seguridad.modulos.hippa.dominio.repositorios import RepositorioValidacionesHippa
-from .repositorios import RepositorioanonimizacionSQLite
+from .repositorios import RepositorioanonimizacionMYSQL
 
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
         if obj == RepositorioValidacionesHippa.__class__:
-            return RepositorioanonimizacionSQLite()
+            return RepositorioanonimizacionMYSQL()
         else:
             raise Exception("FabricaRepositorio.crear_objeto")
