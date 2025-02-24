@@ -28,6 +28,7 @@ def agregar_validacion_hippa():
         ,   fecha_actualizacion=datetime.now()
         )
         despachador = Despachador()
+        print("""comando: ({comando})""".format(comando=comando))
         despachador.publicar_comando(comando, 'comandos-validacion_hippa')
         
         return Response(

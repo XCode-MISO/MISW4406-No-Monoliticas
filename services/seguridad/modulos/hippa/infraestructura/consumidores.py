@@ -45,11 +45,11 @@ def suscribirse_a_comandos():
 
         while True:
             mensaje = consumidor.receive()
-            logging.info(f'Comando recibido: {mensaje.value().data}')
+            print(f'Comando recibido: {mensaje.value().data}')
             
             propiedad_dict = mensaje.value().data.__dict__            
             map_validacion_dto = MapeadorImagenHippaDTOJson()
-            logging.info('dto: {map_validacion_dto}')
+            print('dto: {map_validacion_dto}')
             validacion_dto = map_validacion_dto.externo_a_dto(propiedad_dict)
             sr = ServicioValidacionHippa()
             dto_final = sr.crear_validacion_hippa(validacion_dto)

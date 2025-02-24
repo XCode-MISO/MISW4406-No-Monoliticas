@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
+import logging
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,6 +22,7 @@ def comenzar_consumidor(app):
     def wrap_app_context_eventos(modulo):
         def wrapper():
             with app.app_context():
+                print("DOES THIS EVEN RUN FUCK MY LIFE")
                 modulo.suscribirse_a_eventos()
         return wrapper
     def wrap_app_context_comandos(modulo):
@@ -87,4 +89,5 @@ def create_app(configuracion={}):
     def health():
         return {"status": "up"}
 
+    app.logger.setLevel(logging.DEBUG)
     return app
