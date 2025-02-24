@@ -121,7 +121,7 @@ services:
       broker:
         condition: service_started
     ports:
-      - '5000:5000'
+      - '5002:5002'
 
 networks:
   pulsar:

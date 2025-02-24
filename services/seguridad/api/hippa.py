@@ -24,18 +24,19 @@ def agregar_validacion_hippa():
         validacion_hippa_dto = map_validacion_hippa.externo_a_dto(validacion_hippa_dict)
         comando = CrearValidacionHippa(
             id=validacion_hippa_dto.id
-        ,   image=validacion_hippa_dto.imagen
+        ,   imagen=validacion_hippa_dto.imagen
         ,   fecha_creacion=datetime.now()
         ,   fecha_actualizacion=datetime.now()
+        ,  estado=validacion_hippa_dto.estado
         )
         despachador = Despachador()
-        print("""comando: ({comando})""".format(comando=comando))
+        print("""comando 1: ({comando})""".format(comando=comando))
         despachador.publicar_comando(comando, 'comandos-validacion_hippa')
         
         return Response(
                 json.dumps(dict(
                     id=comando.id, 
-                    image=comando.image, 
+                    imagen=comando.imagen, 
                     fecha_creacion=str(comando.fecha_creacion), 
                     fecha_actualizacion=str(comando.fecha_actualizacion)
                 )), 

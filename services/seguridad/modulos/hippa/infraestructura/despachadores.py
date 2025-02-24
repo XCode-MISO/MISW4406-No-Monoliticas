@@ -30,7 +30,7 @@ class Despachador:
         payload = ValidacionHippaPayload(
             id=str(evento.id), 
             estado=str(evento.estado), 
-            image=str(evento.image)
+            imagen=str(evento.imagen)
         )
         evento_integracion = EventoValidacionHippaCreada(data=payload)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoValidacionHippaCreada))
@@ -39,7 +39,7 @@ class Despachador:
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = ComandoCrearValidacionHippaPayload(
             id=comando.id,
-            image=comando.image,
+            imagen=comando.imagen,
             estado=comando.estado
         )
         comando_integracion = ComandoCrearValidacionHippa(data=payload)
