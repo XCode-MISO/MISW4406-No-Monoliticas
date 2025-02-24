@@ -37,25 +37,37 @@ def comenzar_consumidor(app):
     '''
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
-        with app.app_context():  # Asegurar contexto de Flask
+        with app.app_context():  
             anonimizacion.suscribirse_a_comandos()
     def suscribir_eventos():
         with app.app_context():
             anonimizacion.suscribirse_a_eventos()
     def suscribir_comandos_hippa():
-        with app.app_context():  # Asegurar contexto de Flask
+        with app.app_context(): 
             hippa.suscribirse_a_comandos()
     def suscribir_eventos_hippa():
         with app.app_context():
             hippa.suscribirse_a_eventos()
 
-    
+    threads = []
+
     # Suscripción a comandos
-    threading.Thread(target=suscribir_comandos).start()
-    threading.Thread(target=suscribir_comandos_hippa).start()
+    t1 = threading.Thread(target=suscribir_comandos)
+    t1.start()
+    threads.append(t1)
+    """ t2= threading.Thread(target=suscribir_comandos_hippa)
+    t2.start()
+    threads.append(t2) """
     # Suscripción a eventos
-    threading.Thread(target=suscribir_eventos).start()
-    threading.Thread(target=suscribir_eventos_hippa).start()
+    t3 = threading.Thread(target=suscribir_eventos)
+    t3.start()
+    threads.append(t3)
+    """ t4 = threading.Thread(target=suscribir_eventos_hippa)
+    t4.start()
+    threads.append(t4) """
+
+    for t in threads:
+        print(t.getName() + str(t.is_alive()))
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask

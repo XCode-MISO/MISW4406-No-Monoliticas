@@ -27,7 +27,7 @@ def suscribirse_a_eventos():
             print(f'Evento recibido: {mensaje.value().data}')
 
             consumidor.acknowledge(mensaje)     
-
+        consumidor.close()
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
@@ -45,7 +45,6 @@ def suscribirse_a_comandos():
                 subscription_name='seguridad-sub-comandos-hippa', 
                 schema=AvroSchema(ComandoCrearValidacionHippa)
             )     
-        
         print("suscribirse_a_comandos()")
 
         while True:
@@ -60,7 +59,7 @@ def suscribirse_a_comandos():
             dto_final = sr.crear_validacion_hippa(validacion_dto)
 
             consumidor.acknowledge(mensaje)     
-            
+        consumidor.close()
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
