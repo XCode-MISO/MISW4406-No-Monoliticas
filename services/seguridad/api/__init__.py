@@ -26,7 +26,6 @@ def comenzar_consumidor(app):
     def wrap_app_context_eventos(modulo):
         def wrapper():
             with app.app_context():
-                print("DOES THIS EVEN RUN FUCK MY LIFE")
                 modulo.suscribirse_a_eventos()
         return wrapper
     def wrap_app_context_comandos(modulo):
