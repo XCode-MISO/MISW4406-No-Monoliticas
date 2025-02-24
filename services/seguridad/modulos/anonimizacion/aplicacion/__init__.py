@@ -1,10 +1,7 @@
 from pydispatch import dispatcher
-from .handlers import HandlerAnonimizacionIntegracion
-from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionIniciada, AnonimizacionCancelada, AnonimizacionFinalizada
 
-dispatcher.connect(HandlerAnonimizacionIntegracion.handle_anonimizacion_iniciada,
-                   signal=f'{AnonimizacionIniciada.__name__}Integracion')
-dispatcher.connect(HandlerAnonimizacionIntegracion.handle_anonimizacion_finalizada,
-                   signal=f'{AnonimizacionFinalizada.__name__}Integracion')
-dispatcher.connect(HandlerAnonimizacionIntegracion.handle_anonimizacion_cancelada,
-                   signal=f'{AnonimizacionCancelada.__name__}Integracion')
+from .handlers import HandlerReservaIntegracion
+
+from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionAgregada 
+
+dispatcher.connect(HandlerReservaIntegracion.handle_anonimizacion_agregada, signal=f'{AnonimizacionAgregada.__name__}Integracion')

@@ -1,12 +1,13 @@
 from pulsar.schema import *
-
 from seguridad.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 
-class AnonimizacionCreadaPayload(Record):
-    id_reserva = String()
-    id_cliente = String()
+class AnonimizacionAgregadaPayload(Record):
+    id_anonimizacion = String()
     estado = String()
     fecha_creacion = Long()
 
-class EventoAnonimizacionCreada(EventoIntegracion):
-    data = AnonimizacionCreadaPayload()
+class AnonimizacionAgregada(EventoIntegracion):
+    data = AnonimizacionAgregadaPayload()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

@@ -8,5 +8,5 @@ del dominio de vuelos
 from abc import ABC
 from seguridad.seedwork.dominio.repositorios import Repositorio
 
-class RepositorioAnonimizaciones(Repositorio, ABC):
+class Repositorioanonimizacion(Repositorio, ABC):
     ...

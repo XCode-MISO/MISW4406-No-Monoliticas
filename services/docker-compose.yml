@@ -90,7 +90,7 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf && exec bin/pulsar broker"
 
-  mysqldb:
+  db:
     image: mysql:8
     hostname: mysqldb
     container_name: mysqldb
