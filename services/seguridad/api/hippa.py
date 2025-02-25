@@ -7,6 +7,7 @@ from flask import Response
 from seguridad.seedwork.dominio.excepciones import ExcepcionDominio
 from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorImagenHippaDTOJson
 from seguridad.modulos.hippa.aplicacion.servicios import ServicioValidacionHippa
+from seguridad.modulos.hippa.dominio.objetos_valor import Status
 from seguridad.modulos.hippa.aplicacion.queries.obtener_validacion_hippa import ObtenerValidacionHippa
 from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
 from seguridad.seedwork.aplicacion.queries import ejecutar_query
@@ -14,7 +15,7 @@ from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
 
 
 bp = api.crear_blueprint('hippa', '/hippa')
-
+_FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
 @bp.route('/validacion-hippa', methods=['POST'])
 def agregar_validacion_hippa():
@@ -25,8 +26,9 @@ def agregar_validacion_hippa():
         comando = CrearValidacionHippa(
             id=validacion_hippa_dto.id
         ,   image=validacion_hippa_dto.imagen
-        ,   fecha_creacion=datetime.now()
-        ,   fecha_actualizacion=datetime.now()
+        ,   fecha_creacion=datetime.now().strftime(_FORMATO_FECHA)
+        ,   fecha_actualizacion=datetime.now().strftime(_FORMATO_FECHA)
+        ,   estado=None
         )
         despachador = Despachador()
         print("""comando: ({comando})""".format(comando=comando))

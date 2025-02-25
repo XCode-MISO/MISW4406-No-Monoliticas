@@ -7,29 +7,28 @@ import   uuid
 
 @dataclass
 class ValidacionHippaCreada(EventoDominio):
-    id_anonimizacion: uuid.UUID = None
+    id: uuid.UUID = None
     fecha_creacion: datetime = None
 
 @dataclass
 class HippaAgregada(EventoDominio):
-    id_reserva: uuid.UUID = None
-    id_cliente: uuid.UUID = None
+    id: uuid.UUID = None
     estado: str = None
     fecha_creacion: datetime = None
     
 @dataclass
 class ValidacionHippaIniciada(EventoDominio):
-    id_anonimizacion: uuid.UUID = None
+    id: uuid.UUID = None
     fecha_actualizacion: datetime = None
 
 @dataclass
 class ValidacionHippaCancelada(EventoDominio):
-    id_anonimizacion: uuid.UUID = None
+    id: uuid.UUID = None
     fecha_actualizacion: datetime = None
 
 @dataclass
 class ValidacionHippaFinalizada(EventoDominio):
-    id_anonimizacion: uuid.UUID = None
+    id: uuid.UUID = None
     fecha_finalizacion: datetime = None
     imagen: str = None
     estado: Status = None

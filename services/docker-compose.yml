@@ -119,6 +119,8 @@ services:
     depends_on:
       broker:
         condition: service_started
+      db:
+        condition: service_started
     ports:
       - '5000:5000'
 

@@ -25,7 +25,6 @@ Base = db.declarative_base()
 
 class ValidacionHippa(db.Model):
     __tablename__ = "validacion_hippa"
-
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, server_default=db.text("CURRENT_TIMESTAMP"))
     fecha_actualizacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow, server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))

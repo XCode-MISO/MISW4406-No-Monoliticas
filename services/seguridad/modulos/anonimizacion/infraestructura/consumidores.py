@@ -5,6 +5,7 @@ import time
 import logging
 import traceback
 import json
+from datetime import datetime
 
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import AnonimizacionAgregada
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoCrearAnonimizacion
@@ -12,6 +13,9 @@ from seguridad.seedwork.infraestructura import utils
 
 from seguridad.modulos.anonimizacion.aplicacion.mapeadores import MapeadorAnonimizacionDTOJson
 from seguridad.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
+
+from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
+from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
 
 def suscribirse_a_eventos():
     cliente = None
@@ -35,6 +39,8 @@ def suscribirse_a_eventos():
             cliente.close()
 
 def suscribirse_a_comandos():
+    
+    _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
@@ -55,6 +61,17 @@ def suscribirse_a_comandos():
             dto_final = sr.crear_anonimizacion(anonimizacion_dto)
 ########################################
             consumidor.acknowledge(mensaje)
+            from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
+            from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
+            from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorImagenHippaDTOJson
+            from seguridad.modulos.hippa.aplicacion.servicios import ServicioValidacionHippa
+
+            x_dict = {'estado': None, 'image': dto_final.imagen, 'id': dto_final.id, 'fecha_creacion': dto_final.fecha_creacion, 'fecha_actualizacion': dto_final.fecha_actualizacion}
+            x_map = MapeadorImagenHippaDTOJson()
+            x_dto = x_map.externo_a_dto(x_dict)
+            x_comando = CrearValidacionHippa(x_dto.id, x_dto.imagen, x_dto.estado, x_dto.fecha_creacion, x_dto.fecha_actualizacion)
+            x_despachador = Despachador()
+            x_despachador.publicar_comando(x_comando, 'comandos-validacion_hippa')
             
         cliente.close()
     except:

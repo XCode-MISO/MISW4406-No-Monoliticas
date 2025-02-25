@@ -10,7 +10,6 @@ from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorValidacionHipp
 from seguridad.modulos.hippa.infraestructura.repositorios import RepositorioValidacionesHippa
 
 import logging
-logger = logging.getLogger(__name__)
 
 @dataclass
 class CrearValidacionHippa(Comando):
@@ -18,6 +17,7 @@ class CrearValidacionHippa(Comando):
     image: str
     fecha_creacion: str
     fecha_actualizacion: str
+    estado: str
 
 class CrearValidacionHippaHandler(CrearValidacionHippaBaseHandler):
     def handle(self, comando: CrearValidacionHippa):
@@ -25,14 +25,13 @@ class CrearValidacionHippaHandler(CrearValidacionHippaBaseHandler):
                 fecha_actualizacion=comando.fecha_actualizacion
             ,   fecha_creacion=comando.fecha_creacion
             ,   id=comando.id
-            ,   imagen=comando.image)
-        logger.debug("antes de llamar el repositorio"+validacion_hippa)
+            ,   imagen=comando.image
+            ,   estado=comando.estado)
 
         validacion_hippa: ValidacionHippa = self.fabrica_repositorio.crear_objeto(validacion_hippa_dto, MapeadorValidacionHippa())
         validacion_hippa.crear_anonimizacion(validacion_hippa)
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioValidacionesHippa.__class__)
 
-        logger.debug("antes hacer el unit of work"+validacion_hippa)
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, validacion_hippa)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
