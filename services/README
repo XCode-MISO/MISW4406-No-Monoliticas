@@ -25,7 +25,7 @@
 
     flask --app seguridad/api --debug run
     
- - Si se quiere ejecutar con el docker-compose hacer lo siguiente
+ - Para ejecutar el docker-compose hacer lo siguiente
 
  ```bash
 docker build . -f seguridad.Dockerfile -t seguridad/flask
