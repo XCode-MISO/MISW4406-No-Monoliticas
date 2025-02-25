@@ -23,19 +23,27 @@ modulo de validación de reglas hippa.
 
  - Activar ambiente virtual:
 
-    venv\Scripts\activate
-
+ ```bash
+venv\Scripts\activate
+ ```
+    
  - Instalar dependencia: 
 
+ ```bash
     pip install -r requirements.txt
+ ```
 
- - Ejecutar Servidor Seguridad Http en modo debug:
-
-    flask --app seguridad/api --debug run
-    
  - Para ejecutar el docker-compose hacer lo siguiente
 
  ```bash
 docker build . -f seguridad.Dockerfile -t seguridad/flask
 docker compose up -d
  ```
+
+ - Ejecutar Servidor Seguridad Http en modo debug:
+
+ ```bash
+    flask --app seguridad/api --debug run
+ ```
+
+    
