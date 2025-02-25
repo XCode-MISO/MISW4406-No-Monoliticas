@@ -68,8 +68,14 @@ def suscribirse_a_comandos():
 
             x_dict = {'estado': None, 'image': dto_final.imagen, 'id': dto_final.id, 'fecha_creacion': dto_final.fecha_creacion, 'fecha_actualizacion': dto_final.fecha_actualizacion}
             x_map = MapeadorImagenHippaDTOJson()
-            x_dto = x_map.externo_a_dto(x_dict)
-            x_comando = CrearValidacionHippa(x_dto.id, x_dto.imagen, x_dto.estado, x_dto.fecha_creacion, x_dto.fecha_actualizacion)
+            x_dto = x_map.externo_a_dto(x_dict)            
+            x_comando = CrearValidacionHippa(    
+                id=f'{uuid.uuid4()}',        
+                image=anonimizacion_dto.imagen
+            ,   fecha_creacion=datetime.now().strftime(_FORMATO_FECHA)
+            ,   fecha_actualizacion=datetime.now().strftime(_FORMATO_FECHA)
+            ,   estado=None
+            )
             x_despachador = Despachador()
             x_despachador.publicar_comando(x_comando, 'comandos-validacion_hippa')
             
