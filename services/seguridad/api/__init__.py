@@ -25,9 +25,12 @@ def comenzar_consumidor(app):
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
             anonimizacion.suscribirse_a_comandos()
+    def suscribir_comandos_hippa():
+        with app.app_context():  # Asegurar contexto de Flask
             hippa.suscribirse_a_comandos()
     
     threading.Thread(target=suscribir_comandos).start()
+    threading.Thread(target=suscribir_comandos_hippa).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
