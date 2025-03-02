@@ -9,10 +9,13 @@ from datetime import datetime
 
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import AnonimizacionAgregada
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoCrearAnonimizacion
-from seguridad.seedwork.infraestructura import utils
-
 from seguridad.modulos.anonimizacion.aplicacion.mapeadores import MapeadorAnonimizacionDTOJson
 from seguridad.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
+from seguridad.modulos.anonimizacion.aplicacion.comandos.crear_anonimizacion import CrearAnonimizacion
+from seguridad.seedwork.infraestructura import utils
+
+from seguridad.seedwork.aplicacion.comandos import ejecutar_commando
+
 
 from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
 from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
@@ -23,13 +26,55 @@ def suscribirse_a_eventos():
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('eventos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos', schema=AvroSchema(AnonimizacionAgregada))
 
-        print("suscribirse_a_eventos()")
+        print("suscribirse_a_eventos_ingestion()")
         while True:
             mensaje = consumidor.receive()
 #########################################
             print(f'Evento recibido: {mensaje.value().data}')
 #########################################
             consumidor.acknowledge(mensaje)     
+
+        cliente.close()
+    except:
+        logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+
+            
+def suscribirse_a_eventos_ingestion():
+    cliente = None
+    try:
+        print("suscribirse_a_eventos_ingestion()")
+        from ingestion_datos.eventos import EventoIngestion
+
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650') 
+        consumidor = cliente.subscribe(
+            'evento-ingestion-datos',
+            consumer_type=_pulsar.ConsumerType.Shared,
+            subscription_name='seguridad-sub-eventos',
+            schema=AvroSchema(EventoIngestion)
+        )
+
+        while True:
+            mensaje = consumidor.receive()
+            mensajeAsDict = mensaje.value().__dict__.get('ingestion_finalizada').__dict__
+            print(f'Evento recibido: {mensajeAsDict}')
+            map_anonimizacion = MapeadorAnonimizacionDTOJson()
+            anonimizacion_dto = map_anonimizacion.externo_a_dto(mensajeAsDict)
+            comando = CrearAnonimizacion(
+                anonimizacion_dto.fecha_creacion, 
+                anonimizacion_dto.fecha_actualizacion, 
+                anonimizacion_dto.id, 
+                anonimizacion_dto.nombre, 
+                anonimizacion_dto.imagen, 
+                anonimizacion_dto.fecha_fin
+            )
+            from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
+            despachador = Despachador()
+            print(f'Publicando comando crear anonimizacion: {comando}')
+            despachador.publicar_comando(comando, 'comandos-anonimizacion')
+            consumidor.acknowledge(mensaje)    
 
         cliente.close()
     except:
@@ -57,6 +102,7 @@ def suscribirse_a_comandos():
             anonimizacion_dict = mensaje.value().data.__dict__            
             map_anonimizacion = MapeadorAnonimizacionDTOJson()
             anonimizacion_dto = map_anonimizacion.externo_a_dto(anonimizacion_dict)
+            
             sr = ServicioAnonimizacion()
             dto_final = sr.crear_anonimizacion(anonimizacion_dto)
 ########################################

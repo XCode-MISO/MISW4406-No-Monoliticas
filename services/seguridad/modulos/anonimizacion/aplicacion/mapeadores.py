@@ -7,7 +7,14 @@ from datetime import datetime
 
 class MapeadorAnonimizacionDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> AnonimizacionDTO:
-        anonimizacion_dto = AnonimizacionDTO(externo.get('fecha_creacion'),externo.get('fecha_actualizacion'),'',externo.get('nombre'), externo.get('imagen'), externo.get('fecha_fin'))
+        anonimizacion_dto = AnonimizacionDTO(
+            fecha_creacion=externo.get('fecha_creacion'),
+            fecha_actualizacion=externo.get('fecha_actualizacion'),
+            fecha_fin=externo.get('fecha_fin'),
+            nombre=externo.get('nombre'),
+            imagen=externo.get('imagen'),
+            id=None
+        )
         return anonimizacion_dto
 
     def dto_a_externo(self, dto: AnonimizacionDTO) -> dict:

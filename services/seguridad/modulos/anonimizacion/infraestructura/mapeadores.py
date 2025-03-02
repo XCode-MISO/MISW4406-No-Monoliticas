@@ -15,6 +15,7 @@ class MapeadorAnonimizacion(Mapeador):
         return Anonimizacion.__class__
 
     def entidad_a_dto(self, entidad: Anonimizacion) -> AnonimizacionDTO:
+        print(f"ANONIMIZACION PARA BASE DE DATOS: {entidad}")
         anonimizacion_dto = AnonimizacionDTO()
         anonimizacion_dto.fecha_creacion = entidad.fecha_creacion
         anonimizacion_dto.fecha_actualizacion = entidad.fecha_actualizacion

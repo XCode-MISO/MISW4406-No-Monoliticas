@@ -90,10 +90,11 @@ def flask_uow():
     from seguridad.config.uow import UnidadTrabajoSQLAlchemy
     if session.get('uow'):
         return session['uow']
-    else:
-        uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
-        registrar_unidad_de_trabajo(uow_serialized)
-        return uow_serialized
+    if session.get('uow_metodo') == 'pulsar':
+        uow_serialized = pickle.dumps(UnidadTrabajoPulsar())
+    uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
+    registrar_unidad_de_trabajo(uow_serialized)
+    return uow_serialized
 
 def unidad_de_trabajo() -> UnidadTrabajo:
     if is_flask():

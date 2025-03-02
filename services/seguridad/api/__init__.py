@@ -18,8 +18,13 @@ def comenzar_consumidor(app):
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
     import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
+    def suscribirse_a_eventos_ingestion():
+        with app.app_context():
+            anonimizacion.suscribirse_a_eventos_ingestion()
+
     # Suscripción a eventos
     threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
+    threading.Thread(target=suscribirse_a_eventos_ingestion).start()
     threading.Thread(target=hippa.suscribirse_a_eventos).start()
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
