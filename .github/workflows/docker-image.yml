@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file src/seguridad.Dockerfile --tag us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech:seguridad
+      run: docker build . --file services/seguridad.Dockerfile --tag us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech:seguridad
