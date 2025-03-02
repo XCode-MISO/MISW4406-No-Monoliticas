@@ -46,7 +46,7 @@ def suscribirse_a_eventos_ingestion():
     cliente = None
     try:
         print("suscribirse_a_eventos_ingestion()")
-        from ingestion_datos.eventos import EventoIngestion
+        from ingestion_datos.dominio.eventos import EventoIngestion
 
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650') 
         consumidor = cliente.subscribe(
