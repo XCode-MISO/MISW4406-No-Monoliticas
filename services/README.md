@@ -31,6 +31,7 @@ venv\Scripts\activate
 
  ```bash
     pip install -r requirements.txt
+    pip install -r ingestion_datos-requirements.txt
  ```
 
  - Para ejecutar el docker-compose hacer lo siguiente
@@ -46,4 +47,8 @@ docker compose up -d
     flask --app seguridad/api --debug run
  ```
 
-    
+- Ejecutar Servidor ingestion-datos en modo debug:
+
+```bash
+uvicorn ingestion_datos.main:app --host localhost --port 8000 --reload
+```
