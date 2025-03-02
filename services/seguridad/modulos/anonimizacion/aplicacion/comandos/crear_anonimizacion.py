@@ -29,7 +29,8 @@ class CrearAnonimizacionHandler(CrearAnonimizacionBaseHandler):
             ,   id=comando.id
             ,   nombre=comando.id
             ,   imagen=comando.id
-            ,   fecha_fin=comando.id)
+            ,   fecha_fin=comando.id
+            )
 
         anonimizacion: Anonimizacion = self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorAnonimizacion())
         anonimizacion.crear_anonimizacion(anonimizacion)
@@ -43,5 +44,6 @@ class CrearAnonimizacionHandler(CrearAnonimizacionBaseHandler):
 
 @comando.register(CrearAnonimizacion)
 def ejecutar_comando_crear_anonimizacion(comando: CrearAnonimizacion):
+    print(f'Ejecutandoc comando crear anonimizacion desde el handler: {comando.__class__}')
     handler = CrearAnonimizacionHandler()
     handler.handle(comando)

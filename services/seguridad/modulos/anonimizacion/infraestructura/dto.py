@@ -22,7 +22,7 @@ class Anonimizacion(db.Model):
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    fecha_actualizacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    fecha_actualizacion = db.Column(db.DateTime, nullable=True, default=datetime.utcnow, onupdate=datetime.utcnow)
     nombre = db.Column(db.String(255), nullable=False)
     imagen = db.Column(db.String(255), nullable=False)
-    fecha_fin = db.Column(db.String(255), nullable=False)
+    fecha_fin = db.Column(db.String(255), nullable=True)

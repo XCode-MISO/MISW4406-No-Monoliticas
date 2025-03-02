@@ -1,0 +1,3 @@
+
+class RepositorioIngestion(Repositorio, ABC):
+    ...
