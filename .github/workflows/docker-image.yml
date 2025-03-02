@@ -16,3 +16,5 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build ./services --file services/seguridad.Dockerfile --tag us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech:seguridad
+    - name: Push the Docker image
+      run: docker push us-central-docker.pkg.dev/nomonoliticas-452502/saludtech/seguridad
