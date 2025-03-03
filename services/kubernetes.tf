@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "seguridad" {
 
           env {
             name  = "BROKER_HOST"
-            value = "10.32.2.26"
+            value = "pulsar-proxy.default.svc.cluster.local."
           }
 
           port {
@@ -124,7 +124,7 @@ resource "kubernetes_deployment" "ingestion-datos" {
 
           env {
             name  = "BROKER_HOST"
-            value = "10.32.2.26"
+            value = "pulsar-proxy.default.svc.cluster.local."
           }
 
           port {
