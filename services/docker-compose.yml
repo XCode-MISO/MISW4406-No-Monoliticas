@@ -124,6 +124,17 @@ services:
     ports:
       - '5000:5000'
 
+  ingestion_datos:
+    image: localhost/ingestion_datos/fastapi
+    container_name: ingestion_datos
+    hostname: ingestion_datos
+    networks: 
+      - pulsar
+    environment:
+      - BROKER_HOST=broker
+    ports:
+      - '5000:5000'
+
 networks:
   pulsar:
     driver: bridge

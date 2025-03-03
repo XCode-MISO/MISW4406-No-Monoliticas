@@ -52,3 +52,52 @@ docker compose up -d
 ```bash
 uvicorn ingestion_datos.main:app --host localhost --port 8000 --reload
 ```
+
+## Desplegar aplicación
+
+### Aplicación en Google Cloud
+
+Requerimientos:
+1. Terraform
+2. Helm
+3. Configuración de Google Cloud
+4. Configuración de Kubernetes para el cluster de google cloud donde se desplegará
+
+Pasos:
+
+```bash
+# en la carpeta de services ~ ./services
+terraform init
+terraform plan
+terraform apply
+```
+
+Para destruir se usa
+
+```bash
+terraform destroy
+```
+
+### Pulsar en Google Cloud
+
+#### Desplegar pulsar en un cluster de kubernetes de GKE
+
+```bash
+# Tomado de: https://pulsar.apache.org/docs/2.10.x/helm-prepare/
+PROJECT=nomonoliticas-452502 REGION=us-central1 ZONE_EXTENSION=a sh ./pulsar/scripts/pulsar/gke_bootstrap_script.sh up
+```
+
+```bash
+helm repo add apache https://pulsar.apache.org/charts
+helm repo update
+helm install pulsar apache/pulsar \
+    --timeout 10m \
+    --set initialize=true
+```
+
+#### Tumbar pulsar de GKE
+
+```bash
+# Tomado de: https://pulsar.apache.org/docs/2.10.x/helm-prepare/
+sh ./pulsar/scripts/pulsar/gke_bootstrap_script.sh down
+```
