@@ -125,7 +125,7 @@ services:
       - '5000:5000'
 
   ingestion_datos:
-    image: localhost/ingestion_datos/fastapi
+    image: ingestion_datos/fastapi
     container_name: ingestion_datos
     hostname: ingestion_datos
     networks: 
