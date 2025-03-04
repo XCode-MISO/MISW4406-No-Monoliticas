@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 DB_USERNAME = os.getenv("DB_USERNAME", default="root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", default="adminadmin")
-DB_HOSTNAME = os.getenv("DB_HOSTNAME", default="localhost")
+DB_HOSTNAME = os.getenv("DB_HOSTNAME", default="35.223.246.149")
 
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/saludtech"
 
