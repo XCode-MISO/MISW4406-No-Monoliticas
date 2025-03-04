@@ -226,7 +226,7 @@ resource "kubernetes_service" "bff" {
       target_port = 8000      # Container port
     }
 
-    type = "NodePort"  # Change to "LoadBalancer" if needed
+    type = "LoadBalancer"  # Change to "LoadBalancer" if needed
   }
 }
 

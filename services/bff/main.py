@@ -47,4 +47,10 @@ async def create_transaction(request: Request):
         traceback.print_exc()
         return {"status": "error", "message": "An error occurred while creating the transaction"}
 
+@app.get("/health", include_in_schema=False)
+async def health() -> dict[str, str]:
+    return {"status": "ok"}
 
+@app.get("/", include_in_schema=False)
+async def base() -> dict[str, str]:
+    return {"status": "ok"}
