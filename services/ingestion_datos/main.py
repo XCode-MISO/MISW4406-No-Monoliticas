@@ -65,6 +65,15 @@ async def prueba_ingestion_pagada() -> dict[str, str]:
     despachador.publicar_mensaje(evento, "evento-ingestion-datos")
     return {"status": "ok"}
 
+
+@app.get("/health", include_in_schema=False)
+async def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+@app.get("/", include_in_schema=False)
+async def base() -> dict[str, str]:
+    return {"status": "ok"}
+
 @app.get("/prueba-ingestion-datos-revertido", include_in_schema=False)
 async def prueba_pago_revertido() -> dict[str, str]:
     payload = IngestionCancelada(

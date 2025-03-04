@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r ingestion_datos-requirements.txt
 COPY ./ ./
 
 # Expose the port on which the Flask app will run
-EXPOSE 5000
+EXPOSE 8000
 
 # Run the Flask app
 CMD ["uvicorn", "ingestion_datos.main:app", "--port=8000"]

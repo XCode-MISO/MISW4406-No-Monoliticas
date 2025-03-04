@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "seguridad" {
 
           env {
             name  = "BROKER_HOST"
-            value = "pulsar-proxy.default.svc.cluster.local."
+            value = "pulsar-proxy.default.svc.cluster.local"
           }
 
           env {
@@ -129,18 +129,18 @@ resource "kubernetes_deployment" "ingestion-datos" {
 
           env {
             name  = "BROKER_HOST"
-            value = "pulsar-proxy.default.svc.cluster.local."
+            value = "pulsar-proxy.default.svc.cluster.local"
           }
 
           port {
-            container_port = 5000
+            container_port = 8000
           }
 
           # Optional: Health checks
           readiness_probe {
             http_get {
               path = "/"
-              port = 5000
+              port = 8000
             }
             initial_delay_seconds = 5
             period_seconds        = 10
@@ -149,7 +149,7 @@ resource "kubernetes_deployment" "ingestion-datos" {
           liveness_probe {
             http_get {
               path = "/health"
-              port = 5000
+              port = 8000
             }
             initial_delay_seconds = 15
             period_seconds        = 20
@@ -177,8 +177,8 @@ resource "kubernetes_service" "ingestion-datos" {
 
     port {
       name        = "http"
-      port        = 5000      # Service port
-      target_port = 5000      # Container port
+      port        = 8000      # Service port
+      target_port = 8000      # Container port
     }
 
     type = "NodePort"  # Change to "LoadBalancer" if needed
