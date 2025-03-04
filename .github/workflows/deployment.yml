@@ -20,9 +20,8 @@ jobs:
   
       - name: "Use gcloud CLI"
         run: "gcloud info"
-      - name: "Docker auth"
+      - name: "Gloud config"
         run: |-
-          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
           gcloud config set project nomonoliticas-452502
           gcloud container clusters get-credentials pulsar-dev --zone us-central1-a --project nomonoliticas-452502
 
