@@ -70,10 +70,9 @@ resource "kubernetes_service" "seguridad" {
     port {
       name        = "http"
       port        = 5000      # Service port
-      target_port = 5000      # Container port
     }
 
-    type = "NodePort"  # Change to "LoadBalancer" if needed
+    type = "ClusterIP"  # Change to "LoadBalancer" if needed
   }
 }
 resource "kubernetes_deployment" "autorizacion" {
@@ -144,10 +143,9 @@ resource "kubernetes_service" "autorizacion" {
     port {
       name        = "http"
       port        = 5000      # Service port
-      target_port = 5000      # Container port
     }
 
-    type = "NodePort"  # Change to "LoadBalancer" if needed
+    type = "ClusterIP"  # Change to "LoadBalancer" if needed
   }
 }
 
@@ -223,7 +221,6 @@ resource "kubernetes_service" "bff" {
     port {
       name        = "http"
       port        = 8000      # Service port
-      target_port = 8000      # Container port
     }
 
     type = "LoadBalancer"  # Change to "LoadBalancer" if needed
@@ -293,9 +290,8 @@ resource "kubernetes_service" "ingestion-datos" {
     port {
       name        = "http"
       port        = 8000      # Service port
-      target_port = 8000      # Container port
     }
 
-    type = "NodePort"  # Change to "LoadBalancer" if needed
+    type = "ClusterIP"  # Change to "LoadBalancer" if needed
   }
 }
