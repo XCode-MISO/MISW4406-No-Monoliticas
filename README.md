@@ -14,7 +14,7 @@ XCODE
 # Entrega 04
 ## Escenarios de calidad a probar
 - 1: Escenario de calidad: Escalabilidad en la Integración con Sistemas de información de los data partners​
-- 3: Escenario de calidad: Procesamiento de 30,000 centrod de datos de salud​
+- 3: Escenario de calidad: Procesamiento de 30,000 centros de datos de salud​
 - 4: Escenario de calidad: Disponibilidad del API de Autenticación​
 
 ## Distribucion del trabajo
