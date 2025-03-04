@@ -43,6 +43,12 @@ Para esta entrega se implementaron los siguientes archivos y carpetas:
 - **requirements.txt:** Define las dependencias necesarias para el proyecto.
 - **kubernetes.tf:** Define y gestiona la infraestructura de Kubernetes usando Terraform.
 
+## Diagrama de Arquitecutra 
+
+![image](https://github.com/user-attachments/assets/d4b8aa81-2218-4cef-ac91-c2c663447442)
+
+
+
 ## Ejecutar Aplicación
 - Para ejecutar el proyecto localmente , primero levante los contenedores de pulsar y de MySQL con el siguiente comando: 
 ```
