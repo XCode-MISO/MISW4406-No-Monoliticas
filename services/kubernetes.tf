@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "seguridad" {
           
           liveness_probe {
             http_get {
-              path = "/"
+              path = "/health"
               port = 5000
             }
             initial_delay_seconds = 10
@@ -126,7 +126,7 @@ resource "kubernetes_deployment" "autorizacion" {
 
           liveness_probe {
             http_get {
-              path = "/"
+              path = "/health"
               port = 5000
             }
             initial_delay_seconds = 10
