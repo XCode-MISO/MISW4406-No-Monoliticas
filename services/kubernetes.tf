@@ -76,7 +76,150 @@ resource "kubernetes_service" "seguridad" {
     type = "NodePort"  # Change to "LoadBalancer" if needed
   }
 }
+resource "kubernetes_deployment" "autorizacion" {
+  metadata {
+    name = "autorizacion"
+    labels = {
+      app = "autorizacion"
+    }
+  }
 
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "autorizacion"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "autorizacion"
+        }
+      }
+
+      spec {
+        hostname = "autorizacion"
+
+        container {
+          name  = "autorizacion"
+          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/autorizacion:latest"
+
+          env {
+            name  = "BROKER_HOST"
+            value = "pulsar-proxy.default.svc.cluster.local"
+          }
+
+          env {
+            name  = "DB_HOSTNAME"
+            value = "35.223.246.149"
+          }
+
+          port {
+            container_port = 5000
+          }
+        }
+
+        restart_policy = "Always"
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "autorizacion" {
+  metadata {
+    name = "autorizacion"
+    labels = {
+      app = "autorizacion"
+    }
+  }
+
+  spec {
+    selector = {
+      app = "autorizacion"
+    }
+
+    port {
+      name        = "http"
+      port        = 5000      # Service port
+      target_port = 5000      # Container port
+    }
+
+    type = "NodePort"  # Change to "LoadBalancer" if needed
+  }
+}
+
+resource "kubernetes_deployment" "bff" {
+  metadata {
+    name = "bff"
+    labels = {
+      app = "bff"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "bff"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "bff"
+        }
+      }
+
+      spec {
+        hostname = "bff"
+
+        container {
+          name  = "bff"
+          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/ingestion_datos:latest"
+
+          env {
+            name  = "BROKER_HOST"
+            value = "pulsar-proxy.default.svc.cluster.local"
+          }
+
+          port {
+            container_port = 8000
+          }
+        }
+
+        restart_policy = "Always"
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "bff" {
+  metadata {
+    name = "bff"
+    labels = {
+      app = "bff"
+    }
+  }
+
+  spec {
+    selector = {
+      app = "bff"
+    }
+
+    port {
+      name        = "http"
+      port        = 8000      # Service port
+      target_port = 8000      # Container port
+    }
+
+    type = "NodePort"  # Change to "LoadBalancer" if needed
+  }
+}
 resource "kubernetes_deployment" "ingestion-datos" {
   metadata {
     name = "ingestion-datos"
