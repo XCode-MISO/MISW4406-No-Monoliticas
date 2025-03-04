@@ -18,4 +18,4 @@ COPY ./ ./
 EXPOSE 8000
 
 # Run the Flask app
-CMD ["uvicorn", "ingestion_datos.main:app", "--port=8000"]
+CMD ["uvicorn", "ingestion_datos.main:app", "--port=8000", "--host", "0.0.0.0"]

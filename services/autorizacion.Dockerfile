@@ -19,4 +19,4 @@ EXPOSE 5000
 
 # Run the Flask app
 
-CMD ["flask", "--app", "api", "run"]
+CMD ["flask", "--app", "api", "run", "--host=0.0.0.0"]

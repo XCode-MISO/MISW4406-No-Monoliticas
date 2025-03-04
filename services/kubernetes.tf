@@ -32,6 +32,15 @@ resource "kubernetes_deployment" "seguridad" {
           name  = "seguridad"
           image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/seguridad:latest"
 
+          
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 5000
+            }
+            initial_delay_seconds = 10
+          }
+
           env {
             name  = "BROKER_HOST"
             value = "34.171.186.238"
@@ -115,6 +124,14 @@ resource "kubernetes_deployment" "autorizacion" {
           name  = "autorizacion"
           image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/autorizacion:latest"
 
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 5000
+            }
+            initial_delay_seconds = 10
+          }
+
           env {
             name  = "BROKER_HOST"
             value = "34.171.186.238"
@@ -196,6 +213,14 @@ resource "kubernetes_deployment" "bff" {
         container {
           name  = "bff"
           image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/bff:latest"
+
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 8000
+            }
+            initial_delay_seconds = 10
+          }
 
           env {
             name  = "BROKER_HOST"
@@ -283,6 +308,14 @@ resource "kubernetes_deployment" "ingestion-datos" {
         container {
           name  = "ingestion-datos"
           image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/ingestion_datos:latest"
+
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 8000
+            }
+            initial_delay_seconds = 10
+          }
 
           env {
             name  = "BROKER_HOST"
