@@ -39,7 +39,7 @@ def create_app(configuracion={}):
 
     # Configuración de BD
     #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@localhost:3307/usuariosaludtech'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3307/usuariosaludtech'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
