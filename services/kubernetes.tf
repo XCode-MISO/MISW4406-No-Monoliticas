@@ -27,7 +27,6 @@ resource "kubernetes_deployment" "seguridad" {
       }
 
       spec {
-        hostname = "seguridad"
 
         container {
           name  = "seguridad"
@@ -35,7 +34,7 @@ resource "kubernetes_deployment" "seguridad" {
 
           env {
             name  = "BROKER_HOST"
-            value = "pulsar-proxy.default.svc.cluster.local"
+            value = "34.171.186.238"
           }
 
           env {
@@ -45,6 +44,17 @@ resource "kubernetes_deployment" "seguridad" {
 
           port {
             container_port = 5000
+          }
+          
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
           }
         }
 
@@ -100,7 +110,6 @@ resource "kubernetes_deployment" "autorizacion" {
       }
 
       spec {
-        hostname = "autorizacion"
 
         container {
           name  = "autorizacion"
@@ -108,7 +117,7 @@ resource "kubernetes_deployment" "autorizacion" {
 
           env {
             name  = "BROKER_HOST"
-            value = "pulsar-proxy.default.svc.cluster.local"
+            value = "34.171.186.238"
           }
 
           env {
@@ -118,6 +127,16 @@ resource "kubernetes_deployment" "autorizacion" {
 
           port {
             container_port = 5000
+          }
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
           }
         }
 
@@ -174,15 +193,13 @@ resource "kubernetes_deployment" "bff" {
       }
 
       spec {
-        hostname = "bff"
-
         container {
           name  = "bff"
           image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/bff:latest"
 
           env {
             name  = "BROKER_HOST"
-            value = "pulsar-proxy.default.svc.cluster.local"
+            value = "34.171.186.238"
           }
           env {
             name  = "STA_ENV"
@@ -196,6 +213,16 @@ resource "kubernetes_deployment" "bff" {
 
           port {
             container_port = 8000
+          }
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
           }
         }
 
@@ -252,7 +279,6 @@ resource "kubernetes_deployment" "ingestion-datos" {
       }
 
       spec {
-        hostname = "ingestion-datos"
 
         container {
           name  = "ingestion-datos"
@@ -260,11 +286,21 @@ resource "kubernetes_deployment" "ingestion-datos" {
 
           env {
             name  = "BROKER_HOST"
-            value = "pulsar-proxy.default.svc.cluster.local"
+            value = "34.171.186.238"
           }
 
           port {
             container_port = 8000
+          }
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
           }
         }
 
