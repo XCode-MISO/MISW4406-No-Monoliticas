@@ -43,7 +43,7 @@ resource "kubernetes_deployment" "seguridad" {
 
           env {
             name  = "BROKER_HOST"
-            value = "34.171.186.238"
+            value = "pulsar-proxy.default.svc.cluster.local"
           }
 
           env {
@@ -134,7 +134,7 @@ resource "kubernetes_deployment" "autorizacion" {
 
           env {
             name  = "BROKER_HOST"
-            value = "34.171.186.238"
+            value = "pulsar-proxy.default.svc.cluster.local"
           }
 
           env {
@@ -224,7 +224,7 @@ resource "kubernetes_deployment" "bff" {
 
           env {
             name  = "BROKER_HOST"
-            value = "34.171.186.238"
+            value = "pulsar-proxy.default.svc.cluster.local"
           }
           env {
             name  = "STA_ENV"
@@ -319,7 +319,7 @@ resource "kubernetes_deployment" "ingestion-datos" {
 
           env {
             name  = "BROKER_HOST"
-            value = "34.171.186.238"
+            value = "pulsar-proxy.default.svc.cluster.local"
           }
 
           port {
