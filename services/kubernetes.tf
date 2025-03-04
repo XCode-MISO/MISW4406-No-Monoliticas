@@ -180,7 +180,7 @@ resource "kubernetes_deployment" "bff" {
 
         container {
           name  = "bff"
-          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/ingestion_datos:latest"
+          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/bff:latest"
 
           env {
             name  = "BROKER_HOST"
@@ -229,6 +229,7 @@ resource "kubernetes_service" "bff" {
     type = "NodePort"  # Change to "LoadBalancer" if needed
   }
 }
+
 resource "kubernetes_deployment" "ingestion-datos" {
   metadata {
     name = "ingestion-datos"
