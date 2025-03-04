@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "seguridad" {
 
         container {
           name  = "seguridad"
-          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/seguridad"
+          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/seguridad:latest"
 
           env {
             name  = "BROKER_HOST"
@@ -45,25 +45,6 @@ resource "kubernetes_deployment" "seguridad" {
 
           port {
             container_port = 5000
-          }
-
-          # Optional: Health checks
-          readiness_probe {
-            http_get {
-              path = "/"
-              port = 5000
-            }
-            initial_delay_seconds = 5
-            period_seconds        = 10
-          }
-
-          liveness_probe {
-            http_get {
-              path = "/health"
-              port = 5000
-            }
-            initial_delay_seconds = 15
-            period_seconds        = 20
           }
         }
 
@@ -125,7 +106,7 @@ resource "kubernetes_deployment" "ingestion-datos" {
 
         container {
           name  = "ingestion-datos"
-          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/ingestion_datos"
+          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/ingestion_datos:latest"
 
           env {
             name  = "BROKER_HOST"
@@ -134,25 +115,6 @@ resource "kubernetes_deployment" "ingestion-datos" {
 
           port {
             container_port = 8000
-          }
-
-          # Optional: Health checks
-          readiness_probe {
-            http_get {
-              path = "/"
-              port = 8000
-            }
-            initial_delay_seconds = 5
-            period_seconds        = 10
-          }
-
-          liveness_probe {
-            http_get {
-              path = "/health"
-              port = 8000
-            }
-            initial_delay_seconds = 15
-            period_seconds        = 20
           }
         }
 
