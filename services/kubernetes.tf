@@ -186,6 +186,15 @@ resource "kubernetes_deployment" "bff" {
             name  = "BROKER_HOST"
             value = "pulsar-proxy.default.svc.cluster.local"
           }
+          env {
+            name  = "STA_ENV"
+            value = "autorizacion.default.svc.cluster.local"
+          }
+          
+          env {
+            name  = "STA_PORT"
+            value = "5000"
+          }
 
           port {
             container_port = 8000
