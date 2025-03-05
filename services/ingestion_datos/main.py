@@ -9,6 +9,8 @@ from ingestion_datos.aplicacion.comandos import ComandoIngerirDatos, ComandoReve
 from ingestion_datos.infraestructura.consumidores import suscribirse_a_evento_usuario_valido, suscribirse_a_topico
 from ingestion_datos.infraestructura.despachadores import Despachador
 
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioFinalizada
+
 from ingestion_datos.config.db import Base, engine
 
 from . import utils
