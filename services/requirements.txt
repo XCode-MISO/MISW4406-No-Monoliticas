@@ -15,7 +15,8 @@ MarkupSafe==2.1.1
 mysql-connector-python==9.2.0
 packaging==21.3
 pluggy==1.0.0
-pulsar-client==3.6.0
+pulsar-client
+pulsar-client[avro]
 py==1.11.0
 PyDispatcher==2.0.6
 pyparsing==3.0.9
