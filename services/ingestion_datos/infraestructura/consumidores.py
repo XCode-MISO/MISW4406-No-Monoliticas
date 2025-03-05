@@ -68,7 +68,7 @@ async def suscribirse_a_evento_usuario_valido(topico: str, suscripcion: str, sch
                     )
                     print(f"PAYLOAD: {payload.__dict__}")
                     despachador = DespachadorIngestion()
-                    despachador.publicar_mensaje(evento, "evento-ingestion-datos")
+                    despachador.publicar_mensaje(evento, "public/default/evento-ingestion-datos")
     except:
         logging.error(f'ERROR: Suscribiendose al tópico! {topico}, {suscripcion}, {schema}')
         traceback.print_exc()
