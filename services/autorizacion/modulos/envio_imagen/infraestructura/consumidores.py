@@ -31,7 +31,10 @@ def suscribirse_a_eventos():
             mensaje = consumidor.receive()
             print(f'Evento recibido: {mensaje.value().data}')
 
-            consumidor.acknowledge(mensaje)     
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass  
         consumidor.close()
         cliente.close()
     except:
@@ -80,7 +83,10 @@ def suscribirse_a_comandos():
             despachador.pub_mensaje(evento, 'public/default/evento-validacion-usuario-finalizada')
             print("oo =================> Evento despachado!!!!!!!!!")
 
-            consumidor.acknowledge(mensaje)     
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
         consumidor.close()
         cliente.close()
     except:

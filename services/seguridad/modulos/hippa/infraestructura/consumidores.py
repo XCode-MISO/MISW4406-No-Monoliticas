@@ -26,7 +26,10 @@ def suscribirse_a_eventos():
             mensaje = consumidor.receive()
             print(f'Evento recibido: {mensaje.value().data}')
 
-            consumidor.acknowledge(mensaje)     
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
         consumidor.close()
         cliente.close()
     except:
@@ -57,8 +60,10 @@ def suscribirse_a_comandos():
             print("FINALIZADO VALIDACION HIPPA")
             sr = ServicioValidacionHippa()
             dto_final = sr.crear_validacion_hippa(validacion_dto)
-
-            consumidor.acknowledge(mensaje)     
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
         consumidor.close()
         cliente.close()
     except:

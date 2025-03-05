@@ -32,7 +32,10 @@ def suscribirse_a_eventos():
 #########################################
             print(f'Evento recibido: {mensaje.value().data}')
 #########################################
-            consumidor.acknowledge(mensaje)     
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
 
         cliente.close()
     except:
@@ -74,7 +77,10 @@ def suscribirse_a_eventos_ingestion():
             despachador = Despachador()
             print(f'Publicando comando crear anonimizacion: {comando}')
             despachador.publicar_comando(comando, 'public/default/comandos-anonimizacion')
-            consumidor.acknowledge(mensaje)    
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
 
         cliente.close()
     except:
@@ -106,7 +112,10 @@ def suscribirse_a_comandos():
             sr = ServicioAnonimizacion()
             dto_final = sr.crear_anonimizacion(anonimizacion_dto)
 ########################################
-            consumidor.acknowledge(mensaje)
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
             from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
             from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
             from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorImagenHippaDTOJson

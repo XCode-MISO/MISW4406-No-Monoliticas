@@ -29,7 +29,10 @@ def suscribirse_a_eventos():
 #########################################
             print(f'Evento recibido: {mensaje.value().data}')
 #########################################
-            consumidor.acknowledge(mensaje)     
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass 
 
         cliente.close()
     except:
@@ -60,7 +63,10 @@ def suscribirse_a_comandos():
             sr = ServicioValidacion_Usuario()
             dto_final = sr.crear_validacion_usuario(validacion_usuario_dto)
 ########################################
-            consumidor.acknowledge(mensaje)
+            try:
+                consumidor.acknowledge(mensaje)
+            except:
+                pass
             from autorizacion.modulos.envio_imagen.infraestructura.despachadores import Despachador
             from autorizacion.modulos.envio_imagen.aplicacion.comandos.crear_validacion_envio_imagen import CrearValidacionEnvio_Imagen
             from autorizacion.modulos.envio_imagen.aplicacion.mapeadores import MapeadorImagenEnvio_ImagenDTOJson
