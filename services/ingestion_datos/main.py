@@ -28,9 +28,11 @@ async def app_startup():
     task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-ingestion-datos", "sub-ingestion-datos", EventoIngestion))
     task2 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-ingestion-datos", "sub-com-ingestion-datos-crear", ComandoIngerirDatos))
     task3 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-revetir-ingestion-datos", "sub-com-ingestion-datos-revertir", ComandoRevertirIngestionDatos))
+    task4 = asyncio.ensure_future(suscribirse_a_evento_usuario_valido("public/default/evento-validacion-usuario-finalizada", "sub-validacion-usuario", Validacion_UsuarioFinalizada))
     tasks.append(task1)
     tasks.append(task2)
     tasks.append(task3)
+    tasks.append(task4)
     
     Base.metadata.create_all(engine)
 
