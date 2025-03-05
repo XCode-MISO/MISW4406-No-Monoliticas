@@ -6,7 +6,7 @@ from typing import Any
 
 from ingestion_datos.dominio.eventos import EventoIngestion, IngestionCancelada, IngestionFinalizada
 from ingestion_datos.aplicacion.comandos import ComandoIngerirDatos, ComandoRevertirIngestionDatos, RevertirIngestionDatosPayload, IngestionDatosPayload
-from ingestion_datos.infraestructura.consumidores import suscribirse_a_topico
+from ingestion_datos.infraestructura.consumidores import suscribirse_a_evento_usuario_valido, suscribirse_a_topico
 from ingestion_datos.infraestructura.despachadores import Despachador
 
 from ingestion_datos.config.db import Base, engine
