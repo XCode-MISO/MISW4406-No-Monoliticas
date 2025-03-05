@@ -32,7 +32,7 @@ def agregar_validacion_hippa():
         )
         despachador = Despachador()
         print("""comando: ({comando})""".format(comando=comando))
-        despachador.publicar_comando(comando, 'comandos-validacion_hippa')
+        despachador.publicar_comando(comando, 'public/default/comandos-validacion_hippa')
         
         return Response(
                 json.dumps(dict(

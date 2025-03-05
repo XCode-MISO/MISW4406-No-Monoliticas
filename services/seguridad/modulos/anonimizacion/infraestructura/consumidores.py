@@ -24,7 +24,7 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos', schema=AvroSchema(AnonimizacionAgregada))
+        consumidor = cliente.subscribe('public/default/eventos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos', schema=AvroSchema(AnonimizacionAgregada))
 
         print("suscribirse_a_eventos_ingestion()")
         while True:
@@ -50,7 +50,7 @@ def suscribirse_a_eventos_ingestion():
 
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650') 
         consumidor = cliente.subscribe(
-            'evento-ingestion-datos',
+            'public/default/evento-ingestion-datos',
             consumer_type=_pulsar.ConsumerType.Shared,
             subscription_name='seguridad-sub-eventos',
             schema=AvroSchema(EventoIngestion)
@@ -73,7 +73,7 @@ def suscribirse_a_eventos_ingestion():
             from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
             despachador = Despachador()
             print(f'Publicando comando crear anonimizacion: {comando}')
-            despachador.publicar_comando(comando, 'comandos-anonimizacion')
+            despachador.publicar_comando(comando, 'public/default/comandos-anonimizacion')
             consumidor.acknowledge(mensaje)    
 
         cliente.close()
@@ -90,7 +90,7 @@ def suscribirse_a_comandos():
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         #consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
-        consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='seguridad-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
+        consumidor = cliente.subscribe('public/default/comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='seguridad-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
 #########################################        
         print("suscribirse_a_comandos()")
 #########################################
@@ -123,7 +123,7 @@ def suscribirse_a_comandos():
             ,   estado=None
             )
             x_despachador = Despachador()
-            x_despachador.publicar_comando(x_comando, 'comandos-validacion_hippa')
+            x_despachador.publicar_comando(x_comando, 'public/default/comandos-validacion_hippa')
             
         cliente.close()
     except:

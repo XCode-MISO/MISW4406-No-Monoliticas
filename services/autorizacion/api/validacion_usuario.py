@@ -45,7 +45,7 @@ def agregar_validacion_usuario():
         
         comando = CrearValidacion_Usuario(validacion_usuario_dto.fecha_validacion, validacion_usuario_dto.fecha_actualizacion, validacion_usuario_dto.id, validacion_usuario_dto.usuario, validacion_usuario_dto.nombre, validacion_usuario_dto.imagen, validacion_usuario_dto.fecha_fin)
         despachador = Despachador()
-        despachador.publicar_comando(comando, 'comandos-validacion_usuario')
+        despachador.publicar_comando(comando, 'public/default/comandos-validacion_usuario')
         return Response('{Usuario Valido}', status=202, mimetype='application/json')
     
     except ExcepcionDominio as e:

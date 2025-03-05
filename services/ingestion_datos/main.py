@@ -1,8 +1,5 @@
 from fastapi import FastAPI
 import asyncio
-import time
-import traceback
-import uvicorn
 
 from pydantic import BaseSettings
 from typing import Any
@@ -28,9 +25,9 @@ tasks = list()
 @app.on_event("startup")
 async def app_startup():
     global tasks
-    task1 = asyncio.ensure_future(suscribirse_a_topico("evento-ingestion-datos", "sub-ingestion-datos", EventoIngestion))
-    task2 = asyncio.ensure_future(suscribirse_a_topico("comando-ingestion-datos", "sub-com-ingestion-datos-crear", ComandoIngerirDatos))
-    task3 = asyncio.ensure_future(suscribirse_a_topico("comando-revetir-ingestion-datos", "sub-com-ingestion-datos-revertir", ComandoRevertirIngestionDatos))
+    task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-ingestion-datos", "sub-ingestion-datos", EventoIngestion))
+    task2 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-ingestion-datos", "sub-com-ingestion-datos-crear", ComandoIngerirDatos))
+    task3 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-revetir-ingestion-datos", "sub-com-ingestion-datos-revertir", ComandoRevertirIngestionDatos))
     tasks.append(task1)
     tasks.append(task2)
     tasks.append(task3)
@@ -62,7 +59,7 @@ async def prueba_ingestion_pagada() -> dict[str, str]:
     )
     print(f"PAYLOAD: {payload.__dict__}")
     despachador = Despachador()
-    despachador.publicar_mensaje(evento, "evento-ingestion-datos")
+    despachador.publicar_mensaje(evento, "public/default/evento-ingestion-datos")
     return {"status": "ok"}
 
 
@@ -90,7 +87,7 @@ async def prueba_pago_revertido() -> dict[str, str]:
         ingestion_cancelada = payload
     )
     despachador = Despachador()
-    despachador.publicar_mensaje(evento, "evento-ingestion-datos")
+    despachador.publicar_mensaje(evento, "public/default/evento-ingestion-datos")
     return {"status": "ok"}
     
 @app.get("/prueba-ingestion-datos", include_in_schema=False)
@@ -109,7 +106,7 @@ async def prueba_pagar_ingestion() -> dict[str, str]:
         data = payload
     )
     despachador = Despachador()
-    despachador.publicar_mensaje(comando, "comando-ingestion-datos")
+    despachador.publicar_mensaje(comando, "public/default/comando-ingestion-datos")
     return {"status": "ok"}
 
 @app.get("/prueba-revetir-ingestion-datos", include_in_schema=False)
@@ -127,5 +124,5 @@ async def prueba_revertir_pago() -> dict[str, str]:
         data = payload
     )
     despachador = Despachador()
-    despachador.publicar_mensaje(comando, "comando-revertir-ingestion-datos")
+    despachador.publicar_mensaje(comando, "public/default/comando-revertir-ingestion-datos")
     return {"status": "ok"}

@@ -21,7 +21,7 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-validacion_usuario', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='autorizacion-sub-eventos', schema=AvroSchema(Validacion_UsuarioAgregada))
+        consumidor = cliente.subscribe('public/default/eventos-validacion_usuario', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='autorizacion-sub-eventos', schema=AvroSchema(Validacion_UsuarioAgregada))
 
         print("suscribirse_a_eventos()")
         while True:
@@ -45,7 +45,7 @@ def suscribirse_a_comandos():
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         #consumidor = cliente.subscribe('comandos-validacion_usuario', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearValidacion_Usuario))
-        consumidor = cliente.subscribe('comandos-validacion_usuario', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='autorizacion-sub-comandos', schema=AvroSchema(ComandoCrearValidacion_Usuario))
+        consumidor = cliente.subscribe('public/default/comandos-validacion_usuario', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='autorizacion-sub-comandos', schema=AvroSchema(ComandoCrearValidacion_Usuario))
 #########################################        
         print("suscribirse_a_comandos()")
 #########################################
@@ -77,7 +77,7 @@ def suscribirse_a_comandos():
             ,   estado=None
             )
             x_despachador = Despachador()
-            x_despachador.publicar_comando(x_comando, 'comandos-validacion_envio_imagen')
+            x_despachador.publicar_comando(x_comando, 'public/default/comandos-validacion_envio_imagen')
             
         cliente.close()
     except:

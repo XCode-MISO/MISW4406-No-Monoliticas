@@ -19,7 +19,7 @@ def suscribirse_a_eventos():
     try:
         print("Subscribiendose a eventos hippa")
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-validacion_hippa', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos-hippa', schema=AvroSchema(EventoValidacionHippaCreada))
+        consumidor = cliente.subscribe('public/default/eventos-validacion_hippa', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='seguridad-sub-eventos-hippa', schema=AvroSchema(EventoValidacionHippaCreada))
 
         print("suscribirse_a_eventos()")
         while True:
@@ -40,7 +40,7 @@ def suscribirse_a_comandos():
     try:
         print("Subscribiendose a comandos hippa")
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-validacion_hippa', 
+        consumidor = cliente.subscribe('public/default/comandos-validacion_hippa', 
                 consumer_type=_pulsar.ConsumerType.Shared, 
                 subscription_name='seguridad-sub-comandos-hippa', 
                 schema=AvroSchema(ComandoCrearValidacionHippa)

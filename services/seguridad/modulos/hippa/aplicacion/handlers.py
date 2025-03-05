@@ -6,24 +6,24 @@ class HandlerHippaIntegracion(Handler):
     @staticmethod
     def handle_hippa_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-hippa')
+        despachador.publicar_evento(evento, 'public/default/eventos-hippa')
 
     @staticmethod
     def handle_hippa_agregada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-hippa')
+        despachador.publicar_evento(evento, 'public/default/eventos-hippa')
 
     @staticmethod
     def handle_hippa_iniciada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-hippa')
+        despachador.publicar_evento(evento, 'public/default/eventos-hippa')
 
     @staticmethod
     def handle_hippa_cancelada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-hippa')
+        despachador.publicar_evento(evento, 'public/default/eventos-hippa')
 
     @staticmethod
     def handle_hippa_finalizada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-hippa')
+        despachador.publicar_evento(evento, 'public/default/eventos-hippa')

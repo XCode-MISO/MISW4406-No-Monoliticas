@@ -19,7 +19,12 @@ def suscribirse_a_eventos():
     try:
         print("Subscribiendose a eventos envio_imagen")
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-validacion_envio_imagen', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='autorizacion-sub-eventos-envio_imagen', schema=AvroSchema(EventoValidacionEnvio_ImagenCreada))
+        consumidor = cliente.subscribe(
+            'public/default/eventos-validacion_envio_imagen', 
+            consumer_type=_pulsar.ConsumerType.Shared,
+            subscription_name='autorizacion-sub-eventos-envio_imagen', 
+            schema=AvroSchema(EventoValidacionEnvio_ImagenCreada)
+            )
 
         print("suscribirse_a_eventos()")
         while True:
@@ -40,7 +45,7 @@ def suscribirse_a_comandos():
     try:
         print("Subscribiendose a comandos envio_imagen")
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-validacion_envio_imagen', 
+        consumidor = cliente.subscribe('public/default/comandos-validacion_envio_imagen', 
                 consumer_type=_pulsar.ConsumerType.Shared, 
                 subscription_name='autorizacion-sub-comandos-envio_imagen', 
                 schema=AvroSchema(ComandoCrearValidacionEnvio_Imagen)
@@ -72,7 +77,7 @@ def suscribirse_a_comandos():
             )
             print(f"oo =================> evento: ", evento)
             despachador = Despachador()
-            despachador.pub_mensaje(evento, 'evento-validacion-usuario-finalizada')
+            despachador.pub_mensaje(evento, 'public/default/evento-validacion-usuario-finalizada')
             print("oo =================> Evento despachado!!!!!!!!!")
 
             consumidor.acknowledge(mensaje)     
