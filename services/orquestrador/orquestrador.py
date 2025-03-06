@@ -1,4 +1,5 @@
 
+import datetime
 import inspect
 from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import CrearValidacion_Usuario
 from autorizacion.modulos.validacion_usuario.dominio.eventos import Validacion_UsuarioAgregada
@@ -9,6 +10,8 @@ from ingestion_datos.dominio.eventos import EventoIngestion, IngestionFinalizada
 from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionAgregada
 from seguridad.seedwork.aplicacion.sagas import CoordinadorOrquestacion, Fin, Inicio, Transaccion, Paso
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.comandos import CrearAnonimizacion
+from orquestrador.config import db
+from orquestrador.dto import OrquestracionLog
 
 
 class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
@@ -34,7 +37,14 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
     def persistir_en_saga_log(self, mensaje):
         # TODO Persistir estado en DB
         # Probablemente usted podría usar un repositorio para ello
-        ...
+        db.add(
+            OrquestracionLog(
+                fecha=datetime.datetime.now(),
+                nombre=mensaje.__class__,
+                id_evento=mensaje.id
+            )
+        )
+        db.commit()
 
     def publicar_comando(self,evento: EventoDominio, tipo_comando: type):
         comando = self.construir_comando(evento, tipo_comando)
