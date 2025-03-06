@@ -1,5 +1,6 @@
 from autorizacion.seedwork.aplicacion.comandos import Comando
 from autorizacion.modulos.validacion_usuario.aplicacion.dto import Validacion_UsuarioDTO
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import CrearValidacion_Usuario
 from .base import CrearValidacion_UsuarioBaseHandler
 from dataclasses import dataclass, field
 from autorizacion.seedwork.aplicacion.comandos import ejecutar_commando as comando

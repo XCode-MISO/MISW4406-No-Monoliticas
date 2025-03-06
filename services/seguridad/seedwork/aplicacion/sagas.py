@@ -82,7 +82,7 @@ class CoordinadorOrquestacion(CoordinadorSaga, ABC):
             print("rollback")
             self.publicar_comando(evento, self.pasos[index-1].compensacion)
         elif isinstance(evento, paso.evento):
-            print("rollback siguiente")
+            print("publicar siguiente")
             self.publicar_comando(evento, self.pasos[index].comando)
 
 

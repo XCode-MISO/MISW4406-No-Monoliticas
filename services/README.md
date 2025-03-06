@@ -38,6 +38,10 @@ venv\Scripts\activate
 
  ```bash
 docker build . -f seguridad.Dockerfile -t seguridad/flask
+docker build . -f autorizacion.Dockerfile -t autorizacion/flask
+docker build . -f orquestrador.Dockerfile -t orquestrador/fastapi
+docker build . -f ingestion_datos.Dockerfile -t ingestion_datos/fastapi
+docker build . -f bff.Dockerfile -t bff/fastapi
 docker compose up -d
  ```
 

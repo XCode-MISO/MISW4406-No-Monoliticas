@@ -150,6 +150,62 @@ services:
       - DB_HOSTNAME=mysqldbUsuario:3306
       - DB_PASSWORD=adminadmin
       - DB_USERNAME=root
+    ports:
+      - '5000:5000'
+    depends_on:
+      broker:
+        condition: service_started
+      db:
+        condition: service_started
+
+  ingestion_datos:
+    image: ingestion_datos/fastapi
+    container_name: ingestion_datos
+    hostname: ingestion_datos
+    networks: 
+      - pulsar
+    environment:
+      - BROKER_HOST=broker
+      - DB_HOSTNAME=db:3306
+      - DB_PASSWORD=adminadmin
+      - DB_USERNAME=root
+    depends_on:
+      broker:
+        condition: service_started
+      db:
+        condition: service_started
+
+  bff:
+    image: bff/fastapi
+    container_name: bff
+    hostname: bff
+    networks: 
+      - pulsar
+    environment:
+      - BROKER_HOST=broker
+      - DB_HOSTNAME=db:3306
+      - DB_PASSWORD=adminadmin
+      - DB_USERNAME=root
+    ports:
+      - '9000:9000'
+    
+    depends_on:
+      broker:
+        condition: service_started
+      db:
+        condition: service_started
+
+  orquestrador:
+    image: orquestrador/fastapi
+    container_name: orquestrador
+    hostname: orquestrador
+    networks: 
+      - pulsar
+    environment:
+      - BROKER_HOST=broker
+      - DB_HOSTNAME=db:3306
+      - DB_PASSWORD=adminadmin
+      - DB_USERNAME=root
     depends_on:
       broker:
         condition: service_started
