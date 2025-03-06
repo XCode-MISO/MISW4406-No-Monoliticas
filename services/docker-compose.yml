@@ -132,13 +132,12 @@ services:
       - pulsar
     environment:
       - BROKER_HOST=broker
+      - DB_HOSTNAME=db:3306
     depends_on:
       broker:
         condition: service_started
       db:
         condition: service_started
-    ports:
-      - '5001:5001'
       
   autorizacion:
     image: autorizacion/flask
@@ -148,13 +147,14 @@ services:
       - pulsar
     environment:
       - BROKER_HOST=broker
+      - DB_HOSTNAME=mysqldbUsuario:3306
+      - DB_PASSWORD=adminadmin
+      - DB_USERNAME=root
     depends_on:
       broker:
         condition: service_started
       db:
         condition: service_started
-    ports:
-      - '5000:5000'
 
 
   

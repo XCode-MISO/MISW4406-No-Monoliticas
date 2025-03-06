@@ -26,3 +26,5 @@ SQLAlchemy==1.4.44
 tomli==2.0.1
 Werkzeug==2.2.2
 requests
+pymysql
+cryptography

@@ -9,18 +9,6 @@ from autorizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from autorizacion.modulos.validacion_usuario.aplicacion.mapeadores import MapeadorValidacion_Usuario
 from autorizacion.modulos.validacion_usuario.infraestructura.repositorios import RepositorioValidacion_Usuario
 
-@dataclass
-class CrearValidacion_Usuario(Comando):
-    fecha_validacion: str
-    fecha_actualizacion: str
-    id: str
-    usuario: str
-    nombre: str
-    imagen: str
-    fecha_fin: str
-    
-
-
 class CrearValidacion_UsuarioHandler(CrearValidacion_UsuarioBaseHandler):
     
     def handle(self, comando: CrearValidacion_Usuario):

@@ -16,6 +16,9 @@ class Validacion_UsuarioAgregada(EventoDominio):
     id_cliente: uuid.UUID = None
     estado: str = None
     fecha_validacion: datetime = None
+    imagen: str = None
+    nombre: str = None
+    usuario: str = None
     
     
 @dataclass

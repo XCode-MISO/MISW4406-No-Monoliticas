@@ -100,5 +100,5 @@ helm install pulsar apache/pulsar \
 
 ```bash
 # Tomado de: https://pulsar.apache.org/docs/2.10.x/helm-prepare/
-sh ./pulsar/scripts/pulsar/gke_bootstrap_script.sh down
+PROJECT=nomonoliticas-452502 REGION=us-central1 ZONE_EXTENSION=a NUM_NODES=2 sh ./pulsar/scripts/pulsar/gke_bootstrap_script.sh down
 ```

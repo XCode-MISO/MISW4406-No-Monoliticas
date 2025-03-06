@@ -21,7 +21,7 @@ class EventoIngestion(Record):
     time = Long()
     ingestion = Long(default=time_millis())
     specversion = String(default="v1")
-    type = String(default="EventoIngestion")
+    type = String(default="orquestrador=")
     datacontenttype = String()
     service_name = String(default="ingestion-datos.Saludtech")
     ingestion_finalizada = IngestionFinalizada
