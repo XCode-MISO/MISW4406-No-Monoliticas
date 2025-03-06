@@ -46,8 +46,6 @@ def shutdown_event():
 async def prueba_ingestion_pagada() -> dict[str, str]:
     payload = IngestionFinalizada(
         id = "1232321321",
-        id_correlacion = "389822434",
-        ingestion_id = "6463454",
         imagen = 'https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg',
         nombre = 'dark-brandon',
         fecha_creacion = utils.datetime_a_str(utils.millis_a_datetime(utils.time_millis())) 

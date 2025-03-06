@@ -364,3 +364,88 @@ resource "kubernetes_service" "ingestion-datos" {
     type = "ClusterIP"  # Change to "LoadBalancer" if needed
   }
 }
+resource "kubernetes_deployment" "orquestrador" {
+  metadata {
+    name = "orquestrador"
+    labels = {
+      app = "orquestrador"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "orquestrador"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "orquestrador"
+        }
+      }
+
+      spec {
+
+        container {
+          name  = "orquestrador"
+          image = "us-central1-docker.pkg.dev/nomonoliticas-452502/saludtech/orquestrador:latest"
+
+          liveness_probe {
+            http_get {
+              path = "/"
+              port = 8000
+            }
+            initial_delay_seconds = 10
+          }
+
+          env {
+            name  = "BROKER_HOST"
+            value = "pulsar-proxy.default.svc.cluster.local"
+          }
+
+          port {
+            container_port = 8000
+          }
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
+        }
+
+        restart_policy = "Always"
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "orquestrador" {
+  metadata {
+    name = "orquestrador"
+    labels = {
+      app = "orquestrador"
+    }
+  }
+
+  spec {
+    selector = {
+      app = "orquestrador"
+    }
+
+    port {
+      name        = "http"
+      port        = 8000      # Service port
+    }
+
+    type = "ClusterIP"  # Change to "LoadBalancer" if needed
+  }
+}

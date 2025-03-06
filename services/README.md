@@ -38,6 +38,10 @@ venv\Scripts\activate
 
  ```bash
 docker build . -f seguridad.Dockerfile -t seguridad/flask
+docker build . -f autorizacion.Dockerfile -t autorizacion/flask
+docker build . -f orquestrador.Dockerfile -t orquestrador/fastapi
+docker build . -f ingestion_datos.Dockerfile -t ingestion_datos/fastapi
+docker build . -f bff.Dockerfile -t bff/fastapi
 docker compose up -d
  ```
 
@@ -100,5 +104,5 @@ helm install pulsar apache/pulsar \
 
 ```bash
 # Tomado de: https://pulsar.apache.org/docs/2.10.x/helm-prepare/
-sh ./pulsar/scripts/pulsar/gke_bootstrap_script.sh down
+PROJECT=nomonoliticas-452502 REGION=us-central1 ZONE_EXTENSION=a NUM_NODES=2 sh ./pulsar/scripts/pulsar/gke_bootstrap_script.sh down
 ```
