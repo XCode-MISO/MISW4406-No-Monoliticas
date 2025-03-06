@@ -1,5 +1,6 @@
 from autorizacion.seedwork.aplicacion.comandos import Comando
 from autorizacion.modulos.validacion_usuario.aplicacion.dto import Validacion_UsuarioDTO
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import CrearValidacion_Usuario
 from .base import CrearValidacion_UsuarioBaseHandler
 from dataclasses import dataclass, field
 from autorizacion.seedwork.aplicacion.comandos import ejecutar_commando as comando
@@ -8,18 +9,6 @@ from autorizacion.modulos.validacion_usuario.dominio.entidades import Validacion
 from autorizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from autorizacion.modulos.validacion_usuario.aplicacion.mapeadores import MapeadorValidacion_Usuario
 from autorizacion.modulos.validacion_usuario.infraestructura.repositorios import RepositorioValidacion_Usuario
-
-@dataclass
-class CrearValidacion_Usuario(Comando):
-    fecha_validacion: str
-    fecha_actualizacion: str
-    id: str
-    usuario: str
-    nombre: str
-    imagen: str
-    fecha_fin: str
-    
-
 
 class CrearValidacion_UsuarioHandler(CrearValidacion_UsuarioBaseHandler):
     

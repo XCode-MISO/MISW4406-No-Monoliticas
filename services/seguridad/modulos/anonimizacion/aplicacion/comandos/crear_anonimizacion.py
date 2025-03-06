@@ -1,5 +1,6 @@
 from seguridad.seedwork.aplicacion.comandos import Comando
 from seguridad.modulos.anonimizacion.aplicacion.dto import AnonimizacionDTO
+from seguridad.modulos.anonimizacion.infraestructura.schema.v1.comandos import CrearAnonimizacion
 from .base import CrearAnonimizacionBaseHandler
 from dataclasses import dataclass, field
 from seguridad.seedwork.aplicacion.comandos import ejecutar_commando as comando
@@ -8,17 +9,6 @@ from seguridad.modulos.anonimizacion.dominio.entidades import Anonimizacion
 from seguridad.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from seguridad.modulos.anonimizacion.aplicacion.mapeadores import MapeadorAnonimizacion
 from seguridad.modulos.anonimizacion.infraestructura.repositorios import Repositorioanonimizacion
-
-@dataclass
-class CrearAnonimizacion(Comando):
-    fecha_creacion: str
-    fecha_actualizacion: str
-    id: str
-    nombre: str
-    imagen: str
-    fecha_fin: str
-    
-
 
 class CrearAnonimizacionHandler(CrearAnonimizacionBaseHandler):
     

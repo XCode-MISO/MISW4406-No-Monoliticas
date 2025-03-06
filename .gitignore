@@ -176,3 +176,5 @@ src-gen/**
 
 .terraform**
 terraform.tfstate**
+
+.python-version
