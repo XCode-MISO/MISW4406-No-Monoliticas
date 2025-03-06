@@ -44,51 +44,6 @@ def suscribirse_a_eventos():
         if cliente:
             cliente.close()
 
-            
-def suscribirse_a_eventos_ingestion():
-    cliente = None
-    try:
-        print("suscribirse_a_eventos_ingestion()")
-        from ingestion_datos.dominio.eventos import EventoIngestion
-
-        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650') 
-        consumidor = cliente.subscribe(
-            'public/default/evento-ingestion-datos',
-            consumer_type=_pulsar.ConsumerType.Shared,
-            subscription_name='seguridad-sub-eventos',
-            schema=AvroSchema(EventoIngestion)
-        )
-
-        while True:
-            mensaje = consumidor.receive()
-            mensajeAsDict = mensaje.value().__dict__.get('ingestion_finalizada').__dict__
-            print(f'Evento recibido: {mensajeAsDict}')
-            map_anonimizacion = MapeadorAnonimizacionDTOJson()
-            anonimizacion_dto = map_anonimizacion.externo_a_dto(mensajeAsDict)
-            comando = CrearAnonimizacion(
-                anonimizacion_dto.fecha_creacion, 
-                anonimizacion_dto.fecha_actualizacion, 
-                anonimizacion_dto.id, 
-                anonimizacion_dto.nombre, 
-                anonimizacion_dto.imagen, 
-                anonimizacion_dto.fecha_fin
-            )
-            from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
-            despachador = Despachador()
-            print(f'Publicando comando crear anonimizacion: {comando}')
-            despachador.publicar_comando(comando, 'public/default/comandos-anonimizacion')
-            try:
-                consumidor.acknowledge(mensaje)
-            except:
-                pass
-
-        cliente.close()
-    except:
-        logging.error('ERROR: Suscribiendose al tópico de eventos!')
-        traceback.print_exc()
-        if cliente:
-            cliente.close()
-
 def suscribirse_a_comandos():
     
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
@@ -112,27 +67,27 @@ def suscribirse_a_comandos():
             sr = ServicioAnonimizacion()
             dto_final = sr.crear_anonimizacion(anonimizacion_dto)
 ########################################
-            try:
-                consumidor.acknowledge(mensaje)
-            except:
-                pass
-            from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
-            from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
-            from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorImagenHippaDTOJson
-            from seguridad.modulos.hippa.aplicacion.servicios import ServicioValidacionHippa
+            # try:
+            #     consumidor.acknowledge(mensaje)
+            # except:
+            #     pass
+            # from seguridad.modulos.hippa.infraestructura.despachadores import Despachador
+            # from seguridad.modulos.hippa.aplicacion.comandos.crear_validacion_hippa import CrearValidacionHippa
+            # from seguridad.modulos.hippa.aplicacion.mapeadores import MapeadorImagenHippaDTOJson
+            # from seguridad.modulos.hippa.aplicacion.servicios import ServicioValidacionHippa
 
-            x_dict = {'estado': None, 'image': dto_final.imagen, 'id': dto_final.id, 'fecha_creacion': dto_final.fecha_creacion, 'fecha_actualizacion': dto_final.fecha_actualizacion}
-            x_map = MapeadorImagenHippaDTOJson()
-            x_dto = x_map.externo_a_dto(x_dict)            
-            x_comando = CrearValidacionHippa(    
-                id=f'{uuid.uuid4()}',        
-                image=anonimizacion_dto.imagen
-            ,   fecha_creacion=datetime.now().strftime(_FORMATO_FECHA)
-            ,   fecha_actualizacion=datetime.now().strftime(_FORMATO_FECHA)
-            ,   estado=None
-            )
-            x_despachador = Despachador()
-            x_despachador.publicar_comando(x_comando, 'public/default/comandos-validacion_hippa')
+            # x_dict = {'estado': None, 'image': dto_final.imagen, 'id': dto_final.id, 'fecha_creacion': dto_final.fecha_creacion, 'fecha_actualizacion': dto_final.fecha_actualizacion}
+            # x_map = MapeadorImagenHippaDTOJson()
+            # x_dto = x_map.externo_a_dto(x_dict)            
+            # x_comando = CrearValidacionHippa(    
+            #     id=f'{uuid.uuid4()}',        
+            #     image=anonimizacion_dto.imagen
+            # ,   fecha_creacion=datetime.now().strftime(_FORMATO_FECHA)
+            # ,   fecha_actualizacion=datetime.now().strftime(_FORMATO_FECHA)
+            # ,   estado=None
+            # )
+            # x_despachador = Despachador()
+            # x_despachador.publicar_comando(x_comando, 'public/default/comandos-validacion_hippa')
             
         cliente.close()
     except:

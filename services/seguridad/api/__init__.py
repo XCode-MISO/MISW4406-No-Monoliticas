@@ -16,35 +16,29 @@ def importar_modelos_alchemy():
 
 def comenzar_consumidor(app):
     import seguridad.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
-    import seguridad.modulos.hippa.infraestructura.consumidores as hippa
 
-    def suscribirse_a_eventos_ingestion():
-        with app.app_context():
-            anonimizacion.suscribirse_a_eventos_ingestion()
-
-    # Suscripción a eventos
-    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
-    threading.Thread(target=suscribirse_a_eventos_ingestion).start()
-    threading.Thread(target=hippa.suscribirse_a_eventos).start()
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
             anonimizacion.suscribirse_a_comandos()
-    def suscribir_comandos_hippa():
-        with app.app_context():  # Asegurar contexto de Flask
-            hippa.suscribirse_a_comandos()
-    
+
+    # Suscripción a comandos
     threading.Thread(target=suscribir_comandos).start()
-    threading.Thread(target=suscribir_comandos_hippa).start()
+
+    # Suscripción a eventos
+    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
     app = Flask(__name__, instance_relative_config=True)
 
-    # Configuración de BD
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3306/saludtech'
+    # Configuración de BD - Nube
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3306/saludtech'
+    # Configuración de BD - Local
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@localhost:3306/saludtech'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
     app.config['SESSION_TYPE'] = 'filesystem'

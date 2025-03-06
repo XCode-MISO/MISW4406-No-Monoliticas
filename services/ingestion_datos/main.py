@@ -6,7 +6,7 @@ from typing import Any
 
 from ingestion_datos.dominio.eventos import EventoIngestion, IngestionCancelada, IngestionFinalizada
 from ingestion_datos.aplicacion.comandos import ComandoIngerirDatos, ComandoRevertirIngestionDatos, RevertirIngestionDatosPayload, IngestionDatosPayload
-from ingestion_datos.infraestructura.consumidores import suscribirse_a_evento_usuario_valido, suscribirse_a_topico
+from ingestion_datos.infraestructura.consumidores import suscribirse_a_topico
 from ingestion_datos.infraestructura.despachadores import Despachador
 
 from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioFinalizada
@@ -30,11 +30,9 @@ async def app_startup():
     task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-ingestion-datos", "sub-ingestion-datos", EventoIngestion))
     task2 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-ingestion-datos", "sub-com-ingestion-datos-crear", ComandoIngerirDatos))
     task3 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-revetir-ingestion-datos", "sub-com-ingestion-datos-revertir", ComandoRevertirIngestionDatos))
-    task4 = asyncio.ensure_future(suscribirse_a_evento_usuario_valido("public/default/evento-validacion-usuario-finalizada", "sub-validacion-usuario", Validacion_UsuarioFinalizada))
     tasks.append(task1)
     tasks.append(task2)
     tasks.append(task3)
-    tasks.append(task4)
     
     Base.metadata.create_all(engine)
 

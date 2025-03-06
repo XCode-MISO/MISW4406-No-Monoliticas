@@ -35,7 +35,7 @@ def agregar_anonimizacion():
         despachador = Despachador()
         despachador.publicar_comando(comando, 'public/default/comandos-anonimizacion')
         
-        return Response('{}', status=202, mimetype='application/json')
+        return Response('{anonimizacion realizada}', status=202, mimetype='application/json')
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
