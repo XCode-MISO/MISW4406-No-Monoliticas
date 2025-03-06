@@ -22,22 +22,16 @@ def importar_modelos_alchemy():
 
 def comenzar_consumidor(app):
     import autorizacion.modulos.validacion_usuario.infraestructura.consumidores as validacion_usuario
-    import autorizacion.modulos.envio_imagen.infraestructura.consumidores as envio_imagen
-
-    # Suscripción a eventos
-    threading.Thread(target=validacion_usuario.suscribirse_a_eventos).start()
-    threading.Thread(target=envio_imagen.suscribirse_a_eventos).start()
 
     # Suscripción a comandos dentro del contexto de la app
     def suscribir_comandos():
         with app.app_context():  # Asegurar contexto de Flask
             validacion_usuario.suscribirse_a_comandos()
-    def suscribir_comandos_envio_imagen():
-        with app.app_context():  # Asegurar contexto de Flask
-            envio_imagen.suscribirse_a_comandos()
-    
+
+    #Suscripción a comandos
     threading.Thread(target=suscribir_comandos).start()
-    threading.Thread(target=suscribir_comandos_envio_imagen).start()
+    # Suscripción a eventos
+    threading.Thread(target=validacion_usuario.suscribirse_a_eventos).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
@@ -45,7 +39,8 @@ def create_app(configuracion={}):
 
     # Configuración de BD
     #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URL
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3306/usuariosaludtech'    #pruebas local
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@localhost:3307/usuariosaludtech'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'

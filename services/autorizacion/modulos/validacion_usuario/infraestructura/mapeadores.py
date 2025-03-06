@@ -26,8 +26,7 @@ class MapeadorValidacion_Usuario(Mapeador):
     def dto_a_entidad(self, dto: Validacion_UsuarioDTO) -> Validacion_Usuario:
         validacion_usuario = Validacion_Usuario( dto.fecha_validacion, dto.fecha_actualizacion, dto.id, dto.usuario, dto.imagen)
         return validacion_usuario
-    
-    
+        
 class MapeadorUsuario(Mapeador):
 
     def obtener_tipo(self) -> type:

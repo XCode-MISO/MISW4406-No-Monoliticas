@@ -63,27 +63,27 @@ def suscribirse_a_comandos():
             sr = ServicioValidacion_Usuario()
             dto_final = sr.crear_validacion_usuario(validacion_usuario_dto)
 ########################################
-            try:
-                consumidor.acknowledge(mensaje)
-            except:
-                pass
-            from autorizacion.modulos.envio_imagen.infraestructura.despachadores import Despachador
-            from autorizacion.modulos.envio_imagen.aplicacion.comandos.crear_validacion_envio_imagen import CrearValidacionEnvio_Imagen
-            from autorizacion.modulos.envio_imagen.aplicacion.mapeadores import MapeadorImagenEnvio_ImagenDTOJson
-            from autorizacion.modulos.envio_imagen.aplicacion.servicios import ServicioValidacionEnvio_Imagen
+        #     try:
+        #         consumidor.acknowledge(mensaje)
+        #     except:
+        #         pass
+        #     from autorizacion.modulos.envio_imagen.infraestructura.despachadores import Despachador
+        #     from autorizacion.modulos.envio_imagen.aplicacion.comandos.crear_validacion_envio_imagen import CrearValidacionEnvio_Imagen
+        #     from autorizacion.modulos.envio_imagen.aplicacion.mapeadores import MapeadorImagenEnvio_ImagenDTOJson
+        #     from autorizacion.modulos.envio_imagen.aplicacion.servicios import ServicioValidacionEnvio_Imagen
 
-            x_dict = {'estado': None, 'image': dto_final.imagen, 'id': dto_final.id, 'fecha_validacion': dto_final.fecha_validacion, 'fecha_actualizacion': dto_final.fecha_actualizacion}
-            x_map = MapeadorImagenEnvio_ImagenDTOJson()
-            x_dto = x_map.externo_a_dto(x_dict)            
-            x_comando = CrearValidacionEnvio_Imagen(    
-                id=f'{uuid.uuid4()}',        
-                image=validacion_usuario_dto.imagen
-            ,   fecha_validacion=datetime.now().strftime(_FORMATO_FECHA)
-            ,   fecha_actualizacion=datetime.now().strftime(_FORMATO_FECHA)
-            ,   estado=None
-            )
-            x_despachador = Despachador()
-            x_despachador.publicar_comando(x_comando, 'public/default/comandos-validacion_envio_imagen')
+        #     x_dict = {'estado': None, 'image': dto_final.imagen, 'id': dto_final.id, 'fecha_validacion': dto_final.fecha_validacion, 'fecha_actualizacion': dto_final.fecha_actualizacion}
+        #     x_map = MapeadorImagenEnvio_ImagenDTOJson()
+        #     x_dto = x_map.externo_a_dto(x_dict)            
+        #     x_comando = CrearValidacionEnvio_Imagen(    
+        #         id=f'{uuid.uuid4()}',        
+        #         image=validacion_usuario_dto.imagen
+        #     ,   fecha_validacion=datetime.now().strftime(_FORMATO_FECHA)
+        #     ,   fecha_actualizacion=datetime.now().strftime(_FORMATO_FECHA)
+        #     ,   estado=None
+        #     )
+        #     x_despachador = Despachador()
+        #     x_despachador.publicar_comando(x_comando, 'public/default/comandos-validacion_envio_imagen')
             
         cliente.close()
     except:
