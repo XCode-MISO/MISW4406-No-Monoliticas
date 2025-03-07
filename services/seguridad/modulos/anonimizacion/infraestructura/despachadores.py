@@ -27,9 +27,9 @@ class Despachador:
 
     def publicar_evento(self, evento, topico):
         payload = AnonimizacionAgregadaPayload(
-            id_anonimizacion=str(evento.id_reserva), 
+            id_anonimizacion=str(evento.id_anonimizacion), 
             estado=str(evento.estado), 
-            fecha_creacion=int(unix_time_millis(evento.fecha_creacion))
+            fecha_creacion=str(evento.fecha_creacion)
         )
         evento_integracion = AnonimizacionAgregada(data=payload)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(AnonimizacionAgregada))
