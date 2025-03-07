@@ -39,7 +39,9 @@ def create_app(configuracion={}):
     # Init la aplicación de Flask
     app = Flask(__name__, instance_relative_config=True)
 
-    # Configuración de BD
+    # Configuración de BD - Nube
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3306/saludtech'
+    # Configuración de BD - Local
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

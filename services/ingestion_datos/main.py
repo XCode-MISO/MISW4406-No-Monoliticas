@@ -1,3 +1,4 @@
+import uuid
 from fastapi import FastAPI
 import asyncio
 
@@ -45,7 +46,7 @@ def shutdown_event():
 @app.get("/prueba-ingestion_datos_exitosa", include_in_schema=False)
 async def prueba_ingestion_pagada() -> dict[str, str]:
     payload = IngestionFinalizada(
-        id = "1232321321",
+        id = uuid.uuid4(),
         imagen = 'https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg',
         nombre = 'dark-brandon',
         fecha_creacion = utils.datetime_a_str(utils.millis_a_datetime(utils.time_millis())) 
@@ -74,8 +75,8 @@ async def base() -> dict[str, str]:
 @app.get("/prueba-ingestion-datos-revertido", include_in_schema=False)
 async def prueba_pago_revertido() -> dict[str, str]:
     payload = IngestionCancelada(
-        id = "1232321321",
-        id_correlacion = "389822434",
+        id = uuid.uuid4(),
+        id_correlacion = uuid.uuid4(),
         ingestion_id = "6463454",
         fecha_actualizacion = utils.datetime_a_str(utils.millis_a_datetime(utils.time_millis()))
     )
@@ -93,8 +94,8 @@ async def prueba_pago_revertido() -> dict[str, str]:
 @app.get("/prueba-ingestion-datos", include_in_schema=False)
 async def prueba_pagar_ingestion() -> dict[str, str]:
     payload = IngestionDatosPayload(
-        id_correlacion = "389822434",
-        ingestion_id = "6463454",
+        id_correlacion = uuid.uuid4(),
+        ingestion_id = uuid.uuid4(),
         imagen = 'https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg',
         nombre = 'dark-brandon'
     )
@@ -112,8 +113,8 @@ async def prueba_pagar_ingestion() -> dict[str, str]:
 @app.get("/prueba-revetir-ingestion-datos", include_in_schema=False)
 async def prueba_revertir_pago() -> dict[str, str]:
     payload = RevertirIngestionDatosPayload(
-        id = "1232321321",
-        id_correlacion = "389822434",
+        id = uuid.uuid4(),
+        id_correlacion = uuid.uuid4(),
         ingestion_id = "6463454",
     )
 

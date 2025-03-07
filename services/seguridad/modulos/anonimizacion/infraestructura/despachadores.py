@@ -26,10 +26,13 @@ class Despachador:
         cliente.close()
 
     def publicar_evento(self, evento, topico):
+        print(f"Evento: {evento}")
         payload = AnonimizacionAgregadaPayload(
             id_anonimizacion=str(evento.id_anonimizacion), 
             estado=str(evento.estado), 
-            fecha_creacion=str(evento.fecha_creacion)
+            fecha_creacion=int(unix_time_millis(evento.fecha_creacion)),
+            imagen=evento.imagen,
+            nombre=evento.nombre
         )
         evento_integracion = AnonimizacionAgregada(data=payload)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(AnonimizacionAgregada))
