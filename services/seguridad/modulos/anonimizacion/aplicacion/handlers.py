@@ -11,7 +11,7 @@ class HandlerReservaIntegracion(Handler):
     @staticmethod
     def handle_anonimizacion_agregada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'public/default/eventos-anonimizacion')
+        despachador.publicar_evento(evento, 'public/default/eventos-anonimizacion-finalizada')
 
     @staticmethod
     def handle_anonimizacion_iniciada(evento):

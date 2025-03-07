@@ -4,7 +4,7 @@ from seguridad.seedwork.infraestructura.schema.v1.eventos import EventoIntegraci
 class AnonimizacionAgregadaPayload(Record):
     id_anonimizacion = String()
     estado = String()
-    fecha_creacion = Long()
+    fecha_creacion = String()
 
 class AnonimizacionAgregada(EventoIntegracion):
     data = AnonimizacionAgregadaPayload()
