@@ -6,9 +6,10 @@ import logging
 
 DB_USERNAME = os.getenv("DB_USERNAME", default="root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", default="adminadmin")
-DB_HOSTNAME = os.getenv("DB_HOSTNAME", default="35.223.246.149")
+DB_HOSTNAME = os.getenv("DB_HOSTNAME", default="127.0.0.1")#35.223.246.149
+DB_PORT = os.getenv("DB_PORT", default="3306")
 
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/saludtech"
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_PORT}/saludtech"
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -38,13 +39,9 @@ def create_app(configuracion={}):
     # Init la aplicación de Flask
     app = Flask(__name__, instance_relative_config=True)
 
-    # Configuración de BD - Nube
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3306/saludtech'
-    # Configuración de BD - Local
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@localhost:3306/saludtech'
+    # Configuración de BD
+    app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
     app.config['SESSION_TYPE'] = 'filesystem'
