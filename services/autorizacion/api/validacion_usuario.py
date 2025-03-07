@@ -7,15 +7,15 @@ from autorizacion.seedwork.dominio.excepciones import ExcepcionDominio
 from autorizacion.modulos.validacion_usuario.aplicacion.mapeadores import MapeadorValidacion_UsuarioDTOJson
 from autorizacion.modulos.validacion_usuario.aplicacion.servicios import ServicioValidacion_Usuario
 from autorizacion.modulos.validacion_usuario.aplicacion.queries.obtener_validacion_usuario import ObtenerValidacion_Usuario
-from autorizacion.modulos.validacion_usuario.aplicacion.comandos.crear_validacion_usuario import CrearValidacion_Usuario
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import CrearValidacion_Usuario
+
 from autorizacion.seedwork.aplicacion.queries import ejecutar_query
 from autorizacion.modulos.validacion_usuario.infraestructura.despachadores import Despachador
 
 bp = api.crear_blueprint('validacion_usuario', '/validacion_usuario')
 
 @bp.route('/validacion_usuario', methods=['POST'])
-def agregar_validacion_usuario():
-    
+def agregar_validacion_usuario():    
     try:
         validacion_usuario_dict = request.json
         map_validacion_usuario = MapeadorValidacion_UsuarioDTOJson()
@@ -27,6 +27,22 @@ def agregar_validacion_usuario():
     
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+
+@bp.route('/error_usuario', methods=['POST'])
+def agregar_error_usuario():    
+    from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import ErrorValidacion_Usuario
+
+    try:
+        data = request.json
+        usuario = data["usuario"]
+        comando = ErrorValidacion_Usuario(usuario)
+        despachador = Despachador()
+        despachador.publicar_comando_error(comando, 'public/default/comandos-error_usuario')        
+        return Response('{Error Usuario}', status=202, mimetype='application/json')
+    
+    except ExcepcionDominio as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+
 
 @bp.route('/usuario', methods=['GET'])
 @bp.route('/usuario/<id>', methods=['GET'])

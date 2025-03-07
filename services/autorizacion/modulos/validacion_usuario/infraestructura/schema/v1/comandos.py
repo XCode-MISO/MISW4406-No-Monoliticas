@@ -14,8 +14,6 @@ class ComandoCrearValidacion_UsuarioPayload(ComandoIntegracion):
 
 class ComandoCrearValidacion_Usuario(ComandoIntegracion):
     data = ComandoCrearValidacion_UsuarioPayload()
-
-    
 @dataclass
 class CrearValidacion_Usuario(Comando):
     fecha_validacion: str
@@ -25,4 +23,15 @@ class CrearValidacion_Usuario(Comando):
     nombre: str
     imagen: str
     fecha_fin: str
+
+################################################################
+class ComandoErrorValidacion_UsuarioPayload(ComandoIntegracion):
+    nombre = String()
+
+class ComandoErrorValidacion_Usuario(ComandoIntegracion):
+    data = ComandoErrorValidacion_UsuarioPayload()
     
+@dataclass
+class ErrorValidacion_Usuario(Comando):
+    nombre: str
+################################################################
