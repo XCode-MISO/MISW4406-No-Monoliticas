@@ -29,10 +29,17 @@ def comenzar_consumidor(app):
         with app.app_context():  # Asegurar contexto de Flask
             validacion_usuario.suscribirse_a_comandos()
 
+    def suscribir_comandos_error():
+        with app.app_context():  # Asegurar contexto de Flask
+            validacion_usuario.suscribirse_a_comandos_error()
+
     #Suscripción a comandos
     threading.Thread(target=suscribir_comandos).start()
+    threading.Thread(target=suscribir_comandos_error).start()
+
     # Suscripción a eventos
     threading.Thread(target=validacion_usuario.suscribirse_a_eventos).start()
+    threading.Thread(target=validacion_usuario.suscribirse_a_eventos_error).start()
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
