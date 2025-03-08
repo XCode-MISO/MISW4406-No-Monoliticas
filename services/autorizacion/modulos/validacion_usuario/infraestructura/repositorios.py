@@ -47,9 +47,14 @@ class RepositorioValidacion_UsuarioMYSQL(RepositorioValidacion_Usuario):
         # TODO
         raise NotImplementedError
 
-    def eliminar(self, reserva_id: UUID):
-        # TODO
-        raise NotImplementedError
+    def eliminar(self, usuario: str):
+        try:
+            db.session.query(Validacion_UsuarioDTO).filter_by(usuario=usuario).delete()
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f'Error al eliminar la validación del usuario {usuario}: {e}')
+        #raise NotImplementedError
     
 #######################################################****************************************############################################
     

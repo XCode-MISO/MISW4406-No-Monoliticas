@@ -26,6 +26,10 @@ class ServicioValidacion_Usuario(Servicio):
         repositorio.agregar(validacion_usuario)
         return self.fabrica_validacion_usuario.crear_objeto(validacion_usuario, MapeadorValidacion_Usuario())
 
+    def borrar_usuario_maligno(self, nombre: str) -> None:
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioValidacion_Usuario.__class__)
+        repositorio.eliminar("maligno")
+
     def obtener_validacion_usuario_por_id(self, id) -> Validacion_UsuarioDTO:
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioValidacion_Usuario.__class__)
         return repositorio.obtener_por_id(id).__dict__
