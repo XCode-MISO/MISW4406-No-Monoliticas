@@ -81,8 +81,8 @@ def suscribirse_a_comandos():
             mensaje = consumidor.receive()
             print(
                 f'\n================> Comando recibido: {mensaje.value().data}')
-            anonimizacion_dict = mensaje.value().data.__dict__imagen = anonimizacion_dict['imagen']
-
+            anonimizacion_dict = mensaje.value().data.__dict__
+            imagen = anonimizacion_dict['imagen']
             if (imagen == "invalida"):
                 despacharEventoErrorValidacion(imagen)
             else:
