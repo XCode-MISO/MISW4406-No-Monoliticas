@@ -28,7 +28,7 @@ async def suscribirse_a_topico(
                     datos = mensaje.value()
                     print(f'Evento recibido: {datos}')
                     print(f'Tipo: {type(datos)}')
-                    orquestrador.oir_mensaje(mensaje=datos)
+                    await orquestrador.oir_mensaje(mensaje=datos)
                     await consumidor.acknowledge(mensaje)    
 
     except:

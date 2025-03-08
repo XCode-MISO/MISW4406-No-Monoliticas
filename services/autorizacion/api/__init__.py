@@ -46,6 +46,8 @@ def create_app(configuracion={}):
     app = Flask(__name__, instance_relative_config=True)
 
     # Configuración de BD
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:adminadmin@35.223.246.149:3306/usuariosaludtech'    #pruebas local
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

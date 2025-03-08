@@ -21,6 +21,9 @@ def millis_a_datetime(millis):
 def datetime_a_str(date):
     return date.strftime(FORMATO_FECHA)
 
+def str_date_time(date: str):
+    return datetime.datetime.strptime(date, FORMATO_FECHA)
+
 def broker_host():
     return os.getenv(PULSAR_ENV, default="localhost")
 

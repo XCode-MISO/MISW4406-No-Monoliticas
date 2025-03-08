@@ -1,4 +1,5 @@
-import pulsar,_pulsar  
+import pulsar
+import _pulsar
 from pulsar.schema import *
 import uuid
 import time
@@ -29,7 +30,8 @@ def suscribirse_a_eventos():
         print("\n================> suscribirse_a_eventos()")
         while True:
             mensaje = consumidor.receive()
-            print(f'\n================> Evento recibido: {mensaje.value().data}')
+            print(
+                f'\n================> Evento recibido: {mensaje.value().data}')
             try:
                 consumidor.acknowledge(mensaje)
             except:
@@ -72,23 +74,25 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('public/default/comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='seguridad-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
-        print("\n================> suscribirse_a_comandos()")
+        consumidor = cliente.subscribe('public/default/comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared,
+                                       subscription_name='seguridad-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
+        print("suscribirse_a_comandos()")
         while True:
             mensaje = consumidor.receive()
-            print(f'\n================> Comando recibido: {mensaje.value().data}')
-            anonimizacion_dict = mensaje.value().data.__dict__
-            imagen = anonimizacion_dict['imagen']
+            print(
+                f'\n================> Comando recibido: {mensaje.value().data}')
+            anonimizacion_dict = mensaje.value().data.__dict__imagen = anonimizacion_dict['imagen']
 
             if (imagen == "invalida"):
                 despacharEventoErrorValidacion(imagen)
             else:
                 map_anonimizacion = MapeadorAnonimizacionDTOJson()
-                anonimizacion_dto = map_anonimizacion.externo_a_dto(anonimizacion_dict)            
+                anonimizacion_dto = map_anonimizacion.externo_a_dto(
+                    anonimizacion_dict)
                 sr = ServicioAnonimizacion()
-                dto_final = sr.crear_anonimizacion(anonimizacion_dto)            
+                dto_final = sr.crear_anonimizacion(anonimizacion_dto)
+                consumidor.acknowledge(mensaje)
                 despacharEventoAnonimizacionFinalizada(anonimizacion_dto)
-            consumidor.acknowledge(mensaje)
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
@@ -126,15 +130,16 @@ def despacharEventoErrorValidacion(imagen):
 
 
 def despacharEventoAnonimizacionFinalizada(dto_final):
-    from datetime import datetime
     from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
     print("\n=================> parametro dto: ", dto_final)
     evento = AnonimizacionAgregadaPayload(
         id_anonimizacion="12345",
         estado="COMPLETADO",
-        fecha_creacion=datetime.utcnow().isoformat()
+        fecha_creacion=int(utils.unix_time_millis(
+            utils.str_date_time(dto_final.fecha_creacion)))
     )
     print("\n=================> evento: ", evento)
     despachador = Despachador()
-    despachador.publicar_evento(evento, 'public/default/eventos-anonimizacion-finalizada')
+    despachador.publicar_evento(
+        evento, 'public/default/eventos-anonimizacion-finalizada')
     print("\n=================> Evento despachado!!!!!!!!!")

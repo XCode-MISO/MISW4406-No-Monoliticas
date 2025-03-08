@@ -73,17 +73,18 @@ class CoordinadorOrquestacion(CoordinadorSaga, ABC):
     def es_ultima_transaccion(self, index):
         return len(self.pasos) - index <= 1
 
-    def procesar_evento(self, evento: EventoDominio):
+    async def procesar_evento(self, evento: EventoDominio):
         paso, index = self.obtener_paso_dado_un_evento(evento)
+        print(f"Paso: {paso} Indice: {index}")
         if self.es_ultima_transaccion(index) and not isinstance(evento, paso.error):
             print("Terminar procesar evento transaccion")
             self.terminar()
         elif isinstance(evento, paso.error):
             print("rollback")
-            self.publicar_comando(evento, self.pasos[index-1].compensacion)
+            await self.publicar_comando(evento, self.pasos[index-1].compensacion)
         elif isinstance(evento, paso.evento):
             print("publicar siguiente")
-            self.publicar_comando(evento, self.pasos[index].comando)
+            await self.publicar_comando(evento, self.pasos[index].comando)
 
 
 

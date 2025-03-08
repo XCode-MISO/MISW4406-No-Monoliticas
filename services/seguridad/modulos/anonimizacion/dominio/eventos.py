@@ -16,6 +16,8 @@ class AnonimizacionAgregada(EventoDominio):
     id_cliente: uuid.UUID = None
     estado: str = None
     fecha_creacion: datetime = None
+    imagen: str = None
+    nombre: str = None
     
     
 @dataclass
