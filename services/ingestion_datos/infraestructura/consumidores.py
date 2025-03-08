@@ -101,7 +101,7 @@ def coreografiaError(datos):
     from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import ErrorValidacion_Usuario, ErrorValidacion_UsuarioPayload
     despachador = Despachador()
     payload = ErrorValidacion_UsuarioPayload(
-        nombre=datos.nombre
+        nombre=datos.data.id_correlacion
     )
     evento = ErrorValidacion_Usuario(
         data = payload
