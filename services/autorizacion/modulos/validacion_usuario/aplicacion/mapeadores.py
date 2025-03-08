@@ -8,13 +8,13 @@ from datetime import datetime
 class MapeadorValidacion_UsuarioDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> Validacion_UsuarioDTO:
         validacion_usuario_dto = Validacion_UsuarioDTO(
-            externo.get('fecha_actualizacion'),
-            externo.get('fecha_validacion'),
-            externo.get('id'),
-            externo.get('usuario'),
-            externo.get('nombre'),
-            externo.get('imagen'),
-            externo.get('fecha_fin'))
+            fecha_validacion=externo.get('fecha_validacion'),
+            fecha_actualizacion=externo.get('fecha_actualizacion'),
+            usuario=externo.get('usuario'),
+            nombre=externo.get('nombre'), 
+            imagen=externo.get('imagen'), 
+            fecha_fin=externo.get('fecha_fin')
+            )
         return validacion_usuario_dto
 
     def dto_a_externo(self, dto: Validacion_UsuarioDTO) -> dict:
