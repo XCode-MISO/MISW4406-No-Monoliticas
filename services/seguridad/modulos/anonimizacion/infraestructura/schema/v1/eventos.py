@@ -11,3 +11,8 @@ class AnonimizacionAgregada(EventoIntegracion):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+################################################################
+class ErrorAnonimizacion(Record):
+     imagen = String()
+################################################################
