@@ -11,7 +11,6 @@ class IngestionDatosPayload(Record):
 class RevertirIngestionDatosPayload(Record):
     id = String()
     id_correlacion = String()
-    imagen = String()
 
 class ComandoIngerirDatos(Record):
     id = String(default=str(uuid.uuid4()))

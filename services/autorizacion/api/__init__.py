@@ -38,8 +38,8 @@ def comenzar_consumidor(app):
     threading.Thread(target=suscribir_comandos_error).start()
 
     # Suscripción a eventos
-    threading.Thread(target=validacion_usuario.suscribirse_a_eventos).start()
-    threading.Thread(target=validacion_usuario.suscribirse_a_eventos_error).start()
+    #threading.Thread(target=validacion_usuario.suscribirse_a_eventos).start() # dejar de suscribise a eventos 
+    #threading.Thread(target=validacion_usuario.suscribirse_a_eventos_error).start() # dejar de suscribise a eventos
 
 def create_app(configuracion={}):
     # Init la aplicación de Flask
@@ -102,4 +102,3 @@ def create_app(configuracion={}):
 
     app.logger.setLevel(logging.DEBUG)
     return app
-7

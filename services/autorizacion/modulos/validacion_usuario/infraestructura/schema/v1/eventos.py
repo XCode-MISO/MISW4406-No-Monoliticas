@@ -5,6 +5,8 @@ class Validacion_UsuarioAgregadaPayload(Record):
     id_validacion_usuario = String()
     estado = String()
     fecha_validacion = Long()
+    imagen = String()
+    nombre = String()
 
 class Validacion_UsuarioAgregada(EventoIntegracion):
     data = Validacion_UsuarioAgregadaPayload()
@@ -19,7 +21,13 @@ class Validacion_UsuarioFinalizada(Record):
      imagen = String()
      nombre = String()
      fecha_creacion = String()
-
-class ErrorValidacion_Usuario(Record):
+class ErrorValidacion_UsuarioPayload(Record):
      nombre = String()
+
+class ErrorValidacion_Usuario(EventoIntegracion):
+    data = ErrorValidacion_UsuarioPayload()
+
+    def __init__(self, *args, **kwargs):    
+        super().__init__(*args, **kwargs)
+
 

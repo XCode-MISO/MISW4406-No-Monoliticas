@@ -1,13 +1,14 @@
 import pulsar
 from pulsar.schema import *
 
-from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioAgregada, Validacion_UsuarioAgregadaPayload
-from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioFinalizada, ErrorValidacion_Usuario
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioAgregada, Validacion_UsuarioAgregadaPayload, ErrorValidacion_Usuario
 from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import ComandoCrearValidacion_Usuario, ComandoCrearValidacion_UsuarioPayload
 from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import ComandoErrorValidacion_Usuario, ComandoErrorValidacion_UsuarioPayload
 from autorizacion.seedwork.infraestructura import utils
 
 import datetime
+
+from ingestion_datos.dominio.eventos import EventoIngestion, IngestionFinalizada
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 
@@ -17,7 +18,12 @@ def unix_time_millis(dt):
 class Despachador:
     def pub_mensaje(self, mensaje, topico):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(Validacion_UsuarioFinalizada))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(Validacion_UsuarioAgregada))
+        publicador.send(mensaje)
+        cliente.close()
+    def pub_mensaje_ingestion(self, mensaje, topico):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoIngestion))
         publicador.send(mensaje)
         cliente.close()
 
@@ -76,7 +82,7 @@ class Despachador:
 
     def publicar_comando_error(self, comando, topico):
         payload = ComandoErrorValidacion_UsuarioPayload(
-            nombre = comando.nombre
+            nombre = comando.usuario if hasattr(comando, 'usuario') else comando.data.nombre
         )
         comando_integracion = ComandoErrorValidacion_Usuario(data=payload)
         self._publicar_mensaje_comando_error(comando_integracion, topico, AvroSchema(ComandoErrorValidacion_Usuario))

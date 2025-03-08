@@ -9,7 +9,7 @@ from typing import Any
 from orquestrador.config.db import Base, engine
 from orquestrador.orquestrador import CoordinadorProcesamientoDatos
 from orquestrador.consumidores import suscribirse_a_topico
-from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioAgregada
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import Validacion_UsuarioAgregada, ErrorValidacion_Usuario
 from ingestion_datos.dominio.eventos import EventoIngestion
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import AnonimizacionAgregada
 
@@ -30,14 +30,14 @@ async def app_startup():
     orquestrador = CoordinadorProcesamientoDatos()
     orquestrador.inicializar_pasos()
     
-    task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-validacion_usuario", "sub-orquestrador-validacion", Validacion_UsuarioAgregada, orquestrador=orquestrador))
-    #task1_f = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-validacion_usuario", "sub-orquestrador", Validacion_UsuarioAgregada, orquestrador))
+    task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-validacion-usuario-finalizada", "sub-orquestrador-validacion", Validacion_UsuarioAgregada, orquestrador=orquestrador))
+    task1_f = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-error-validacion-usuario", "sub-orquestrador-validacion-error", ErrorValidacion_Usuario, orquestrador=orquestrador))
     task2 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-ingestion-datos", "sub-orquestrador-ingestion", EventoIngestion, orquestrador=orquestrador))
-    task3 = asyncio.ensure_future(suscribirse_a_topico("public/default/eventos-anonimizacion", "sub-orquestrador-anonimizacion", AnonimizacionAgregada, orquestrador=orquestrador))
+    task4 = asyncio.ensure_future(suscribirse_a_topico("public/default/eventos-anonimizacion", "sub-orquestrador-anonimizacion", AnonimizacionAgregada, orquestrador=orquestrador))
     #task3_F = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-revetir-orquestrador", "sub-orquestrador", AnonimizacionAgregada, orquestrador))
     tasks.append(task1)
     tasks.append(task2)
-    tasks.append(task3)
+    tasks.append(task4)
     Base.metadata.create_all(engine)
 
     

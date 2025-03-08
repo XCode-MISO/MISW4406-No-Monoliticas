@@ -78,8 +78,8 @@ async def base() -> dict[str, str]:
 @app.get("/prueba-ingestion-datos-revertido", include_in_schema=False)
 async def prueba_pago_revertido() -> dict[str, str]:
     payload = IngestionCancelada(
-        id = uuid.uuid4(),
-        id_correlacion = uuid.uuid4(),
+        id = str(uuid.uuid4()),
+        id_correlacion = str(uuid.uuid4()),
         ingestion_id = "6463454",
         fecha_actualizacion = utils.datetime_a_str(utils.millis_a_datetime(utils.time_millis()))
     )
@@ -97,8 +97,8 @@ async def prueba_pago_revertido() -> dict[str, str]:
 @app.get("/prueba-ingestion-datos", include_in_schema=False)
 async def prueba_pagar_ingestion() -> dict[str, str]:
     payload = IngestionDatosPayload(
-        id_correlacion = uuid.uuid4(),
-        ingestion_id = uuid.uuid4(),
+        id_correlacion = str(uuid.uuid4()),
+        ingestion_id = str(uuid.uuid4()),
         imagen = 'https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg',
         nombre = 'dark-brandon'
     )
@@ -117,8 +117,8 @@ async def prueba_pagar_ingestion() -> dict[str, str]:
 @app.get("/prueba-revetir-ingestion-datos", include_in_schema=False)
 async def prueba_revertir_pago() -> dict[str, str]:
     payload = RevertirIngestionDatosPayload(
-        id = uuid.uuid4(),
-        id_correlacion = uuid.uuid4(),
+        id = str(uuid.uuid4()),
+        id_correlacion = str(uuid.uuid4()),
         ingestion_id = "6463454",
     )
 

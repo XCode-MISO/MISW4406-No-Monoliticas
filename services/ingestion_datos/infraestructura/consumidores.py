@@ -1,6 +1,7 @@
 import datetime
 import logging
 import traceback
+import uuid
 import pulsar
 import _pulsar
 import aiopulsar
@@ -27,6 +28,7 @@ async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, ti
                     mensaje = await consumidor.receive()
                     datos = mensaje.value()
                     print(f'Evento recibido en ingestion_datos: {datos}')
+                    print(f'Evento recibido en ingestion_datos con data: {datos.data}')
 
                     if type(datos) == ComandoIngerirDatos:
                         # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
@@ -36,13 +38,29 @@ async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, ti
                                 TotalIngestionDatosProjection.ADD
                             )
                         )
+                        if (datos.data.imagen == "maligno"):
+                            from ingestion_datos.infraestructura.despachadores import Despachador as DespechadorIngestion
+                            despachador = DespechadorIngestion()
+                            payload = IngestionCancelada(
+                                id = datos.id,
+                                id_correlacion = datos.data.id_correlacion,
+                                ingestion_id = datos.id,
+                                fecha_actualizacion = utils.datetime_a_str(datetime.datetime.now())
+                            )
+                            evento = EventoIngestion(
+                                ingestion_cancelada=payload,
+                                datacontenttype="IngestionCancelada"
+                            )
+                            despachador.publicar_mensaje(evento, 'public/default/evento-ingestion-datos')
+                            await consumidor.acknowledge(mensaje)
+                            continue
                         from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
                         from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import AnonimizacionAgregadaPayload
                         despachador = Despachador()
                         datosComando = datos.data
                         print(f"Ingestion datos: {datosComando}")
                         evento = AnonimizacionAgregadaPayload(
-                                id_anonimizacion=datos.id,
+                                id_anonimizacion=str(uuid.uuid4()),
                                 estado="Iniciado",
                                 fecha_creacion=utils.time_millis(),
                                 fecha_evento=datetime.datetime.now(),
@@ -69,7 +87,7 @@ async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, ti
                                 TotalIngestionDatosProjection.DELETE
                             )
                         )
-                        
+                        coreografiaError(datos)
 
                     await consumidor.acknowledge(mensaje)
 
@@ -77,3 +95,16 @@ async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, ti
         logging.error(
             f'ERROR: Suscribiendose al tópico! {topico}, {suscripcion}, {schema}')
         traceback.print_exc()
+
+def coreografiaError(datos):
+    from autorizacion.modulos.validacion_usuario.infraestructura.despachadores import Despachador
+    from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import ErrorValidacion_Usuario, ErrorValidacion_UsuarioPayload
+    despachador = Despachador()
+    payload = ErrorValidacion_UsuarioPayload(
+        nombre=datos.nombre
+    )
+    evento = ErrorValidacion_Usuario(
+        data = payload
+    )
+    despachador.pub_mensaje_error(evento, 'public/default/evento-error-validacion-usuario')
+    print(f"Coordinacion mediante evento error validacion-usuario publicado {evento}")

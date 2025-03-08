@@ -1,10 +1,10 @@
 import datetime
 import traceback
-from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import CrearValidacion_Usuario
-from autorizacion.modulos.validacion_usuario.dominio.eventos import Validacion_UsuarioAgregada
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.comandos import ComandoErrorValidacion_Usuario, ComandoErrorValidacion_UsuarioPayload, CrearValidacion_Usuario
+from autorizacion.modulos.validacion_usuario.infraestructura.schema.v1.eventos import ErrorValidacion_Usuario, ErrorValidacion_UsuarioPayload, Validacion_UsuarioAgregada, Validacion_UsuarioAgregadaPayload
 from autorizacion.seedwork.dominio.eventos import EventoDominio
 from ingestion_datos import utils
-from ingestion_datos.aplicacion.comandos import ComandoIngerirDatos, IngestionDatosPayload, ComandoRevertirIngestionDatos
+from ingestion_datos.aplicacion.comandos import ComandoIngerirDatos, IngestionDatosPayload, ComandoRevertirIngestionDatos, RevertirIngestionDatosPayload
 from ingestion_datos.dominio.eventos import EventoIngestion, IngestionFinalizada, IngestionCancelada
 from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import AnonimizacionAgregada
 from seguridad.seedwork.aplicacion.sagas import CoordinadorOrquestacion, Fin, Inicio, Transaccion, Paso
@@ -21,7 +21,7 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
         self.pasos = [
             Inicio(index=0),
             Transaccion(index=1, comando=CrearValidacion_Usuario,
-                        evento=Validacion_UsuarioAgregada, error=type(None), compensacion=type(None)),
+                        evento=Validacion_UsuarioAgregada, error=ErrorValidacion_Usuario, compensacion=ComandoErrorValidacion_Usuario),
             Transaccion(index=2, comando=ComandoIngerirDatos,
                         evento=IngestionFinalizada, error=IngestionCancelada, compensacion=ComandoRevertirIngestionDatos),
             Transaccion(index=3, comando=CrearAnonimizacion,
@@ -49,7 +49,7 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
         )
         db.commit()
 
-    async def publicar_comando(self,evento: EventoDominio, tipo_comando: type):
+    async def publicar_comando(self, evento: EventoDominio, tipo_comando: type):
         comando = self.construir_comando(evento, tipo_comando)
         print(f"Comando construido: {comando}")
         if isinstance(comando, CrearValidacion_Usuario):
@@ -57,12 +57,26 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
             despachador = Despachador()
             topic = "public/default/comandos-validacion_usuario"
             print(f'Publicando comando: {comando} en topic: {topic}')
-            await despachador.publicar_comando(comando, topic)
+            despachador.publicar_comando(comando, topic)
+            self.persistir_en_saga_log(comando)
+        elif isinstance(comando, ComandoErrorValidacion_Usuario):
+            from autorizacion.modulos.validacion_usuario.infraestructura.despachadores import Despachador
+            despachador = Despachador()
+            topic = "public/default/comandos-error_usuario"
+            print(f'Publicando comando: {comando} en topic: {topic}')
+            despachador.publicar_comando_error(comando, topic)
             self.persistir_en_saga_log(comando)
         elif isinstance(comando, ComandoIngerirDatos):
             from ingestion_datos.infraestructura.despachadores import Despachador
             despachador = Despachador()
             topic = "public/default/comando-ingestion-datos"
+            print(f'Publicando comando: {comando} en topic: {topic}')
+            despachador.publicar_mensaje(comando, topic)
+            self.persistir_en_saga_log(comando)
+        elif isinstance(comando, ComandoRevertirIngestionDatos):
+            from ingestion_datos.infraestructura.despachadores import Despachador
+            despachador = Despachador()
+            topic = "public/default/comando-revetir-ingestion-datos"
             print(f'Publicando comando: {comando} en topic: {topic}')
             despachador.publicar_mensaje(comando, topic)
             self.persistir_en_saga_log(comando)
@@ -74,7 +88,8 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
             despachador.publicar_comando(comando, topic)
             self.persistir_en_saga_log(comando)
         else:
-            raise NotImplementedError(f"Comando no ha sido implementado {comando}")
+            raise NotImplementedError(
+                f"Comando no ha sido implementado {comando}")
         print("Finalizo publicar comando!")
 
     def construir_comando(self, evento: EventoDominio, tipo_comando: type):
@@ -83,34 +98,61 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
         # Debemos usar los atributos de ReservaCreada para crear el comando PagarReserva
         print(f"Comando: {tipo_comando} y evento: {evento}")
         if isinstance(evento, Validacion_UsuarioAgregada) and tipo_comando == CrearValidacion_Usuario:
+            datos = evento.data
             return CrearValidacion_Usuario(
-                fecha_actualizacion=evento.fecha_evento,
-                fecha_fin=utils.time_millis(),
-                fecha_validacion=evento.fecha_evento,
-                id=evento.id,
-                imagen=evento.imagen,
-                nombre=evento.nombre,
-                usuario=evento.usuario
+                id=datos.id_validacion_usuario,
+                fecha_actualizacion=utils.datetime_a_str(
+                    utils.millis_a_datetime(utils.time_millis())),
+                fecha_fin=utils.datetime_a_str(
+                    utils.millis_a_datetime(utils.time_millis())),
+                fecha_validacion=utils.datetime_a_str(
+                    utils.millis_a_datetime(datos.fecha_validacion)),
+                imagen=datos.imagen,
+                nombre=datos.nombre,
+                usuario=datos.id_validacion_usuario
             )
-        # TODO: compensacion
+        # compensacion
+        elif isinstance(evento, ErrorValidacion_Usuario) and tipo_comando == ComandoErrorValidacion_Usuario:
+            datos = evento.data
+            print(f"evento: {datos}")
+            payload = ComandoErrorValidacion_UsuarioPayload(
+                nombre=datos.nombre,
+            )
+            print(f'payload === {payload}')
+            return ComandoErrorValidacion_Usuario(
+                time=utils.time_millis(),
+                data=payload
+            )
         elif isinstance(evento, IngestionFinalizada) and tipo_comando == ComandoIngerirDatos:
             print(f"evento: {evento}")
             payload = IngestionDatosPayload(
-                    id_correlacion=str(evento.ingestion_id),
-                    imagen=r'{}'.format(evento.imagen),
-                    nombre=evento.nombre,
-                    fecha_creacion=int(utils.str_date_time(evento.fecha_creacion).timestamp() * 1000),
-                )
+                id_correlacion=str(evento.ingestion_id),
+                imagen=r'{}'.format(evento.imagen),
+                nombre=evento.nombre,
+                fecha_creacion=int(utils.str_date_time(
+                    evento.fecha_creacion).timestamp() * 1000),
+            )
             print(f'payload === {payload}')
             return ComandoIngerirDatos(
                 time=utils.time_millis(),
                 data=payload
             )
-        # TODO: compensacion
+        elif isinstance(evento, IngestionCancelada) and tipo_comando == ComandoRevertirIngestionDatos:
+            print(f"evento: {evento}")
+            payload = RevertirIngestionDatosPayload(
+                id_correlacion=str(evento.ingestion_id)
+            )
+            print(f'payload === {payload}')
+            return ComandoRevertirIngestionDatos(
+                time=utils.time_millis(),
+                data=payload
+            )
         elif isinstance(evento, AnonimizacionAgregada) and tipo_comando == CrearAnonimizacion:
             return CrearAnonimizacion(
-                fecha_actualizacion=utils.datetime_a_str(datetime.datetime.now()),
-                fecha_creacion=utils.datetime_a_str(utils.millis_a_datetime(evento.data.fecha_creacion)),
+                fecha_actualizacion=utils.datetime_a_str(
+                    datetime.datetime.now()),
+                fecha_creacion=utils.datetime_a_str(
+                    utils.millis_a_datetime(evento.data.fecha_creacion)),
                 fecha_fin=None,
                 id=evento.data.id_anonimizacion,
                 imagen=evento.data.imagen,
@@ -126,6 +168,7 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
 
     async def oir_mensaje(self, mensaje):
         print(f"oirmensaje: {mensaje}")
+        print(f"oirmensaje tipo: {type(mensaje)}")
         if isinstance(mensaje, EventoDominio):
             await self.procesar_evento(mensaje)
         elif isinstance(mensaje, EventoIngestion):
@@ -135,9 +178,19 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
             await self.procesar_evento(evento)
         elif isinstance(mensaje, EventoIntegracionSeg):
             print(f"Mensaje: ${mensaje}")
-            evento = mensaje if isinstance(mensaje, AnonimizacionAgregada) else None
+            evento = mensaje if isinstance(
+                mensaje, AnonimizacionAgregada) else None
             print(f"Type: {type(evento)}")
             await self.procesar_evento(evento)
+        elif isinstance(mensaje, Validacion_UsuarioAgregada):
+            print(f"Mensaje: ${mensaje}")
+            print(f"Type: {type(mensaje)}")
+            await self.procesar_evento(mensaje)
+        elif isinstance(mensaje, ErrorValidacion_Usuario):
+            print(f"Mensaje: ${mensaje}")
+            print(f"Type: {type(mensaje)}")
+            await self.procesar_evento(mensaje)
         else:
             traceback.print_exc()
-            raise NotImplementedError(f"El mensaje: {mensaje} no es evento de Dominio")
+            raise NotImplementedError(
+                f"El mensaje: {mensaje} no es evento de Dominio")
