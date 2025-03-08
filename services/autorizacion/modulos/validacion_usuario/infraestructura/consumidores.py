@@ -14,10 +14,13 @@ from autorizacion.seedwork.infraestructura import utils
 
 from autorizacion.modulos.validacion_usuario.aplicacion.mapeadores import MapeadorValidacion_UsuarioDTOJson
 from autorizacion.modulos.validacion_usuario.aplicacion.servicios import ServicioValidacion_Usuario
+from autorizacion.modulos.validacion_usuario.infraestructura.despachadores import Despachador
+from autorizacion.api.validacion_usuario import despacharEventoErrorUsuario, despacharEventoUsuarioValido
+from ingestion_datos.dominio.eventos import EventoIngestion, IngestionFinalizada
 
 from autorizacion.modulos.validacion_usuario.infraestructura.despachadores import Despachador
 
-def suscribirse_a_eventos():
+""" def suscribirse_a_eventos():
     cliente = None
     topico = 'public/default/evento-validacion-usuario-finalizada'
     try:
@@ -63,7 +66,7 @@ def suscribirse_a_eventos_error():
         traceback.print_exc()
         if cliente:
             cliente.close()
-
+ """
 def suscribirse_a_comandos():    
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
     cliente = None
@@ -75,7 +78,7 @@ def suscribirse_a_comandos():
             mensaje = consumidor.receive()
             print(f'\n========suscribirse_a_comandos========> Comando recibido: {mensaje.value().data}')
             validacion_usuario_dict = mensaje.value().data.__dict__
-            login_usuario = validacion_usuario_dict["id"]
+            login_usuario = validacion_usuario_dict["nombre"]
             if(login_usuario == "maligno"):
                 despacharEventoErrorUsuario(login_usuario)
             else:
@@ -83,7 +86,23 @@ def suscribirse_a_comandos():
                 validacion_usuario_dto = map_validacion_usuario.externo_a_dto(validacion_usuario_dict)
                 sr = ServicioValidacion_Usuario()
                 dto_final = sr.crear_validacion_usuario(validacion_usuario_dto)
-                despacharEventoUsuarioValido(validacion_usuario_dto)
+                print("\n=================> parametro dto: ", dto_final)
+                payload = IngestionFinalizada(
+                    id = str(uuid.uuid4()),
+                    id_correlacion = validacion_usuario_dto.id,
+                    ingestion_id = str(uuid.uuid4()),
+                    imagen = validacion_usuario_dto.imagen,
+                    nombre = validacion_usuario_dto.nombre,
+                    fecha_creacion = validacion_usuario_dto.fecha_actualizacion
+                )
+                evento = EventoIngestion(
+                    ingestion_finalizada = payload,
+                    datacontenttype="IngestionFinalizada"
+                )
+                print(f"\n=================> evento: ", evento)
+                despachador = Despachador()
+                despachador.pub_mensaje_ingestion(evento, 'public/default/evento-ingestion-datos')
+                print(f"\n=================> Evento despachado!!!!!!!!!: {evento}")    
             consumidor.acknowledge(mensaje)
         cliente.close()
     except:
@@ -110,28 +129,3 @@ def suscribirse_a_comandos_error():
         traceback.print_exc()
         if cliente:
             cliente.close()
-
-def despacharEventoErrorUsuario(login_usuario):
-    print(f"\n================> Usuario maligno detectado:", login_usuario)
-    evento = ErrorValidacion_Usuario(
-        nombre = login_usuario
-    )
-    print(f"\n================> evento: ", evento)
-    despachador = Despachador()
-    despachador.pub_mensaje_error(evento, 'public/default/evento-error-validacion-usuario')
-    print("\n=================> Evento despachado!!!!!!!!!")    
-
-def despacharEventoUsuarioValido(validacion_usuario_dto):
-    print("\n=================> parametro dto: ", validacion_usuario_dto)
-    evento = Validacion_UsuarioFinalizada(
-        id = "1232321321",
-        id_correlacion = "389822434",
-        ingestion_id = "6463454",
-        imagen = "https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg",
-        nombre = "dark-brandon",
-        fecha_creacion = "2025-03-02T22:48:08Z"
-    )
-    print(f"\n=================> evento: ", evento)
-    despachador = Despachador()
-    despachador.pub_mensaje(evento, 'public/default/evento-validacion-usuario-finalizada')
-    print("\n=================> Evento despachado!!!!!!!!!")    
