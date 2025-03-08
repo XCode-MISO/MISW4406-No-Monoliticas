@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "925bff87-bf23-4745-9259-01353e7d7787",
+		"name": "No Monoliticas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30234468"
+	},
+	"item": [
+		{
+			"name": "BFF",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"imagen\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Dark_Brandon.jpg/1920px-Dark_Brandon.jpg\",\n    \"usuario\":\"dark-brandon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://34.173.231.46:8000/v1/sta/transaction",
+					"protocol": "http",
+					"host": [
+						"34",
+						"173",
+						"231",
+						"46"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"sta",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BFF Error Imagen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"imagen\":\"maligno\",\n    \"usuario\":\"dark-brandon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://34.173.231.46:8000/v1/sta/transaction",
+					"protocol": "http",
+					"host": [
+						"34",
+						"173",
+						"231",
+						"46"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"sta",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BFF Error Validacion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"imagen\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Dark_Brandon.jpg/1920px-Dark_Brandon.jpg\",\n    \"usuario\":\"maligno\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://34.173.231.46:8000/v1/sta/transaction",
+					"protocol": "http",
+					"host": [
+						"34",
+						"173",
+						"231",
+						"46"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"sta",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
