@@ -28,10 +28,10 @@ tasks = list()
 @app.on_event("startup")
 async def app_startup():
     global tasks
-    task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-ingestion-datos", "sub-ingestion-datos", EventoIngestion))
+    #task1 = asyncio.ensure_future(suscribirse_a_topico("public/default/evento-ingestion-datos", "sub-ingestion-datos", EventoIngestion))
     task2 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-ingestion-datos", "sub-com-ingestion-datos-crear", ComandoIngerirDatos))
     task3 = asyncio.ensure_future(suscribirse_a_topico("public/default/comando-revetir-ingestion-datos", "sub-com-ingestion-datos-revertir", ComandoRevertirIngestionDatos))
-    tasks.append(task1)
+    #tasks.append(task1)
     tasks.append(task2)
     tasks.append(task3)
     
@@ -46,11 +46,14 @@ def shutdown_event():
 @app.get("/prueba-ingestion_datos_exitosa", include_in_schema=False)
 async def prueba_ingestion_pagada() -> dict[str, str]:
     payload = IngestionFinalizada(
-        id = uuid.uuid4(),
+        id = str(uuid.uuid4()),
+        ingestion_id = str(uuid.uuid4()),
+        id_correlacion = str(uuid.uuid4()),
         imagen = 'https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg',
         nombre = 'dark-brandon',
         fecha_creacion = utils.datetime_a_str(utils.millis_a_datetime(utils.time_millis())) 
     )
+    print(f"====================> {payload}")
 
     evento = EventoIngestion(
         time=utils.time_millis(),
@@ -99,6 +102,7 @@ async def prueba_pagar_ingestion() -> dict[str, str]:
         imagen = 'https://upload.wikimedia.org/wikipedia/commons/3/32/Dark_Brandon.jpg',
         nombre = 'dark-brandon'
     )
+    print(f"====================> {payload}")
 
     comando = ComandoIngerirDatos(
         time=utils.time_millis(),

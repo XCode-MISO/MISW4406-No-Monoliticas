@@ -9,9 +9,6 @@ import datetime
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 
-def unix_time_millis(dt):
-    return (dt - epoch).total_seconds() * 1000.0
-
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
@@ -30,7 +27,7 @@ class Despachador:
         payload = AnonimizacionAgregadaPayload(
             id_anonimizacion=str(evento.id_anonimizacion), 
             estado=str(evento.estado), 
-            fecha_creacion=int(unix_time_millis(evento.fecha_creacion)),
+            fecha_creacion=evento.fecha_creacion,
             imagen=evento.imagen,
             nombre=evento.nombre
         )

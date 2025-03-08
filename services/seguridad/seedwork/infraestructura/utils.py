@@ -7,6 +7,7 @@ from pulsar.schema import *
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 PULSAR_ENV: str = 'BROKER_HOST'
+FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
 def time_millis():
     return int(time.time() * 1000)
@@ -19,6 +20,12 @@ def unix_time_millis(dt):
 
 def millis_a_datetime(millis):
     return datetime.datetime.fromtimestamp(millis/1000.0)
+
+def datetime_a_str(date):
+    return date.strftime(FORMATO_FECHA)
+
+def str_date_time(date: str):
+    return datetime.datetime.strptime(date, FORMATO_FECHA)
 
 def broker_host():
     return os.getenv(PULSAR_ENV, default="localhost")

@@ -3,8 +3,8 @@ from ingestion_datos.utils import time_millis
 import uuid
 
 class IngestionDatosPayload(Record):
-    id_correlacion = String(),
-    imagen = String(),
+    id_correlacion = String()
+    imagen = String()
     fecha_creacion = Long()
     nombre = String()
  

@@ -37,15 +37,17 @@ async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, ti
                             )
                         )
                         from seguridad.modulos.anonimizacion.infraestructura.despachadores import Despachador
-                        from seguridad.modulos.anonimizacion.dominio.eventos import AnonimizacionAgregada
+                        from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import AnonimizacionAgregadaPayload
                         despachador = Despachador()
-                        evento = AnonimizacionAgregada(
-                                id=datos.id,
+                        datosComando = datos.data
+                        print(f"Ingestion datos: {datosComando}")
+                        evento = AnonimizacionAgregadaPayload(
+                                id_anonimizacion=datos.id,
                                 estado="Iniciado",
-                                fecha_creacion=datetime.datetime.now(),
+                                fecha_creacion=utils.time_millis(),
                                 fecha_evento=datetime.datetime.now(),
-                                id_cliente=datos.id,
-                                id_reserva=datos.id
+                                nombre=datosComando.nombre,
+                                imagen=datosComando.imagen
                             )
                         despachador.publicar_evento(evento, 'public/default/eventos-anonimizacion')
                         print(f"Evento de ingestion datos publicado {evento}")

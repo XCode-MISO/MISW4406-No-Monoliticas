@@ -51,6 +51,7 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
 
     async def publicar_comando(self,evento: EventoDominio, tipo_comando: type):
         comando = self.construir_comando(evento, tipo_comando)
+        print(f"Comando construido: {comando}")
         if isinstance(comando, CrearValidacion_Usuario):
             from autorizacion.modulos.validacion_usuario.infraestructura.despachadores import Despachador
             despachador = Despachador()
@@ -94,14 +95,16 @@ class CoordinadorProcesamientoDatos(CoordinadorOrquestacion):
         # TODO: compensacion
         elif isinstance(evento, IngestionFinalizada) and tipo_comando == ComandoIngerirDatos:
             print(f"evento: {evento}")
+            payload = IngestionDatosPayload(
+                    id_correlacion=str(evento.ingestion_id),
+                    imagen=r'{}'.format(evento.imagen),
+                    nombre=evento.nombre,
+                    fecha_creacion=int(utils.str_date_time(evento.fecha_creacion).timestamp() * 1000),
+                )
+            print(f'payload === {payload}')
             return ComandoIngerirDatos(
                 time=utils.time_millis(),
-                payload=IngestionDatosPayload(
-                    id=evento.id,
-                    fecha_creacion=utils.time_millis(),
-                    imagen=evento.imagen,
-                    nombre=evento.nombre,
-                )
+                data=payload
             )
         # TODO: compensacion
         elif isinstance(evento, AnonimizacionAgregada) and tipo_comando == CrearAnonimizacion:
