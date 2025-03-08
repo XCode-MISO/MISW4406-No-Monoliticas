@@ -8,7 +8,7 @@ from autorizacion.seedwork.infraestructura import utils
 
 import datetime
 
-from ingestion_datos.dominio.eventos import EventoIngestion, IngestionFinalizada
+from ingestion_datos.dominio.eventos import EventoIngestion
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 

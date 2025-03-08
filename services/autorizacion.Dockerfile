@@ -12,11 +12,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code to the working directory
-COPY ./autorizacion .
+COPY ./ ./
 
 # Expose the port on which the Flask app will run
 EXPOSE 5000
 
 # Run the Flask app
 
-CMD ["flask", "--app", "api", "run", "--host=0.0.0.0"]
+CMD ["flask", "--app", "autorizacion/api", "run", "--host=0.0.0.0"]
