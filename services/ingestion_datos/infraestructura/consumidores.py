@@ -79,7 +79,7 @@ async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, ti
                                     datetime.datetime.now()),
                             )) """
 
-                    elif type(schema) == ComandoRevertirIngestionDatos:
+                    elif type(datos) == ComandoRevertirIngestionDatos:
                         # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
                         execute_transaction_projection(
                             TotalIngestionDatosProjection(
