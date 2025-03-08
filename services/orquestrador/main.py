@@ -41,6 +41,16 @@ async def app_startup():
     Base.metadata.create_all(engine)
 
     
+
+@app.get("/health", include_in_schema=False)
+async def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+@app.get("/", include_in_schema=False)
+async def base() -> dict[str, str]:
+    return {"status": "ok"}
+
+    
 @app.on_event("shutdown")
 def shutdown_event():
     global tasks
