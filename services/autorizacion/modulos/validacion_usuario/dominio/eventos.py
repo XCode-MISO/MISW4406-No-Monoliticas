@@ -30,6 +30,7 @@ class Validacion_UsuarioIniciada(EventoDominio):
 class Validacion_UsuarioCancelada(EventoDominio):
     id_validacion_usuario: uuid.UUID = None
     fecha_actualizacion: datetime = None
+    nombre: str = None
 
 @dataclass
 class Validacion_UsuarioFinalizada(EventoDominio):
