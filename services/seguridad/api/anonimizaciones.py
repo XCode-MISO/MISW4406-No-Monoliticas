@@ -15,18 +15,6 @@ bp = api.crear_blueprint('anonimizacion', '/anonimizacion')
 
 @bp.route('/anonimizacion', methods=['POST'])
 def agregar_anonimizacion():
-    '''
-    try:
-        anonimizacion_dict = request.json
-        map_anonimizacion = MapeadorAnonimizacionDTOJson()
-        anonimizacion_dto = map_anonimizacion.externo_a_dto(anonimizacion_dict)
-        sr = ServicioAnonimizacion()
-        dto_final = sr.crear_anonimizacion(anonimizacion_dto)
-        return map_anonimizacion.dto_a_externo(dto_final)
-    
-    except ExcepcionDominio as e:
-        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
-    '''
     try:
         anonimizacion_dict = request.json
         map_anonimizacion = MapeadorAnonimizacionDTOJson()
@@ -36,6 +24,20 @@ def agregar_anonimizacion():
         despachador.publicar_comando(comando, 'public/default/comandos-anonimizacion')
         
         return Response('{anonimizacion realizada}', status=202, mimetype='application/json')
+    except ExcepcionDominio as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+
+@bp.route('/error_anonimizacion', methods=['POST'])
+def agregar_error_anonimizacion():    
+    from seguridad.modulos.anonimizacion.infraestructura.schema.v1.eventos import ErrorAnonimizacion
+    try:
+        data = request.json
+        usuario = data["imagen"]
+        comando = ErrorAnonimizacion(usuario)
+        despachador = Despachador()
+        despachador.publicar_comando_error(comando, 'public/default/comandos-error_anonimizacion')
+        return Response('{Error Usuario}', status=202, mimetype='application/json')
+    
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 

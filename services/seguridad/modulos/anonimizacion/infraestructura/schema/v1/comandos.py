@@ -23,3 +23,15 @@ class CrearAnonimizacion(Comando):
     nombre: str
     imagen: str
     fecha_fin: str
+
+################################################################
+class ComandoError_AnonimizacionPayload(ComandoIntegracion):
+    imagen = String()
+
+class ComandoError_Anonimizacion(ComandoIntegracion):
+    data = ComandoError_AnonimizacionPayload()
+
+@dataclass
+class Error_Anonimizacion(Comando):
+    imagen: str
+################################################################
